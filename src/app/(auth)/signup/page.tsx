@@ -1,0 +1,93 @@
+"use client";
+import useAuth from "@/hooks/useAuth";
+import { SignUpType } from "@/types/auth";
+import { Button, Checkbox, TextField } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+
+type Props = {};
+
+const SignUpPage = (props: Props) => {
+  const route = useRouter();
+  const { signUp, user } = useAuth();
+  const [dataUser, setDataUser] = useState<SignUpType>({
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    if (user) {
+      route.push("/");
+    }
+  }, [user?.email]);
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDataUser({
+      ...dataUser,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signUp(dataUser);
+  };
+
+  return (
+    <form className="space-y-4 md:space-y-6" onSubmit={handleSignUp}>
+      <TextField
+        type="email"
+        label="Email"
+        name="email"
+        className="w-full"
+        onChange={handleOnChange}
+      />
+      <TextField
+        type="password"
+        label="Password"
+        name="password"
+        className="w-full"
+        onChange={handleOnChange}
+      />
+      <div className="flex items-center justify-between">
+        <div className="flex items-start">
+          <div className="flex items-center h-5">
+            <Checkbox name="remember" />
+          </div>
+          <div className="ml-3 text-sm">
+            <label
+              htmlFor="remember"
+              className="text-gray-500 dark:text-gray-300"
+            >
+              Remember me
+            </label>
+          </div>
+        </div>
+        <Link
+          href="/"
+          className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
+        >
+          Forgot password?
+        </Link>
+      </div>
+      <Button
+        type="submit"
+        className="w-full text-white !bg-blue-600 hover:!bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 h-[50px]"
+      >
+        Sign Up
+      </Button>
+      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+        Already have an account?{" "}
+        <Link
+          href={"/signin"}
+          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+        >
+          Sign In
+        </Link>
+      </p>
+    </form>
+  );
+};
+
+export default SignUpPage;
