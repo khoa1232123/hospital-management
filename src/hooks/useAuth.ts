@@ -6,6 +6,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut as signOutAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,17 +26,30 @@ const useAuth = () => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
-        console.log("User found", user);
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
       } else {
-        console.log("User not found");
         localStorage.removeItem("user");
       }
       setIsPageLoading(false);
     });
     return () => unSubscribe();
   }, []);
+
+  const signInWithGoogle = () => {
+    setIsLoading(true);
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        console.log("Signed in successfully!", userCredential);
+        route.push("/");
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log("Sign in failed!", error);
+        setIsLoading(false);
+      });
+  };
 
   const signIn = (user: SignInType) => {
     setIsLoading(true);
@@ -82,6 +97,7 @@ const useAuth = () => {
     signUp,
     signOut,
     user,
+    signInWithGoogle,
   };
 };
 

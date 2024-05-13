@@ -1,6 +1,7 @@
 "use client";
 import useAuth from "@/hooks/useAuth";
 import GoogleIcon from "@/icons/google";
+import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,7 +14,7 @@ type Props = {
 const AuthLayout = ({ children }: Props) => {
   const route = useRouter();
   const pathname = usePathname();
-  const { user, isPageLoading } = useAuth();
+  const { user, isPageLoading, signInWithGoogle, isLoading } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -49,12 +50,16 @@ const AuthLayout = ({ children }: Props) => {
               Sign {pathname.includes("signup") ? "up" : "in"} to your account
             </h1>
             <div className="signin-with-google">
-              <Button className="bg-white border-[1px] border-gray-200 border-solid w-full gap-2 h-[50px]">
+              <LoadingButton
+                loading={isLoading}
+                className="bg-white border-[1px] border-gray-200 border-solid w-full gap-2 h-[50px]"
+                onClick={signInWithGoogle}
+              >
                 <div className="w-5">
                   <GoogleIcon />
                 </div>
                 Sign in with Google
-              </Button>
+              </LoadingButton>
             </div>
             <div className="text-sm text-center text-gray-500 dark:text-gray-400 flex items-center gap-4">
               <div className="w-full bg-gray-300 h-[2px]"></div>
