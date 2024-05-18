@@ -23,6 +23,7 @@ interface KDialogProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   title?: string;
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+  submitText?: string;
   children: React.ReactNode;
 }
 
@@ -33,6 +34,7 @@ const KDialog = ({
   title,
   onSubmit,
   children,
+  submitText,
 }: KDialogProps) => {
   const handleClose = () => {
     setOpen(false);
@@ -69,7 +71,7 @@ const KDialog = ({
             color="primary"
             className="bg-blue-500 text-white hover:bg-blue-600"
           >
-            Save changes
+            {submitText ? submitText : "Save changes"}
           </Button>
         </DialogActions>
       </BootstrapDialog>

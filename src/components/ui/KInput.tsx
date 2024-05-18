@@ -1,25 +1,27 @@
 import {
+  Box,
   FormControl,
   FormControlLabel,
+  Grid,
+  GridProps,
   Input,
   TextField,
   TextFieldProps,
 } from "@mui/material";
 import React from "react";
 
-const height = 50;
-const labelOffset = -2;
+export type KInputProps = TextFieldProps & GridProps & {};
 
-type Props = TextFieldProps & {};
-
-const KInput = (props: Props) => {
+const KInput = (props: KInputProps) => {
   return (
-    <TextField
-      style={{
-        width: "100%",
-      }}
-      {...props}
-    />
+    <Grid item {...props}>
+      <TextField
+        style={{
+          width: "100%",
+        }}
+        {...props}
+      />
+    </Grid>
   );
 };
 
