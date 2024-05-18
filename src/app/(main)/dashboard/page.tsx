@@ -15,24 +15,8 @@ const DashboardPage = (props: Props) => {
     email: "",
   });
   const { addUser, fieldsForm } = useUser();
-  const {
-    data,
-    loading,
-    addDocument,
-    updateDocument,
-    deleteDocument,
-    goToPage,
-    currentPage,
-    totalPages,
-    setFilters,
-  } = useFirestore("users");
 
-  const [newItem, setNewItem] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearch = () => {
-    setFilters({ lastName: searchTerm });
-  };
+  console.log({ fieldsForm }, "dashboard");
 
   return (
     <div>
@@ -50,8 +34,8 @@ const DashboardPage = (props: Props) => {
         submitText="Create"
       >
         <Grid container spacing={2}>
-          {fieldsForm.map((item) => (
-            <KRenderField {...item} />
+          {fieldsForm.map((item, index) => (
+            <KRenderField key={index} {...item} />
           ))}
         </Grid>
       </KDialog>

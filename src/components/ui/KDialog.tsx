@@ -22,7 +22,7 @@ interface KDialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   title?: string;
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit?: () => void;
   submitText?: string;
   children: React.ReactNode;
 }
@@ -40,8 +40,18 @@ const KDialog = ({
     setOpen(false);
   };
 
+  const handleSubmit = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log("Submit");
+
+    event.preventDefault();
+    if (onSubmit) onSubmit();
+    setOpen(false);
+  };
+
   return (
-    <form onSubmit={onSubmit}>
+    <form action={"#"}>
       <BootstrapDialog
         fullWidth={true}
         maxWidth={size}
@@ -67,9 +77,9 @@ const KDialog = ({
           <Button onClick={handleClose}>Close</Button>
           <Button
             type="submit"
-            onClick={handleClose}
             color="primary"
             className="bg-blue-500 text-white hover:bg-blue-600"
+            onClick={handleSubmit}
           >
             {submitText ? submitText : "Save changes"}
           </Button>

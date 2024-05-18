@@ -1,24 +1,24 @@
 // useFirestore.ts
-import { useState, useEffect } from "react";
+import { db } from "@/lib/firebase/client";
 import {
-  collection,
+  CollectionReference,
+  DocumentData,
+  Query,
   addDoc,
-  updateDoc,
+  collection,
   deleteDoc,
-  getDocs,
-  query,
-  orderBy,
-  startAfter,
-  limit,
-  where,
   doc,
   getCountFromServer,
-  Query,
-  DocumentData,
-  CollectionReference,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
   serverTimestamp,
+  updateDoc,
+  where,
 } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
+import { useEffect, useState } from "react";
 
 interface DataType {
   id?: string;
@@ -27,7 +27,7 @@ interface DataType {
 }
 
 const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [allData, setAllData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -58,7 +58,7 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
   };
 
   // Fetch data from Firestore based on page number
-  const fetchData = async (page: number) => {
+  const getDocuments = async (page: number = 10) => {
     setLoading(true);
     try {
       const offset = (page - 1) * pageSize;
@@ -81,18 +81,21 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
       const docsData = querySnapshot.docs
         .slice(offset)
         .map((doc) => ({ ...doc.data(), id: doc.id }));
-      setData(docsData);
+      setAllData(docsData);
+
+      return docsData;
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
       setLoading(false);
     }
+    return null;
   };
 
   // Go to specific page
   const goToPage = (page: number) => {
     setCurrentPage(page);
-    fetchData(page);
+    getDocuments(page);
   };
 
   // Add a new document
@@ -103,7 +106,7 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      setData([...data, { ...newData, id: docRef.id }]);
+      setAllData([...allData, { ...newData, id: docRef.id }]);
       calculateTotalPages(); // Recalculate total pages after adding a document
       console.log({ docRef });
     } catch (error) {
@@ -116,8 +119,8 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
     try {
       const docRef = doc(db, collectionName, id);
       await updateDoc(docRef, { ...updatedData, updatedAt: serverTimestamp() });
-      setData(
-        data.map((item) =>
+      setAllData(
+        allData.map((item) =>
           item.id === id ? { ...item, ...updatedData } : item
         )
       );
@@ -131,20 +134,36 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
     try {
       const docRef = doc(db, collectionName, id);
       await deleteDoc(docRef);
-      setData(data.filter((item) => item.id !== id));
+      setAllData(allData.filter((item) => item.id !== id));
       calculateTotalPages(); // Recalculate total pages after deleting a document
     } catch (error) {
       console.error("Error deleting document: ", error);
     }
   };
 
+  // Get a document by ID
+  const getDocumentById = async (id: string) => {
+    try {
+      const docRef = doc(db, collectionName, id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { ...docSnap.data(), id: docSnap.id } as DataType;
+      } else {
+        console.error("No such document!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting document: ", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     calculateTotalPages();
-    fetchData(currentPage);
   }, [collectionName, pageSize, currentPage, filters]);
 
   return {
-    data,
+    allData,
     loading,
     addDocument,
     updateDocument,
@@ -154,6 +173,8 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
     totalPages,
     setFilters,
     setPageSize,
+    getDocuments,
+    getDocumentById,
   };
 };
 
