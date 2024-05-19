@@ -9,3 +9,7 @@ export const extractKeys = (arr: Array<Record<string, any>>): string[] => {
 
   return Array.from(keysSet);
 };
+
+export const convertNumberToArray = (n: number): number[] => {
+  return Array.from({ length: n }, (_, i) => i + 1);
+};

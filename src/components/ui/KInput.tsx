@@ -1,22 +1,7 @@
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  GridProps,
-  Input,
-  TextField,
-  TextFieldProps,
-  TextFieldVariants,
-} from "@mui/material";
-import React from "react";
+import { KInputType } from "@/types/field";
+import { Grid, TextField } from "@mui/material";
 
-export type KInputProps = TextFieldProps & {
-  xs?: number;
-  xl?: number;
-  sm?: number;
-  md?: number;
-};
+type KInputProps = KInputType & {};
 
 const KInput = ({ xs, xl, sm, md, ...props }: KInputProps) => {
   return (

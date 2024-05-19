@@ -23,7 +23,9 @@ type CreateUserType = UserType & {
   email: string;
 };
 
-type UpdateUserType = UserType & {};
+type UpdateUserType = UserType & {
+  id: string;
+};
 
 type GetUserType = UserType & {
   id: string;

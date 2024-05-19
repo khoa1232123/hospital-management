@@ -1,22 +1,38 @@
 "use client";
 import TestTable from "@/components/TestTable";
 import { KDialog } from "@/components/ui";
-import KInput from "@/components/ui/KInput";
-import KRenderField, { KRenderFieldProps } from "@/components/ui/KRenderField";
+import KRenderField from "@/components/ui/KRenderField";
+import { DATATABLES } from "@/constants";
 import { useFirestore, useUser } from "@/hooks/firestore";
+import { convertNumberToArray } from "@/utils/array";
 import { Button, Grid } from "@mui/material";
-import React, { useState } from "react";
+import { useEffect } from "react";
 
 type Props = {};
 
 const DashboardPage = (props: Props) => {
-  const [open, setOpen] = React.useState(false);
-  const [userData, setUserData] = useState<CreateUserType>({
-    email: "",
-  });
-  const { addUser, fieldsForm } = useUser();
+  const {
+    addUser,
+    fieldsForm,
+    open,
+    setOpen,
+    getUsers,
+    allData,
+    goToPage,
+    totalPages,
+  } = useUser(2);
 
-  console.log({ fieldsForm }, "dashboard");
+  // const { allData, getDocuments } = useFirestore(DATATABLES.USERS);
+
+  // useEffect(() => {
+  //   getDocuments(1);
+  // }, []);
+
+  useEffect(() => {
+    getUsers(1);
+  }, []);
+
+  console.log({ allData });
 
   return (
     <div>
@@ -24,7 +40,11 @@ const DashboardPage = (props: Props) => {
         <h1 className="m-0">New Page</h1>
         <Button onClick={() => setOpen(true)}>Create New Page</Button>
       </div>
-      <TestTable />
+      {convertNumberToArray(totalPages).map((item) => (
+        <Button key={item} onClick={() => goToPage(item)}>
+          {item}
+        </Button>
+      ))}
       <KDialog
         open={open}
         setOpen={setOpen}

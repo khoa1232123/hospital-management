@@ -19,6 +19,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { TableRow } from "@mui/material";
 
 interface DataType {
   id?: string;
@@ -26,7 +27,17 @@ interface DataType {
   [key: string]: any;
 }
 
-const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
+interface KeyConfig {
+  name: string;
+  align: "left" | "right" | "center" | "inherit" | "justify";
+}
+
+const useFirestore = (
+  collectionName: string,
+  initialPageSize: number = 10,
+  isData: boolean = false
+) => {
+  const [open, setOpen] = useState(false);
   const [allData, setAllData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,7 +69,7 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
   };
 
   // Fetch data from Firestore based on page number
-  const getDocuments = async (page: number = 10) => {
+  const getDocuments = async (page: number) => {
     setLoading(true);
     try {
       const offset = (page - 1) * pageSize;
@@ -99,16 +110,18 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
   };
 
   // Add a new document
-  const addDocument = async (newData: DataType) => {
+  const addDocument = async (data: DataType) => {
     try {
-      const docRef = await addDoc(collection(db, collectionName), {
-        ...newData,
+      const newData = {
+        ...data,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-      });
+      };
+      const docRef = await addDoc(collection(db, collectionName), newData);
       setAllData([...allData, { ...newData, id: docRef.id }]);
       calculateTotalPages(); // Recalculate total pages after adding a document
-      console.log({ docRef });
+      setOpen(false);
+      return newData;
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -117,13 +130,16 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
   // Update an existing document
   const updateDocument = async (id: string, updatedData: Partial<DataType>) => {
     try {
+      const newData = { ...updatedData, updatedAt: serverTimestamp() };
       const docRef = doc(db, collectionName, id);
-      await updateDoc(docRef, { ...updatedData, updatedAt: serverTimestamp() });
+      await updateDoc(docRef, newData);
       setAllData(
         allData.map((item) =>
           item.id === id ? { ...item, ...updatedData } : item
         )
       );
+      setOpen(false);
+      return newData;
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -160,6 +176,9 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
 
   useEffect(() => {
     calculateTotalPages();
+    if (isData) {
+      getDocuments(currentPage);
+    }
   }, [collectionName, pageSize, currentPage, filters]);
 
   return {
@@ -175,6 +194,8 @@ const useFirestore = (collectionName: string, initialPageSize: number = 10) => {
     setPageSize,
     getDocuments,
     getDocumentById,
+    open,
+    setOpen,
   };
 };
 

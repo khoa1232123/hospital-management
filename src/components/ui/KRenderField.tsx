@@ -1,6 +1,7 @@
-import KInput, { KInputProps } from "./KInput";
+import { KInputType } from "@/types/field";
+import KInput from "./KInput";
 
-export type KRenderFieldProps = KInputProps & {};
+export type KRenderFieldProps = KInputType & {};
 
 const KRenderField = ({ ...props }: KRenderFieldProps) => {
   switch (props.type) {

@@ -1,135 +1,81 @@
-import checkFieldExists from "@/common/checkFieldExists";
-import { KRenderFieldProps } from "@/components/ui/KRenderField";
 import { DATATABLES } from "@/constants";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useFirestore } from ".";
+import useChange from "../common/useChange";
+import useFormUser from "../form/useFormUser";
+import { tableUsers } from "@/constants/renderTable";
+import useTableComponents from "../useTableComponents";
 
-type FieldErrType = {
-  [field: string]: string;
-};
+const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
+  const [data, setData] = useState<CreateUserType | UpdateUserType | null>(
+    null
+  );
 
-const useUser = () => {
   const {
     addDocument,
     updateDocument,
-    allData,
     getDocuments: getUsers,
-    currentPage,
     deleteDocument: deleteUser,
     getDocumentById: getUserById,
-    goToPage,
-    loading,
-    setFilters,
-    setPageSize,
-    totalPages,
-  } = useFirestore(DATATABLES.USERS);
+    allData,
+    ...rest
+  } = useFirestore(DATATABLES.USERS, initialPageSize, isData);
 
-  const [fieldsData, setFieldsData] = useState<
-    CreateUserType | UpdateUserType | null
-  >(null);
-
-  const [fieldErrs, setFieldErrs] = useState<FieldErrType>();
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    setFieldsData({
-      ...fieldsData,
-      [name]: e.target.value,
-    });
-    if (fieldErrs?.[name]) {
-      delete fieldErrs?.[name];
-      setFieldErrs(fieldErrs);
-    }
-  };
-
-  const checkField = async (
-    e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement, Element>
-  ) => {
-    e.preventDefault();
-    const name = e.target.name;
-    const value = e.target.value;
-    const fieldExists = await checkFieldExists(DATATABLES.USERS, {
-      [name]: value,
-    });
-    if (fieldExists) {
-      setFieldErrs({ ...fieldErrs, [name]: `${value} already exists` });
-    } else {
-      delete fieldErrs?.[name];
-
-      setFieldErrs(fieldErrs);
-    }
-  };
+  const { onChange, checkField, fieldErrs } = useChange({
+    setData,
+    data,
+    collectionName: DATATABLES.USERS,
+  });
 
   const addUser = async () => {
-    if (!fieldsData) return;
-    await addDocument({
-      ...fieldsData,
-      createdAt: new Date(),
-    });
+    if (!data) return;
+    if (JSON.stringify(fieldErrs).length > 2) return;
+    const newUser: CreateUserType = {
+      ...(data as CreateUserType),
+      fullName: data.firstName + " " + data.lastName,
+      fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+    };
+    const result = await addDocument(newUser);
+    setData(null);
+    return result;
   };
 
-  const updateUser = async (id: string, data: UpdateUserType) => {
-    await updateDocument(id, data);
+  const updateUser = async (id: string) => {
+    if (!data) return;
+    if (JSON.stringify(fieldErrs).length > 2) return;
+    const newUser: UpdateUserType = {
+      ...(data as UpdateUserType),
+      fullName: data.firstName + " " + data.lastName,
+      fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+    };
+    const result = await updateDocument(id, newUser);
+    setData(null);
+    return result;
   };
 
-  const fieldsForm: KRenderFieldProps[] = useMemo(() => {
-    console.log({ fieldErrs }, "memo");
+  const { fieldsForm } = useFormUser({
+    fieldErrs,
+    onChange: onChange,
+    onBlur: checkField,
+    data,
+  });
 
-    return [
-      {
-        type: "text",
-        name: "email",
-        label: "Email",
-        placeholder: "Email",
-        helperText: fieldErrs?.email ? fieldErrs?.email : "",
-        error: !!fieldErrs?.email,
-        xs: 12,
-        md: 12,
-        xl: 12,
-        onChange: handleOnChange,
-        onBlur: checkField,
-        value: fieldsData?.email || "",
-        tabIndex: 0,
-      },
-      {
-        type: "text",
-        name: "firstName",
-        label: "First Name",
-        placeholder: "First Name",
-        xs: 12,
-        md: 6,
-        xl: 6,
-        onChange: handleOnChange,
-        value: fieldsData?.firstName || "",
-      },
-      {
-        type: "text",
-        name: "lastName",
-        label: "Last Name",
-        placeholder: "Last Name",
-        xs: 12,
-        md: 6,
-        xl: 6,
-        onChange: handleOnChange,
-        value: fieldsData?.lastName || "",
-      },
-    ];
-  }, [fieldErrs, fieldsData]);
+  const { headerRow: headerData, rows: rowsData } = useTableComponents(
+    allData,
+    tableUsers
+  );
 
   return {
     addUser,
     updateUser,
     fieldsForm,
-    goToPage,
-    loading,
-    setFilters,
-    setPageSize,
-    totalPages,
     deleteUser,
     getUserById,
     getUsers,
     allData,
-    currentPage,
+    headerData,
+    rowsData,
+    ...rest,
   };
 };
 

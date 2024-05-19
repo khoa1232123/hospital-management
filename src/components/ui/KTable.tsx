@@ -21,6 +21,8 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import { KeyConfigType } from "@/types/field";
+import { Button } from "@mui/material";
 
 interface Data {
   id: number;
@@ -271,94 +273,83 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   );
 }
 
-type TestTableProps = {
-  theader: JSX.Element;
-  tbody: JSX.Element[];
+type KTableProps = {
+  data: any[];
+  isAction?: boolean;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+  keys: KeyConfigType[];
 };
 
-const TestTable = ({ tbody, theader }: TestTableProps) => {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+const KTable = ({
+  data,
+  onEdit,
+  onDelete,
+  isAction = false,
+  keys,
+}: KTableProps) => {
+  const headerRow: JSX.Element = React.useMemo(
+    () => (
+      <TableRow>
+        {keys.map((keyConfig) => (
+          <TableCell
+            key={keyConfig.name}
+            align={keyConfig.align || "left"}
+            width={keyConfig.width || "auto"}
+          >
+            {keyConfig.name}
+          </TableCell>
+        ))}
+        {isAction && <TableCell />}
+      </TableRow>
+    ),
+    []
+  );
 
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
+  //   if (data.length === 0) {
+  //     const noDataRow: JSX.Element = (
+  //       <TableRow>
+  //         <TableCell colSpan={keys.length} align="center">
+  //           No data available
+  //         </TableCell>
+  //       </TableRow>
+  //     );
+  //     return { headerRow, rows: [noDataRow] };
+  //   }
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const visibleRows = React.useMemo(
+  const rows: JSX.Element[] = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
+      data.map((row) => (
+        <TableRow key={row.id}>
+          {keys.map((keyConfig) => (
+            <TableCell
+              key={keyConfig.name}
+              align={keyConfig.align}
+              component={keyConfig.component || "td"}
+              scope="row"
+            >
+              {row[keyConfig.name]}
+            </TableCell>
+          ))}
+          {isAction && (
+            <TableCell>
+              <Button>edit</Button>
+              <Button>delete</Button>
+            </TableCell>
+          )}
+        </TableRow>
+      )),
+    [data, keys]
   );
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>{theader}</TableHead>
-        <TableBody>{tbody}</TableBody>
+        <TableHead>{headerRow}</TableHead>
+        <TableBody>{rows}</TableBody>
       </Table>
     </TableContainer>
   );
 };
 
-export default TestTable;
+export default KTable;

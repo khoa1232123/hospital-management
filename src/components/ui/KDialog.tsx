@@ -40,14 +40,11 @@ const KDialog = ({
     setOpen(false);
   };
 
-  const handleSubmit = (
+  const handleSubmit = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log("Submit");
-
     event.preventDefault();
     if (onSubmit) onSubmit();
-    setOpen(false);
   };
 
   return (
