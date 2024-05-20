@@ -12,7 +12,8 @@ type FieldErrType = {
 };
 
 type KeyConfigType = {
-  name: string;
+  value: string;
+  label?: string;
   align?: "left" | "right" | "center" | "inherit" | "justify";
   component?: "th" | "td";
   width?: number;

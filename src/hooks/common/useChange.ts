@@ -1,6 +1,6 @@
 import checkFieldExists from "@/common/checkFieldExists";
 import { FieldErrType } from "@/types/field";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   setData: React.Dispatch<React.SetStateAction<any | null>>;
@@ -10,6 +10,12 @@ type Props = {
 
 const useChange = ({ setData, data, collectionName }: Props) => {
   const [fieldErrs, setFieldErrs] = useState<FieldErrType>({});
+
+  useEffect(() => {
+    if (data === null) {
+      setFieldErrs({});
+    }
+  }, [data]);
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

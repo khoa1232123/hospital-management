@@ -19,27 +19,23 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 interface KDialogProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   title?: string;
   onSubmit?: () => void;
   submitText?: string;
+  onClose?: () => void;
   children: React.ReactNode;
 }
 
 const KDialog = ({
   open,
-  setOpen,
   size = "md",
   title,
   onSubmit,
   children,
   submitText,
+  onClose,
 }: KDialogProps) => {
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleSubmit = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -53,13 +49,13 @@ const KDialog = ({
         fullWidth={true}
         maxWidth={size}
         open={open}
-        onClose={handleClose}
+        onClose={onClose}
       >
         <DialogTitle sx={{ m: 0, p: 2, pb: 0 }}>{title}</DialogTitle>
 
         <IconButton
           aria-label="close"
-          onClick={handleClose}
+          onClick={onClose}
           sx={{
             position: "absolute",
             right: 12,
@@ -71,7 +67,7 @@ const KDialog = ({
         </IconButton>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={onClose}>Close</Button>
           <Button
             type="submit"
             color="primary"

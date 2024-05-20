@@ -2,15 +2,27 @@ import { KeyConfigType } from "@/types/field";
 
 export const tableUsers: KeyConfigType[] = [
   {
-    name: "lastName",
+    value: "firstName",
+    label: "First Name",
     align: "left",
     component: "th",
-    width: 100,
   },
   {
-    name: "email",
+    value: "lastName",
+    label: "Last Name",
     align: "left",
     component: "th",
-    width: 100,
+  },
+  {
+    value: "email",
+    label: "Email",
+    align: "left",
+    component: "th",
+  },
+  {
+    value: "createdAt",
+    label: "Date Created",
+    align: "left",
+    component: "th",
   },
 ];

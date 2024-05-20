@@ -1,7 +1,7 @@
 "use client";
-import { Header, Sidebar } from "@/components/main";
+import { Header, Sidebar } from "@/components/layout";
 import useAuth from "@/hooks/useAuth";
-import { Box, CssBaseline, styled } from "@mui/material";
+import { Box, CircularProgress, CssBaseline, styled } from "@mui/material";
 import React from "react";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -24,7 +24,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   if (isPageLoading) {
     return (
       <div className="flex items-center justify-center h-[100vh] w-full">
-        Loading...
+        <CircularProgress />
       </div>
     );
   }

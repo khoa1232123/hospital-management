@@ -18,18 +18,14 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import moment from "moment";
 import { useEffect, useState } from "react";
-import { TableRow } from "@mui/material";
+import { toast } from "react-toastify";
 
 interface DataType {
   id?: string;
   name?: string;
   [key: string]: any;
-}
-
-interface KeyConfig {
-  name: string;
-  align: "left" | "right" | "center" | "inherit" | "justify";
 }
 
 const useFirestore = (
@@ -86,12 +82,13 @@ const useFirestore = (
           where(field, "<=", value + "\uf8ff")
         );
       }
-      q = query(q, orderBy("createdAt"), limit(offset + pageSize));
+      q = query(q, orderBy("createdAt", "desc"), limit(offset + pageSize));
 
       const querySnapshot = await getDocs(q);
-      const docsData = querySnapshot.docs
-        .slice(offset)
-        .map((doc) => ({ ...doc.data(), id: doc.id }));
+      const docsData = querySnapshot.docs.slice(offset).map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setAllData(docsData);
 
       return docsData;
@@ -117,10 +114,11 @@ const useFirestore = (
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
-      const docRef = await addDoc(collection(db, collectionName), newData);
-      setAllData([...allData, { ...newData, id: docRef.id }]);
+      await addDoc(collection(db, collectionName), newData);
       calculateTotalPages(); // Recalculate total pages after adding a document
       setOpen(false);
+      getDocuments(currentPage);
+      toast.success("You added a document successfully");
       return newData;
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -133,12 +131,9 @@ const useFirestore = (
       const newData = { ...updatedData, updatedAt: serverTimestamp() };
       const docRef = doc(db, collectionName, id);
       await updateDoc(docRef, newData);
-      setAllData(
-        allData.map((item) =>
-          item.id === id ? { ...item, ...updatedData } : item
-        )
-      );
+      getDocuments(currentPage);
       setOpen(false);
+      toast.success("You updated a document successfully");
       return newData;
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -152,6 +147,7 @@ const useFirestore = (
       await deleteDoc(docRef);
       setAllData(allData.filter((item) => item.id !== id));
       calculateTotalPages(); // Recalculate total pages after deleting a document
+      toast.success("You deleted a document successfully");
     } catch (error) {
       console.error("Error deleting document: ", error);
     }
@@ -175,6 +171,10 @@ const useFirestore = (
   };
 
   useEffect(() => {
+    setCurrentPage((prev) => (prev > totalPages ? totalPages : prev));
+  }, [totalPages]);
+
+  useEffect(() => {
     calculateTotalPages();
     if (isData) {
       getDocuments(currentPage);
@@ -187,15 +187,17 @@ const useFirestore = (
     addDocument,
     updateDocument,
     deleteDocument,
-    goToPage,
-    currentPage,
-    totalPages,
     setFilters,
     setPageSize,
     getDocuments,
     getDocumentById,
     open,
     setOpen,
+    pagination: {
+      goToPage,
+      currentPage,
+      totalPages,
+    },
   };
 };
 

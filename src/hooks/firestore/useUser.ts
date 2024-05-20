@@ -3,11 +3,9 @@ import { useState } from "react";
 import { useFirestore } from ".";
 import useChange from "../common/useChange";
 import useFormUser from "../form/useFormUser";
-import { tableUsers } from "@/constants/renderTable";
-import useTableComponents from "../useTableComponents";
 
 const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
-  const [data, setData] = useState<CreateUserType | UpdateUserType | null>(
+  const [data, setData] = useState<UpdateUserType | CreateUserType | null>(
     null
   );
 
@@ -16,8 +14,9 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     updateDocument,
     getDocuments: getUsers,
     deleteDocument: deleteUser,
-    getDocumentById: getUserById,
+    getDocumentById,
     allData,
+    setOpen,
     ...rest
   } = useFirestore(DATATABLES.USERS, initialPageSize, isData);
 
@@ -26,6 +25,16 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     data,
     collectionName: DATATABLES.USERS,
   });
+
+  const closeForm = () => {
+    setData(null);
+    setOpen(false);
+  };
+
+  const getUserById = async (id: string) => {
+    const result: any = await getDocumentById(id);
+    setData(result);
+  };
 
   const addUser = async () => {
     if (!data) return;
@@ -36,7 +45,7 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
       fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
     };
     const result = await addDocument(newUser);
-    setData(null);
+    closeForm();
     return result;
   };
 
@@ -49,8 +58,30 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
       fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
     };
     const result = await updateDocument(id, newUser);
-    setData(null);
+    closeForm();
     return result;
+  };
+
+  const submitUser = async () => {
+    if (!data) return;
+    if (JSON.stringify(fieldErrs).length > 2) return;
+    if (data.id) {
+      const newUser: UpdateUserType = {
+        ...(data as UpdateUserType),
+        fullName: data.firstName + " " + data.lastName,
+        fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+      };
+      await updateDocument(data.id, newUser);
+      closeForm();
+    } else {
+      const newUser: CreateUserType = {
+        ...(data as CreateUserType),
+        fullName: data.firstName + " " + data.lastName,
+        fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+      };
+      await addDocument(newUser);
+      closeForm();
+    }
   };
 
   const { fieldsForm } = useFormUser({
@@ -60,11 +91,6 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     data,
   });
 
-  const { headerRow: headerData, rows: rowsData } = useTableComponents(
-    allData,
-    tableUsers
-  );
-
   return {
     addUser,
     updateUser,
@@ -73,8 +99,10 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     getUserById,
     getUsers,
     allData,
-    headerData,
-    rowsData,
+    closeForm,
+    setOpen,
+    data,
+    submitUser,
     ...rest,
   };
 };
