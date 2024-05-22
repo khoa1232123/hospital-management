@@ -3,7 +3,7 @@ import { Grid, TextField } from "@mui/material";
 
 type KInputProps = KInputType & {};
 
-const KInput = ({ xs, xl, sm, md, ...props }: KInputProps) => {
+const KInput = ({ xs, xl, sm, md, children, ...props }: KInputProps) => {
   return (
     <Grid item xs={xs} xl={xl} sm={sm} md={md}>
       <TextField
@@ -11,7 +11,9 @@ const KInput = ({ xs, xl, sm, md, ...props }: KInputProps) => {
           width: "100%",
         }}
         {...props}
-      />
+      >
+        {children}
+      </TextField>
     </Grid>
   );
 };

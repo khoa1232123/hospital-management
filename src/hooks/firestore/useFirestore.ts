@@ -171,7 +171,11 @@ const useFirestore = (
   };
 
   useEffect(() => {
-    setCurrentPage((prev) => (prev > totalPages ? totalPages : prev));
+    if (totalPages > 0) {
+      setCurrentPage((prev) => (prev > totalPages ? totalPages : prev));
+    } else {
+      setCurrentPage(1);
+    }
   }, [totalPages]);
 
   useEffect(() => {

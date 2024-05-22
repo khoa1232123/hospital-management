@@ -1,28 +1,27 @@
 "use client";
-import TestTable from "@/components/TestTable";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
-import { tableUsers } from "@/constants/renderTable";
-import { useUsers } from "@/hooks/firestore";
+import { tablePatients } from "@/constants/renderTable";
+import { usePatients } from "@/hooks/firestore";
 import { Box, Button, Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 
 type Props = {};
 
-const UsersPage = (props: Props) => {
+const PatientsPage = (props: Props) => {
   const {
-    fieldsForm,
-    open,
+    submitPatient,
     setOpen,
-    getUserById,
+    open,
+    closeForm,
+    fieldsForm,
+    loading,
     allData,
     pagination,
-    loading,
-    closeForm,
-    deleteUser,
-    submitUser,
-  } = useUsers(10, true);
+    deletePatient,
+    getPatientById,
+  } = usePatients(10, true);
 
   return (
     <div>
@@ -34,20 +33,20 @@ const UsersPage = (props: Props) => {
         loading={loading}
         data={allData}
         pagination={pagination}
-        keys={tableUsers}
+        keys={tablePatients}
         onEdit={(id) => {
-          getUserById(id);
+          getPatientById(id);
           setOpen(true);
         }}
-        onDelete={deleteUser}
+        onDelete={deletePatient}
         isAction
       />
       <KDialog
-        title="User"
+        title="Patient"
         size="sm"
         open={open}
         onClose={closeForm}
-        onSubmit={submitUser}
+        onSubmit={submitPatient}
       >
         <Grid container spacing={2}>
           {fieldsForm.map((props, index) => (
@@ -59,4 +58,4 @@ const UsersPage = (props: Props) => {
   );
 };
 
-export default UsersPage;
+export default PatientsPage;

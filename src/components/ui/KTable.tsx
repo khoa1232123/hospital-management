@@ -86,8 +86,12 @@ const KTable = ({
 
   return (
     <Box>
-      <TableContainer component={Paper} className="relative">
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer
+        component={Paper}
+        sx={{ maxHeight: "calc(100vh - 240px)" }}
+        className="relative"
+      >
+        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>{headerRow}</TableHead>
           <TableBody>
             {data.length > 0 ? (
