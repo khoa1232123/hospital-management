@@ -3,6 +3,7 @@ import { useFirestore } from ".";
 import { DATATABLES } from "@/constants";
 import useChange from "../common/useChange";
 import useFormPatient from "../form/useFormPatient";
+import { splitString } from "@/utils/strings";
 
 const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
   const [data, setData] = useState<
@@ -39,10 +40,11 @@ const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
   const addPatient = async () => {
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
+    const fullName = (data.firstName + " " + data.lastName).trim();
     const newPatient: CreatePatientType = {
       ...(data as CreatePatientType),
-      fullName: data.firstName + " " + data.lastName,
-      fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+      fullName: fullName,
+      nameSearch: splitString(fullName.toLowerCase()),
     };
     const result = await addDocument(newPatient);
     closeForm();
@@ -52,10 +54,11 @@ const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
   const updatePatient = async (id: string) => {
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
+    const fullName = (data.firstName + " " + data.lastName).trim();
     const newPatient: UpdatePatientType = {
       ...(data as UpdatePatientType),
-      fullName: data.firstName + " " + data.lastName,
-      fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+      fullName: fullName,
+      nameSearch: splitString(fullName.toLowerCase()),
     };
     const result = await updateDocument(id, newPatient);
     closeForm();
@@ -65,19 +68,20 @@ const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
   const submitPatient = async () => {
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
+    const fullName = (data.firstName + " " + data.lastName).trim();
     if (data.id) {
       const newPatient: UpdatePatientType = {
         ...(data as UpdatePatientType),
-        fullName: data.firstName + " " + data.lastName,
-        fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+        fullName: fullName,
+        nameSearch: splitString(fullName.toLowerCase()),
       };
       await updateDocument(data.id, newPatient);
       closeForm();
     } else {
       const newPatient: CreatePatientType = {
         ...(data as CreatePatientType),
-        fullName: data.firstName + " " + data.lastName,
-        fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+        fullName: fullName,
+        nameSearch: splitString(fullName.toLowerCase()),
       };
       await addDocument(newPatient);
       closeForm();

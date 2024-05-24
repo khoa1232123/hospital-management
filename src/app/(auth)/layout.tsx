@@ -2,7 +2,7 @@
 import useAuth from "@/hooks/useAuth";
 import GoogleIcon from "@/icons/google";
 import { LoadingButton } from "@mui/lab";
-import { Button } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
@@ -14,7 +14,8 @@ type Props = {
 const AuthLayout = ({ children }: Props) => {
   const route = useRouter();
   const pathname = usePathname();
-  const { user, isPageLoading, signInWithGoogle, isLoading } = useAuth();
+  const { user, isPageLoading, signInWithGoogle, isLoading, signOut } =
+    useAuth();
 
   useEffect(() => {
     if (user) {
@@ -25,7 +26,7 @@ const AuthLayout = ({ children }: Props) => {
   if (isPageLoading) {
     return (
       <div className="flex items-center justify-center h-[100vh] w-full">
-        Loading...
+        <CircularProgress />
       </div>
     );
   }

@@ -18,9 +18,10 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useAuth from "../useAuth";
+import { useRouter } from "next/navigation";
 
 interface DataType {
   id?: string;
@@ -33,6 +34,8 @@ const useFirestore = (
   initialPageSize: number = 10,
   isData: boolean = false
 ) => {
+  const { user, isPageLoading } = useAuth();
+  const route = useRouter();
   const [open, setOpen] = useState(false);
   const [allData, setAllData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,8 +46,16 @@ const useFirestore = (
     {}
   );
 
+  useEffect(() => {
+    if (!isPageLoading && !user) {
+      route.push("/signin");
+    }
+  }, [user, isPageLoading]);
+
   // Calculate total number of pages
-  const calculateTotalPages = async () => {
+  const calculateTotalPages = async (
+    filters: { [key: string]: string | number } = {}
+  ) => {
     let q:
       | Query<DocumentData, DocumentData>
       | CollectionReference<DocumentData, DocumentData> = collection(
@@ -52,20 +63,30 @@ const useFirestore = (
       collectionName
     );
     for (const [field, value] of Object.entries(filters)) {
-      q = query(
-        q,
-        where(field, ">=", value),
-        where(field, "<=", value + "\uf8ff")
-      );
+      if (value) {
+        switch (field) {
+          case "gender":
+            q = query(q, where(field, "==", value));
+            break;
+          case "nameSearch":
+            q = query(q, where(field, "array-contains", value));
+          default:
+            break;
+        }
+      }
     }
 
     const countSnapshot = await getCountFromServer(q);
     const totalItems = countSnapshot.data().count;
+
     setTotalPages(Math.ceil(totalItems / pageSize));
   };
 
   // Fetch data from Firestore based on page number
-  const getDocuments = async (page: number) => {
+  const getDocuments = async (
+    page: number,
+    filters: { [key: string]: string | number } = {}
+  ) => {
     setLoading(true);
     try {
       const offset = (page - 1) * pageSize;
@@ -76,11 +97,17 @@ const useFirestore = (
         collectionName
       );
       for (const [field, value] of Object.entries(filters)) {
-        q = query(
-          q,
-          where(field, ">=", value),
-          where(field, "<=", value + "\uf8ff")
-        );
+        if (value) {
+          switch (field) {
+            case "gender":
+              q = query(q, where(field, "==", value));
+              break;
+            case "nameSearch":
+              q = query(q, where(field, "array-contains", value));
+            default:
+              break;
+          }
+        }
       }
       q = query(q, orderBy("createdAt", "desc"), limit(offset + pageSize));
 
@@ -179,9 +206,9 @@ const useFirestore = (
   }, [totalPages]);
 
   useEffect(() => {
-    calculateTotalPages();
+    calculateTotalPages(filters);
     if (isData) {
-      getDocuments(currentPage);
+      getDocuments(currentPage, filters);
     }
   }, [collectionName, pageSize, currentPage, filters]);
 
