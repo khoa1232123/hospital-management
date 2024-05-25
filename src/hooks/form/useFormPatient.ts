@@ -29,7 +29,7 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         onBlur,
         value: data?.email || "",
         tabIndex: 0,
-        require,
+        require: true,
       },
       {
         type: "text",
@@ -100,6 +100,7 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 4,
         xl: 4,
         onChange,
+        require: true,
         value: data?.phone || "",
       },
       {

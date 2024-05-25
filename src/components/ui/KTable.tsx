@@ -2,7 +2,9 @@
 import { KeyConfigType } from "@/types/field";
 import { convertNumberToArray } from "@/utils/array";
 import { convertServerTimestamp } from "@/utils/timeDate";
-import { Box, Button, CircularProgress, TablePagination } from "@mui/material";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Box, Button, CircularProgress } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -23,6 +25,11 @@ type KTableProps = {
   isAction?: boolean;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onSortBy?: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: "desc" | "asc";
+    }>
+  >;
   keys: KeyConfigType[];
   pagination?: PaginationProps;
   loading?: boolean;
@@ -36,6 +43,7 @@ const KTable = ({
   keys,
   pagination,
   loading = false,
+  onSortBy,
 }: KTableProps) => {
   const headerRow: JSX.Element = React.useMemo(
     () => (
@@ -46,7 +54,19 @@ const KTable = ({
             align={keyConfig.align || "left"}
             width={keyConfig.width || "auto"}
           >
-            {keyConfig.label || keyConfig.value}
+            <div
+              onClick={() => {
+                console.log("abx");
+
+                onSortBy &&
+                  onSortBy((prev) => ({
+                    [keyConfig.value]:
+                      prev[keyConfig.value] === "desc" ? "asc" : "desc",
+                  }));
+              }}
+            >
+              {keyConfig.label || keyConfig.value}
+            </div>
           </TableCell>
         ))}
         {isAction && <TableCell />}
@@ -69,15 +89,25 @@ const KTable = ({
           </TableCell>
         ))}
         {isAction && (
-          <TableCell>
+          <TableCell align="right">
             <Button
-              onClick={() => {
-                onEdit && onEdit(row.id || "");
-              }}
+              color="warning"
+              onClick={() => onEdit && onEdit(row.id)}
+              className="px-2 min-w-[40px] min-h-[40px]"
             >
-              edit
+              <BorderColorIcon color="warning" />
             </Button>
-            <Button onClick={() => onDelete && onDelete(row.id)}>delete</Button>
+            <Button
+              color="error"
+              onClick={() => {
+                if (confirm("Are you sure you want to delete this patient?")) {
+                  onDelete && onDelete(row.id);
+                }
+              }}
+              className="px-2 min-w-[40px] min-h-[40px]"
+            >
+              <DeleteForeverIcon color="error" />
+            </Button>
           </TableCell>
         )}
       </TableRow>
@@ -91,7 +121,12 @@ const KTable = ({
         sx={{ maxHeight: "calc(100vh - 240px)" }}
         className="relative"
       >
-        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table
+          size="small"
+          stickyHeader
+          sx={{ minWidth: 650 }}
+          aria-label="simple table"
+        >
           <TableHead>{headerRow}</TableHead>
           <TableBody>
             {data.length > 0 ? (

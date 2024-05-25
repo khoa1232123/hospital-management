@@ -88,6 +88,11 @@ const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
     }
   };
 
+  const editPatient = (id: string) => {
+    getPatientById(id);
+    setOpen(true);
+  };
+
   const { fieldsForm } = useFormPatient({
     fieldErrs,
     onChange: onChange,
@@ -105,6 +110,7 @@ const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
     setOpen,
     closeForm,
     allData,
+    editPatient,
     deletePatient,
   };
 };
