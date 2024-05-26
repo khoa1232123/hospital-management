@@ -31,7 +31,13 @@ const PatientsPage = (props: Props) => {
         <h2 className="m-0">Manage Patients</h2>
         <Button onClick={() => setOpen(true)}>create patient</Button>
       </Box>
-      <ActionFilters setFilters={setFilters} />
+      <ActionFilters
+        setFilters={setFilters}
+        actions={{
+          nameAndPhone: true,
+          gender: true,
+        }}
+      />
       <KTable
         loading={loading}
         data={allData}

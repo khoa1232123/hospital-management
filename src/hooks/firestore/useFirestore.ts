@@ -1,5 +1,7 @@
 // useFirestore.ts
 import { db } from "@/lib/firebase/client";
+import { FilterType, SortByType } from "@/types/firebaseHook";
+import { isNumberInput } from "@/utils/numbers";
 import {
   CollectionReference,
   DocumentData,
@@ -18,11 +20,10 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../useAuth";
-import { useRouter } from "next/navigation";
-import { isNumberInput } from "@/utils/numbers";
 
 interface DataType {
   id?: string;
@@ -43,10 +44,8 @@ const useFirestore = (
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(initialPageSize);
-  const [filters, setFilters] = useState<{ [key: string]: string | number }>(
-    {}
-  );
-  const [sortBy, setSortBy] = useState<{ [key: string]: "desc" | "asc" }>({
+  const [filters, setFilters] = useState<FilterType>({});
+  const [sortBy, setSortBy] = useState<SortByType>({
     createdAt: "desc",
   });
 

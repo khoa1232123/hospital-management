@@ -3,16 +3,7 @@ import { Box, Button, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import KInput from "../ui/KInput";
 import { Clear, Search } from "@mui/icons-material";
-
-type Props = {
-  setFilters: React.Dispatch<
-    React.SetStateAction<{
-      nameSearch?: string;
-      gender?: string;
-    }>
-  >;
-  className?: string;
-};
+import { FilterType } from "@/types/firebaseHook";
 
 const dataGenders = [
   { value: "", label: "--Choose a gender--" },
@@ -21,16 +12,46 @@ const dataGenders = [
   { value: "other", label: "Other" },
 ];
 
-const ActionFilters = ({ setFilters, className = "" }: Props) => {
-  const [dataSearch, setDataSearch] = useState<{
-    nameAndPhone?: string;
-    gender?: string;
-  }>({
-    nameAndPhone: "",
-    gender: "",
-  });
+const initDataSearch = {
+  nameSearch: "",
+  nameAndPhone: "",
+  gender: "",
+  phone: "",
+};
 
-  const onSearch = debouncedValue(setFilters, 500);
+type DataSearchType = {
+  nameSearch?: string;
+  phone?: string;
+  nameAndPhone?: string;
+  gender?: string;
+};
+
+type Props = {
+  setFilters: React.Dispatch<React.SetStateAction<FilterType>>;
+  className?: string;
+  actions?: {
+    nameAndPhone?: boolean;
+    nameSearch?: boolean;
+    phone?: boolean;
+    gender?: boolean;
+    clearBtn?: boolean;
+  };
+};
+
+const ActionFilters = ({
+  setFilters,
+  className = "",
+  actions = {
+    gender: false,
+    nameAndPhone: false,
+    phone: false,
+    nameSearch: false,
+    clearBtn: false,
+  },
+}: Props) => {
+  const [dataSearch, setDataSearch] = useState<DataSearchType>(initDataSearch);
+
+  const onSearch = debouncedValue(setFilters, 700);
 
   const handleSearch = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -43,51 +64,92 @@ const ActionFilters = ({ setFilters, className = "" }: Props) => {
 
   const handleClearSearch = () => {
     onSearch({ nameSearch: "", gender: "" });
-    setDataSearch({ nameAndPhone: "", gender: "" });
+    setDataSearch(initDataSearch);
   };
 
   return (
     <Box className={`mb-4 flex gap-4 ${className}`}>
-      <KInput
-        name="nameAndPhone"
-        onChange={handleSearch}
-        value={dataSearch?.nameAndPhone}
-        type="text"
-        placeholder="Search"
-        label="Search"
-        size="small"
-        className="w-[200px]"
-        InputProps={{
-          endAdornment: <Search />,
-          style: {
-            paddingRight: "8px",
-          },
-        }}
-      />
-      <KInput
-        size="small"
-        className="min-w-[200px]"
-        name={"gender"}
-        onChange={handleSearch}
-        value={dataSearch?.gender}
-        placeholder="Gender"
-        label="Gender"
-        select
-      >
-        {dataGenders.map((item) => (
-          <MenuItem
-            key={item.value}
-            value={item.value}
-            selected={dataSearch?.gender === item.value}
-          >
-            {item.label}
-          </MenuItem>
-        ))}
-      </KInput>
-
-      <Button onClick={() => handleClearSearch()}>
-        <Clear /> Clear
-      </Button>
+      {actions.nameSearch && (
+        <KInput
+          name="nameSearch"
+          onChange={handleSearch}
+          value={dataSearch?.nameSearch}
+          type="text"
+          placeholder="Search Name"
+          label="Search Name"
+          size="small"
+          className="w-[200px]"
+          InputProps={{
+            endAdornment: <Search />,
+            style: {
+              paddingRight: "8px",
+            },
+          }}
+        />
+      )}
+      {actions.phone && (
+        <KInput
+          name="phone"
+          onChange={handleSearch}
+          value={dataSearch?.phone}
+          type="text"
+          placeholder="Search Phone"
+          label="Search Phone"
+          size="small"
+          className="w-[200px]"
+          InputProps={{
+            endAdornment: <Search />,
+            style: {
+              paddingRight: "8px",
+            },
+          }}
+        />
+      )}
+      {actions.nameAndPhone && (
+        <KInput
+          name="nameAndPhone"
+          onChange={handleSearch}
+          value={dataSearch?.nameAndPhone}
+          type="text"
+          placeholder="Search"
+          label="Search"
+          size="small"
+          className="w-[200px]"
+          InputProps={{
+            endAdornment: <Search />,
+            style: {
+              paddingRight: "8px",
+            },
+          }}
+        />
+      )}
+      {actions.gender && (
+        <KInput
+          size="small"
+          className="min-w-[200px]"
+          name={"gender"}
+          onChange={handleSearch}
+          value={dataSearch?.gender}
+          placeholder="Gender"
+          label="Gender"
+          select
+        >
+          {dataGenders.map((item) => (
+            <MenuItem
+              key={item.value}
+              value={item.value}
+              selected={dataSearch?.gender === item.value}
+            >
+              {item.label}
+            </MenuItem>
+          ))}
+        </KInput>
+      )}
+      {actions.clearBtn && (
+        <Button onClick={() => handleClearSearch()}>
+          <Clear /> Clear
+        </Button>
+      )}
     </Box>
   );
 };

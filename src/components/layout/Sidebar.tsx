@@ -3,6 +3,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MasksIcon from "@mui/icons-material/Masks";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AccessibleIcon from "@mui/icons-material/Accessible";
+import BedroomChildIcon from "@mui/icons-material/BedroomChild";
 
 import {
   CSSObject,
@@ -80,6 +81,11 @@ const Sidebar = ({ open }: Props) => {
         {[
           { label: "Users", link: "/users", Icon: <AdminPanelSettingsIcon /> },
           { label: "Patients", link: "/patients", Icon: <AccessibleIcon /> },
+          {
+            label: "Departments",
+            link: "/departments",
+            Icon: <BedroomChildIcon />,
+          },
         ].map((item, index) => (
           <Link
             key={item.label}

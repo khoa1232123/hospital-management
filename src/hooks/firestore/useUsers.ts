@@ -2,7 +2,8 @@ import { DATATABLES } from "@/constants";
 import { useState } from "react";
 import { useFirestore } from ".";
 import useChange from "../common/useChange";
-import useFormUser from "../form/useFormUser";
+import { splitString } from "@/utils/strings";
+import { useFormUser } from "../form";
 
 const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
   const [data, setData] = useState<UpdateUserType | CreateUserType | null>(
@@ -36,52 +37,33 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     setData(result);
   };
 
-  const addUser = async () => {
-    if (!data) return;
-    if (JSON.stringify(fieldErrs).length > 2) return;
-    const newUser: CreateUserType = {
-      ...(data as CreateUserType),
-      fullName: data.firstName + " " + data.lastName,
-      fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
-    };
-    const result = await addDocument(newUser);
-    closeForm();
-    return result;
-  };
-
-  const updateUser = async (id: string) => {
-    if (!data) return;
-    if (JSON.stringify(fieldErrs).length > 2) return;
-    const newUser: UpdateUserType = {
-      ...(data as UpdateUserType),
-      fullName: data.firstName + " " + data.lastName,
-      fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
-    };
-    const result = await updateDocument(id, newUser);
-    closeForm();
-    return result;
-  };
-
   const submitUser = async () => {
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
+    const fullName = (data.firstName + " " + data.lastName).trim();
+
     if (data.id) {
       const newUser: UpdateUserType = {
         ...(data as UpdateUserType),
-        fullName: data.firstName + " " + data.lastName,
-        fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+        fullName: fullName,
+        nameSearch: splitString(fullName.toLowerCase()),
       };
       await updateDocument(data.id, newUser);
       closeForm();
     } else {
       const newUser: CreateUserType = {
         ...(data as CreateUserType),
-        fullName: data.firstName + " " + data.lastName,
-        fullNameSearch: (data.firstName + " " + data.lastName).toLowerCase(),
+        fullName: fullName,
+        nameSearch: splitString(fullName.toLowerCase()),
       };
       await addDocument(newUser);
       closeForm();
     }
+  };
+
+  const editUser = (id: string) => {
+    getUserById(id);
+    setOpen(true);
   };
 
   const { fieldsForm } = useFormUser({
@@ -92,8 +74,6 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
   });
 
   return {
-    addUser,
-    updateUser,
     fieldsForm,
     deleteUser,
     getUserById,
@@ -103,6 +83,7 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     setOpen,
     data,
     submitUser,
+    editUser,
     ...rest,
   };
 };

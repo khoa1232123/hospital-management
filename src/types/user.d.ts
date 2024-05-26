@@ -4,7 +4,7 @@ type UserType = {
   firstName?: string;
   lastName?: string;
   fullName?: string;
-  fullNameSearch?: string;
+  nameSearch?: string[];
   birthday?: Date;
   gender?: "male" | "female" | "other";
   phone?: string;
