@@ -26,6 +26,12 @@ export const tableUsers: KeyConfigType[] = [
     component: "th",
   },
   {
+    value: "departmentName",
+    label: "Department",
+    align: "left",
+    component: "th",
+  },
+  {
     value: "createdAt",
     label: "Date Created",
     align: "left",

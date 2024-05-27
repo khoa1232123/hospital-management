@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../useAuth";
+import { OptionsType } from "@/types/field";
 
 interface DataType {
   id?: string;
@@ -48,8 +49,6 @@ const useFirestore = (
   const [sortBy, setSortBy] = useState<SortByType>({
     createdAt: "desc",
   });
-
-  console.log({ sortBy });
 
   useEffect(() => {
     if (!isPageLoading && !user) {
@@ -104,6 +103,17 @@ const useFirestore = (
     const totalItems = countSnapshot.data().count;
 
     setTotalPages(Math.ceil(totalItems / pageSize));
+  };
+
+  const getDataSelected = async () => {
+    let q = returnQuery({});
+    q = query(q, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    const docsData: OptionsType[] = querySnapshot.docs.map((doc) => ({
+      value: doc.id,
+      label: doc.data().name,
+    }));
+    return docsData;
   };
 
   // Fetch data from Firestore based on page number
@@ -233,6 +243,8 @@ const useFirestore = (
     open,
     setOpen,
     setSortBy,
+    getDataSelected,
+    setAllData,
     pagination: {
       goToPage,
       currentPage,

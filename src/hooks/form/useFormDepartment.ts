@@ -35,7 +35,7 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 6,
         xl: 6,
         onChange,
-        require: true,
+        require: "true",
         value: data?.phone || "",
       },
       {

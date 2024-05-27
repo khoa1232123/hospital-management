@@ -16,6 +16,7 @@ type UserType = {
   salary?: number;
   shift?: string;
   departmentId?: string;
+  departmentName?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

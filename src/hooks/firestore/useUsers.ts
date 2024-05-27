@@ -1,6 +1,6 @@
 import { DATATABLES } from "@/constants";
-import { useState } from "react";
-import { useFirestore } from ".";
+import { useEffect, useState } from "react";
+import { useDepartments, useFirestore } from ".";
 import useChange from "../common/useChange";
 import { splitString } from "@/utils/strings";
 import { useFormUser } from "../form";
@@ -18,8 +18,35 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     getDocumentById,
     allData,
     setOpen,
+    setAllData,
     ...rest
   } = useFirestore(DATATABLES.USERS, initialPageSize, isData);
+
+  const { getDataSelected } = useDepartments();
+
+  useEffect(() => {
+    const unSub = async () => {
+      const data = await getDataSelected();
+      if (allData.length > 0 && data.length > 0) {
+        const newAllData = allData.map((item) => {
+          const index = data.findIndex(
+            (itemData) => itemData.value === item.departmentId
+          );
+
+          console.log({ data });
+
+          if (index !== -1) {
+            return { ...item, departmentName: data[index]?.label };
+          } else {
+            return item;
+          }
+        });
+        setAllData(newAllData);
+      }
+    };
+
+    unSub();
+  }, [allData.length]);
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -48,6 +75,7 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
         fullName: fullName,
         nameSearch: splitString(fullName.toLowerCase()),
       };
+      console.log({ newUser });
       await updateDocument(data.id, newUser);
       closeForm();
     } else {
@@ -56,6 +84,9 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
         fullName: fullName,
         nameSearch: splitString(fullName.toLowerCase()),
       };
+
+      console.log({ newUser });
+
       await addDocument(newUser);
       closeForm();
     }

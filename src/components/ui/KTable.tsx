@@ -56,8 +56,6 @@ const KTable = ({
           >
             <div
               onClick={() => {
-                console.log("abx");
-
                 onSortBy &&
                   onSortBy((prev) => ({
                     [keyConfig.value]:

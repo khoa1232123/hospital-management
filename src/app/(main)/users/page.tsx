@@ -22,7 +22,6 @@ const UsersPage = (props: Props) => {
     submitUser,
     editUser,
     setFilters,
-    setSortBy,
   } = useUsers(10, true);
 
   return (
@@ -47,7 +46,6 @@ const UsersPage = (props: Props) => {
         keys={tableUsers}
         onEdit={editUser}
         onDelete={deleteUser}
-        onSortBy={setSortBy}
         isAction
       />
       <KDialog

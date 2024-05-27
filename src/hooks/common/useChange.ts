@@ -25,6 +25,7 @@ const useChange = ({ setData, data, collectionName }: Props) => {
       ...data,
       [name]: e.target.value,
     });
+    console.log({ name, value: e.target.value });
     if (fieldErrs?.[name]) {
       delete fieldErrs?.[name];
       setFieldErrs(fieldErrs);

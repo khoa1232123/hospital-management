@@ -1,5 +1,6 @@
-import { FieldErrType, KInputType } from "@/types/field";
-import React, { useMemo } from "react";
+import { FieldErrType, KInputType, OptionsType } from "@/types/field";
+import React, { useEffect, useMemo, useState } from "react";
+import { useDepartments } from "../firestore";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -13,6 +14,20 @@ type Props = {
 };
 
 const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
+  const [dataDepartments, setDataDepartments] = useState<OptionsType[]>([]);
+  const { getDataSelected } = useDepartments();
+
+  useEffect(() => {
+    const unSub = async () => {
+      const data = await getDataSelected();
+      setDataDepartments(data);
+    };
+
+    unSub();
+  }, []);
+
+  console.log({ dataDepartments });
+
   const fieldsForm: KInputType[] = useMemo(() => {
     return [
       {
@@ -49,6 +64,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xl: 12,
         onChange,
         onBlur,
+        require: "true",
         value: data?.email || "",
         tabIndex: 0,
       },
@@ -99,7 +115,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 4,
         xl: 4,
         onChange,
-        require: true,
+        require: "true",
         value: data?.phone || "",
       },
       {
@@ -179,6 +195,17 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xl: 4,
         onChange,
         value: data?.shirt || "",
+      },
+      {
+        type: "select",
+        name: "departmentId",
+        label: "Department",
+        placeholder: "Department",
+        select: true,
+        xs: 4,
+        md: 4,
+        onChange,
+        options: [...dataDepartments],
       },
     ];
   }, [fieldErrs, data]);
