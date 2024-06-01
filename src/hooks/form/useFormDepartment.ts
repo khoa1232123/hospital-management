@@ -14,7 +14,7 @@ type Props = {
 
 const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
   const fieldsForm: KInputType[] = useMemo(() => {
-    return [
+    const fields = [
       {
         type: "text",
         name: "name",
@@ -23,8 +23,6 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 12,
         xl: 12,
-        onChange,
-        value: data?.name || "",
       },
       {
         type: "text",
@@ -34,9 +32,7 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        onChange,
         require: "true",
-        value: data?.phone || "",
       },
       {
         type: "text",
@@ -46,10 +42,14 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.location || "",
       },
     ];
+
+    return fields.map((field) => ({
+      ...field,
+      value: data?.[field.name] || "",
+      onChange,
+    }));
   }, [fieldErrs, data]);
 
   return { fieldsForm };

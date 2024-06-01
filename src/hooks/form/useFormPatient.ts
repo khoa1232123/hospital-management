@@ -14,7 +14,7 @@ type Props = {
 
 const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
   const fieldsForm: KInputType[] = useMemo(() => {
-    return [
+    const fields = [
       {
         type: "text",
         name: "email",
@@ -25,9 +25,7 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 12,
         xl: 12,
-        onChange,
         onBlur,
-        value: data?.email || "",
         tabIndex: 0,
         require: "true",
       },
@@ -39,8 +37,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.firstName || "",
       },
       {
         type: "text",
@@ -50,8 +46,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.lastName || "",
       },
       {
         type: "date",
@@ -62,8 +56,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.birthday || "",
       },
       {
         type: "select",
@@ -74,8 +66,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.gender || "",
         options: [
           {
             value: "male",
@@ -99,9 +89,7 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
         require: "true",
-        value: data?.phone || "",
       },
       {
         type: "text",
@@ -111,8 +99,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 12,
         xl: 12,
-        onChange,
-        value: data?.address || "",
       },
       {
         type: "text",
@@ -120,8 +106,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         label: "Emergency Contact",
         placeholder: "Emergency Contact",
         xs: 6,
-        onChange,
-        value: data?.emergencyContact || "",
       },
       {
         type: "text",
@@ -129,8 +113,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         label: "Insurance Number",
         placeholder: "Insurance Number",
         xs: 6,
-        onChange,
-        value: data?.insuranceNumber || "",
       },
       {
         type: "textarea",
@@ -142,10 +124,14 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 12,
         xl: 12,
-        onChange,
-        value: data?.medicalHistory || "",
       },
     ];
+
+    return fields.map((field) => ({
+      ...field,
+      value: data?.[field.name] || "",
+      onChange,
+    }));
   }, [fieldErrs, data]);
 
   return { fieldsForm };

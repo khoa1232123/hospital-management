@@ -24,7 +24,9 @@ const DepartmentsPage = (props: Props) => {
     deleteDepartment,
     setFilters,
     setSortBy,
-  } = useDepartments(10, true);
+  } = useDepartments(10, {
+    allData: true,
+  });
 
   return (
     <div>

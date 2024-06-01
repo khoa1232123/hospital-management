@@ -7,7 +7,7 @@ import { useFormDepartment } from "../form";
 
 const useDepartments = (
   initialPageSize: number = 10,
-  isData: boolean = false
+  moreGetData?: MoreGetDataType
 ) => {
   const [data, setData] = useState<
     UpdateDepartmentType | CreateDepartmentType | null
@@ -22,7 +22,7 @@ const useDepartments = (
     allData,
     setOpen,
     ...rest
-  } = useFirestore(DATATABLES.DEPARTMENTS, initialPageSize, isData);
+  } = useFirestore(DATATABLES.DEPARTMENTS, initialPageSize, moreGetData);
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -84,6 +84,7 @@ const useDepartments = (
     data,
     editDepartment,
     deleteDepartment,
+    getDepartments,
   };
 };
 

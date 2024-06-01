@@ -35,12 +35,16 @@ interface DataType {
 const useFirestore = (
   collectionName: string,
   initialPageSize: number = 10,
-  isData: boolean = false
+  moreGetData: MoreGetDataType = {
+    allData: false,
+    dataSelected: false,
+  }
 ) => {
   const { user, isPageLoading } = useAuth();
   const route = useRouter();
   const [open, setOpen] = useState(false);
   const [allData, setAllData] = useState<DataType[]>([]);
+  const [dataSelected, setDataSelected] = useState<OptionsType[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -55,6 +59,15 @@ const useFirestore = (
       route.push("/signin");
     }
   }, [user, isPageLoading]);
+
+  useEffect(() => {
+    if (!moreGetData.dataSelected) return;
+    const unSub = async () => {
+      const data = await getDataSelected();
+      setDataSelected(data);
+    };
+    unSub();
+  }, [moreGetData?.dataSelected]);
 
   const returnQuery = (filters: { [key: string]: string | number }) => {
     let q:
@@ -117,10 +130,10 @@ const useFirestore = (
   };
 
   // Fetch data from Firestore based on page number
-  const getDocuments = async (
+  const getDocuments = async <T>(
     page: number,
     filters: { [key: string]: string | number } = {}
-  ) => {
+  ): Promise<T> => {
     setLoading(true);
     try {
       const offset = (page - 1) * pageSize;
@@ -132,17 +145,19 @@ const useFirestore = (
       const querySnapshot = await getDocs(q);
       const docsData = querySnapshot.docs.slice(offset).map((doc) => ({
         ...doc.data(),
+        value: doc.id,
+        label: doc.data()?.label || "",
         id: doc.id,
       }));
       setAllData(docsData);
 
-      return docsData;
+      return docsData as T;
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
       setLoading(false);
     }
-    return null;
+    return null as T;
   };
 
   // Go to specific page
@@ -225,14 +240,22 @@ const useFirestore = (
 
   useEffect(() => {
     calculateTotalPages(filters);
-    if (isData) {
+    if (moreGetData?.allData) {
       getDocuments(currentPage, filters);
     }
-  }, [collectionName, pageSize, currentPage, filters, sortBy]);
+  }, [
+    collectionName,
+    pageSize,
+    currentPage,
+    filters,
+    sortBy,
+    moreGetData?.allData,
+  ]);
 
   return {
     allData,
     loading,
+    dataSelected,
     addDocument,
     updateDocument,
     deleteDocument,

@@ -23,7 +23,9 @@ const PatientsPage = (props: Props) => {
     deletePatient,
     setFilters,
     setSortBy,
-  } = usePatients(10, true);
+  } = usePatients(10, {
+    allData: true,
+  });
 
   return (
     <div>

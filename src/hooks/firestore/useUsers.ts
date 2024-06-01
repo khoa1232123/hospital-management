@@ -1,52 +1,26 @@
 import { DATATABLES } from "@/constants";
-import { useEffect, useState } from "react";
+import { splitString } from "@/utils/strings";
+import { useState } from "react";
 import { useDepartments, useFirestore } from ".";
 import useChange from "../common/useChange";
-import { splitString } from "@/utils/strings";
 import { useFormUser } from "../form";
 
-const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
+const useUser = (
+  initialPageSize: number = 10,
+  moreGetData?: MoreGetDataType
+) => {
   const [data, setData] = useState<UpdateUserType | CreateUserType | null>(
     null
   );
-
   const {
     addDocument,
     updateDocument,
     getDocuments: getUsers,
     deleteDocument: deleteUser,
     getDocumentById,
-    allData,
     setOpen,
-    setAllData,
     ...rest
-  } = useFirestore(DATATABLES.USERS, initialPageSize, isData);
-
-  const { getDataSelected } = useDepartments();
-
-  useEffect(() => {
-    const unSub = async () => {
-      const data = await getDataSelected();
-      if (allData.length > 0 && data.length > 0) {
-        const newAllData = allData.map((item) => {
-          const index = data.findIndex(
-            (itemData) => itemData.value === item.departmentId
-          );
-
-          console.log({ data });
-
-          if (index !== -1) {
-            return { ...item, departmentName: data[index]?.label };
-          } else {
-            return item;
-          }
-        });
-        setAllData(newAllData);
-      }
-    };
-
-    unSub();
-  }, [allData.length]);
+  } = useFirestore(DATATABLES.USERS, initialPageSize, moreGetData);
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -109,7 +83,6 @@ const useUser = (initialPageSize: number = 10, isData: boolean = false) => {
     deleteUser,
     getUserById,
     getUsers,
-    allData,
     closeForm,
     setOpen,
     data,

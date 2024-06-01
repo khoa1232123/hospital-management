@@ -1,5 +1,5 @@
 "use client";
-import { KeyConfigType } from "@/types/field";
+import { KeyConfigType, OptionsType } from "@/types/field";
 import { convertNumberToArray } from "@/utils/array";
 import { convertServerTimestamp } from "@/utils/timeDate";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -20,8 +20,14 @@ type PaginationProps = {
   goToPage: (page: number) => void;
 };
 
+interface MoreDataType {
+  name: string;
+  data: OptionsType[];
+}
+
 type KTableProps = {
   data: any[];
+  moreData?: MoreDataType[];
   isAction?: boolean;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
@@ -35,6 +41,28 @@ type KTableProps = {
   loading?: boolean;
 };
 
+const addMoreData = (
+  row: { [key: string]: string },
+  moreData: MoreDataType[]
+) => {
+  moreData &&
+    moreData.forEach((moreDataItem) => {
+      const key = moreDataItem.name; // Tên key cần thay thế trong docsData
+
+      // Kiểm tra nếu doc có key này và key này có trong moreData
+      if (row.hasOwnProperty(key + "Id")) {
+        const dataItem =
+          moreDataItem.data &&
+          moreDataItem.data.find((d) => d.value === row[key + "Id"]);
+
+        // Nếu tìm thấy giá trị phù hợp, thay thế giá trị trong doc
+        if (dataItem) {
+          row[key + "Name"] = dataItem.label;
+        }
+      }
+    });
+};
+
 const KTable = ({
   data,
   onEdit,
@@ -44,6 +72,7 @@ const KTable = ({
   pagination,
   loading = false,
   onSortBy,
+  moreData,
 }: KTableProps) => {
   const headerRow: JSX.Element = React.useMemo(
     () => (
@@ -74,42 +103,47 @@ const KTable = ({
   );
 
   const rows: JSX.Element[] = React.useMemo(() => {
-    return data.map((row) => (
-      <TableRow key={row.id}>
-        {keys.map((keyConfig) => (
-          <TableCell
-            key={keyConfig.value}
-            align={keyConfig.align}
-            component={keyConfig.component || "td"}
-            scope="row"
-          >
-            {convertServerTimestamp(row[keyConfig.value])}
-          </TableCell>
-        ))}
-        {isAction && (
-          <TableCell align="right">
-            <Button
-              color="warning"
-              onClick={() => onEdit && onEdit(row.id)}
-              className="px-2 min-w-[40px] min-h-[40px]"
+    return data.map((row) => {
+      moreData && addMoreData(row, moreData);
+      return (
+        <TableRow key={row.id}>
+          {keys.map((keyConfig) => (
+            <TableCell
+              key={keyConfig.value}
+              align={keyConfig.align}
+              component={keyConfig.component || "td"}
+              scope="row"
             >
-              <BorderColorIcon color="warning" />
-            </Button>
-            <Button
-              color="error"
-              onClick={() => {
-                if (confirm("Are you sure you want to delete this patient?")) {
-                  onDelete && onDelete(row.id);
-                }
-              }}
-              className="px-2 min-w-[40px] min-h-[40px]"
-            >
-              <DeleteForeverIcon color="error" />
-            </Button>
-          </TableCell>
-        )}
-      </TableRow>
-    ));
+              {convertServerTimestamp(row[keyConfig.value])}
+            </TableCell>
+          ))}
+          {isAction && (
+            <TableCell align="right">
+              <Button
+                color="warning"
+                onClick={() => onEdit && onEdit(row.id)}
+                className="px-2 min-w-[40px] min-h-[40px]"
+              >
+                <BorderColorIcon color="warning" />
+              </Button>
+              <Button
+                color="error"
+                onClick={() => {
+                  if (
+                    confirm("Are you sure you want to delete this patient?")
+                  ) {
+                    onDelete && onDelete(row.id);
+                  }
+                }}
+                className="px-2 min-w-[40px] min-h-[40px]"
+              >
+                <DeleteForeverIcon color="error" />
+              </Button>
+            </TableCell>
+          )}
+        </TableRow>
+      );
+    });
   }, [data, keys, onEdit, onDelete]);
 
   return (

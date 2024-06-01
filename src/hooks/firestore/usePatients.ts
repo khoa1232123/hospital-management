@@ -5,7 +5,10 @@ import useChange from "../common/useChange";
 import { splitString } from "@/utils/strings";
 import { useFormPatient } from "../form";
 
-const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
+const usePatients = (
+  initialPageSize: number = 10,
+  moreGetData?: MoreGetDataType
+) => {
   const [data, setData] = useState<
     UpdatePatientType | CreatePatientType | null
   >(null);
@@ -19,7 +22,7 @@ const usePatients = (initialPageSize: number = 10, isData: boolean = false) => {
     allData,
     setOpen,
     ...rest
-  } = useFirestore(DATATABLES.PATIENTS, initialPageSize, isData);
+  } = useFirestore(DATATABLES.PATIENTS, initialPageSize, moreGetData);
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,

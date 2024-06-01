@@ -26,10 +26,8 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
     unSub();
   }, []);
 
-  console.log({ dataDepartments });
-
   const fieldsForm: KInputType[] = useMemo(() => {
-    return [
+    let fields = [
       {
         type: "text",
         name: "firstName",
@@ -38,8 +36,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.firstName || "",
       },
       {
         type: "text",
@@ -49,8 +45,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.lastName || "",
       },
       {
         type: "text",
@@ -62,10 +56,8 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 12,
         xl: 12,
-        onChange,
         onBlur,
         require: "true",
-        value: data?.email || "",
         tabIndex: 0,
       },
       {
@@ -77,8 +69,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.birthday || "",
       },
       {
         type: "select",
@@ -89,8 +79,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.gender || "",
         options: [
           {
             value: "male",
@@ -114,9 +102,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
         require: "true",
-        value: data?.phone || "",
       },
       {
         type: "text",
@@ -126,8 +112,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 12,
         xl: 12,
-        onChange,
-        value: data?.address || "",
       },
       {
         type: "text",
@@ -137,8 +121,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.position || "",
       },
       {
         type: "select",
@@ -149,8 +131,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        onChange,
-        value: data?.role || "",
         options: [
           {
             value: "admin",
@@ -171,8 +151,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.dateHired || "",
       },
       {
         type: "number",
@@ -182,8 +160,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.salary || "",
       },
       {
         type: "text",
@@ -193,8 +169,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        onChange,
-        value: data?.shirt || "",
       },
       {
         type: "select",
@@ -204,10 +178,15 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         select: true,
         xs: 4,
         md: 4,
-        onChange,
         options: [...dataDepartments],
       },
     ];
+
+    return fields.map((field) => ({
+      ...field,
+      value: data?.[field.name] || "",
+      onChange,
+    }));
   }, [fieldErrs, data]);
 
   return { fieldsForm };

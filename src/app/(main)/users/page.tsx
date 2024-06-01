@@ -4,8 +4,10 @@ import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { tableUsers } from "@/constants/renderTable";
-import { useUsers } from "@/hooks/firestore";
+import { useDepartments, useUsers } from "@/hooks/firestore";
+import { KInputType, OptionsType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 
 type Props = {};
 
@@ -22,7 +24,15 @@ const UsersPage = (props: Props) => {
     submitUser,
     editUser,
     setFilters,
-  } = useUsers(10, true);
+  } = useUsers(10, {
+    allData: true,
+  });
+
+  const { dataSelected: dataDepartments } = useDepartments(10, {
+    dataSelected: true,
+  });
+
+  console.log({ dataDepartments });
 
   return (
     <div>
@@ -42,6 +52,12 @@ const UsersPage = (props: Props) => {
       <KTable
         loading={loading}
         data={allData}
+        moreData={[
+          {
+            name: "department",
+            data: dataDepartments,
+          },
+        ]}
         pagination={pagination}
         keys={tableUsers}
         onEdit={editUser}
@@ -56,7 +72,7 @@ const UsersPage = (props: Props) => {
         onSubmit={submitUser}
       >
         <Grid container spacing={2}>
-          {fieldsForm.map((props, index) => (
+          {(fieldsForm as KInputType[]).map((props, index) => (
             <KRenderField key={index} {...props} />
           ))}
         </Grid>
