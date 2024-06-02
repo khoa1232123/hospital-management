@@ -5,7 +5,7 @@ import { useDepartments, useFirestore } from ".";
 import useChange from "../common/useChange";
 import { useFormUser } from "../form";
 
-const useUser = (
+const useUsers = (
   initialPageSize: number = 10,
   moreGetData?: MoreGetDataType
 ) => {
@@ -92,4 +92,4 @@ const useUser = (
   };
 };
 
-export default useUser;
+export default useUsers;

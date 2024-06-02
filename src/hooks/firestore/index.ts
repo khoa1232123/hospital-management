@@ -1,6 +1,7 @@
-import useFirestore from "./useFirestore";
-import useUsers from "./useUsers";
-import usePatients from "./usePatients";
+import useAppointments from "./useAppointments";
 import useDepartments from "./useDepartments";
+import useFirestore from "./useFirestore";
+import usePatients from "./usePatients";
+import useUsers from "./useUsers";
 
-export { useFirestore, useUsers, usePatients, useDepartments };
+export { useAppointments, useDepartments, useFirestore, usePatients, useUsers };

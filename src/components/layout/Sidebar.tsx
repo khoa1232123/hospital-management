@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -73,6 +74,8 @@ type Props = {
 };
 
 const Sidebar = ({ open }: Props) => {
+  const pathName = usePathname();
+
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader />
@@ -86,13 +89,22 @@ const Sidebar = ({ open }: Props) => {
             link: "/departments",
             Icon: <BedroomChildIcon />,
           },
+          {
+            label: "Appointments",
+            link: "/appointments",
+            Icon: <MasksIcon />,
+          },
         ].map((item, index) => (
           <Link
             key={item.label}
             href={item.link}
             className="no-underline text-black"
           >
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              className={pathName === item.link ? `bg-gray-300` : ""}
+              sx={{ display: "block" }}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,

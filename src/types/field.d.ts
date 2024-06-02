@@ -23,4 +23,5 @@ type KeyConfigType = {
   align?: "left" | "right" | "center" | "inherit" | "justify";
   component?: "th" | "td";
   width?: number;
+  isLink?: boolean = false;
 };

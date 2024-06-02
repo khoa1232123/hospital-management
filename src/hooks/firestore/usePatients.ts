@@ -22,7 +22,11 @@ const usePatients = (
     allData,
     setOpen,
     ...rest
-  } = useFirestore(DATATABLES.PATIENTS, initialPageSize, moreGetData);
+  } = useFirestore<GetPatientType>(
+    DATATABLES.PATIENTS,
+    initialPageSize,
+    moreGetData
+  );
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -78,6 +82,7 @@ const usePatients = (
   return {
     ...rest,
     fieldsForm,
+    getPatients,
     getPatientById,
     submitPatient,
     setOpen,

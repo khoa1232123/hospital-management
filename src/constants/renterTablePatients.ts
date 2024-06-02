@@ -1,12 +1,11 @@
 import { KeyConfigType } from "@/types/field";
 
-export const tableUsers: KeyConfigType[] = [
+export const tablePatients: KeyConfigType[] = [
   {
     value: "fullName",
     label: "Full Name",
     align: "left",
     component: "th",
-    width: 200,
     isLink: true,
   },
   {
@@ -14,42 +13,16 @@ export const tableUsers: KeyConfigType[] = [
     label: "Email",
     align: "left",
     component: "th",
-    width: 300,
-  },
-  {
-    value: "phone",
-    label: "Phone",
-    align: "left",
-    component: "th",
-    width: 120,
   },
   {
     value: "birthday",
     label: "Birthday",
     align: "left",
     component: "th",
-    width: 110,
   },
   {
-    value: "departmentName",
-    label: "Department",
-    align: "left",
-    component: "th",
-    width: 200,
-  },
-  {
-    value: "createdAt",
-    label: "Date Created",
-    align: "left",
-    component: "th",
-    width: 120,
-  },
-];
-
-export const tableDepartments: KeyConfigType[] = [
-  {
-    value: "name",
-    label: "Department Name",
+    value: "gender",
+    label: "Gender",
     align: "left",
     component: "th",
   },
@@ -60,12 +33,6 @@ export const tableDepartments: KeyConfigType[] = [
     component: "th",
   },
   {
-    value: "location",
-    label: "Location",
-    align: "left",
-    component: "th",
-  },
-  {
     value: "createdAt",
     label: "Date Created",
     align: "left",
@@ -73,16 +40,10 @@ export const tableDepartments: KeyConfigType[] = [
   },
 ];
 
-export const tableAppointments: KeyConfigType[] = [
+export const tablePatientId: KeyConfigType[] = [
   {
     value: "userName",
-    label: "User Name",
-    align: "left",
-    component: "th",
-  },
-  {
-    value: "patientName",
-    label: "Patient Name",
+    label: "Doctor Name",
     align: "left",
     component: "th",
   },

@@ -32,10 +32,11 @@ interface DataType {
   [key: string]: any;
 }
 
-const useFirestore = (
+const useFirestore = <T extends DataType>(
   collectionName: string,
   initialPageSize: number = 10,
   moreGetData: MoreGetDataType = {
+    docId: "",
     allData: false,
     dataSelected: false,
   }
@@ -43,8 +44,9 @@ const useFirestore = (
   const { user, isPageLoading } = useAuth();
   const route = useRouter();
   const [open, setOpen] = useState(false);
-  const [allData, setAllData] = useState<DataType[]>([]);
+  const [allData, setAllData] = useState<(T | DataType)[]>([]);
   const [dataSelected, setDataSelected] = useState<OptionsType[]>([]);
+  const [data, setData] = useState<T | DataType>();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -78,6 +80,8 @@ const useFirestore = (
     );
 
     for (const [field, value] of Object.entries(filters)) {
+      console.log({ field, value });
+
       if (!!value) {
         switch (field) {
           case "gender":
@@ -98,6 +102,7 @@ const useFirestore = (
             }
             break;
           default:
+            q = query(q, where(field, "==", value));
             break;
         }
       }
@@ -124,7 +129,7 @@ const useFirestore = (
     const querySnapshot = await getDocs(q);
     const docsData: OptionsType[] = querySnapshot.docs.map((doc) => ({
       value: doc.id,
-      label: doc.data().name,
+      label: doc.data().name || doc.data().fullName || "",
     }));
     return docsData;
   };
@@ -135,6 +140,9 @@ const useFirestore = (
     filters: { [key: string]: string | number } = {}
   ): Promise<T> => {
     setLoading(true);
+
+    console.log({ filters });
+
     try {
       const offset = (page - 1) * pageSize;
 
@@ -205,7 +213,7 @@ const useFirestore = (
     try {
       const docRef = doc(db, collectionName, id);
       await deleteDoc(docRef);
-      setAllData(allData.filter((item) => item.id !== id));
+      setAllData(allData.filter((item) => item?.id !== id));
       calculateTotalPages(); // Recalculate total pages after deleting a document
       toast.success("You deleted a document successfully");
     } catch (error) {
@@ -218,17 +226,20 @@ const useFirestore = (
     try {
       const docRef = doc(db, collectionName, id);
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        return { ...docSnap.data(), id: docSnap.id } as DataType;
-      } else {
-        console.error("No such document!");
-        return null;
-      }
+      const data = { ...docSnap.data(), id: docSnap.id };
+      setData(data);
+      return { ...docSnap.data(), id: docSnap.id };
     } catch (error) {
       console.error("Error getting document: ", error);
       return null;
     }
   };
+
+  useEffect(() => {
+    if (moreGetData.docId) {
+      getDocumentById(moreGetData.docId);
+    }
+  }, [moreGetData.docId]);
 
   useEffect(() => {
     if (totalPages > 0) {
@@ -239,8 +250,8 @@ const useFirestore = (
   }, [totalPages]);
 
   useEffect(() => {
-    calculateTotalPages(filters);
-    if (moreGetData?.allData) {
+    if (moreGetData?.allData || filters) {
+      calculateTotalPages(filters);
       getDocuments(currentPage, filters);
     }
   }, [
@@ -264,6 +275,7 @@ const useFirestore = (
     getDocuments,
     getDocumentById,
     open,
+    data,
     setOpen,
     setSortBy,
     getDataSelected,

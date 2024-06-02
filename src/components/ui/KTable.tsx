@@ -12,6 +12,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
 type PaginationProps = {
@@ -74,6 +76,7 @@ const KTable = ({
   onSortBy,
   moreData,
 }: KTableProps) => {
+  const pathName = usePathname();
   const headerRow: JSX.Element = React.useMemo(
     () => (
       <TableRow>
@@ -81,7 +84,7 @@ const KTable = ({
           <TableCell
             key={keyConfig.value}
             align={keyConfig.align || "left"}
-            width={keyConfig.width || "auto"}
+            style={{ minWidth: keyConfig.width || "auto" }}
           >
             <div
               onClick={() => {
@@ -96,7 +99,12 @@ const KTable = ({
             </div>
           </TableCell>
         ))}
-        {isAction && <TableCell />}
+        {isAction && (
+          <TableCell
+            style={{ minWidth: 100 }}
+            className="sticky right-0 bg-white"
+          />
+        )}
       </TableRow>
     ),
     [keys]
@@ -106,7 +114,7 @@ const KTable = ({
     return data.map((row) => {
       moreData && addMoreData(row, moreData);
       return (
-        <TableRow key={row.id}>
+        <TableRow hover key={row.id}>
           {keys.map((keyConfig) => (
             <TableCell
               key={keyConfig.value}
@@ -114,11 +122,17 @@ const KTable = ({
               component={keyConfig.component || "td"}
               scope="row"
             >
-              {convertServerTimestamp(row[keyConfig.value])}
+              {keyConfig.isLink ? (
+                <Link href={`${pathName}/${row.id}`}>
+                  {convertServerTimestamp(row[keyConfig.value])}
+                </Link>
+              ) : (
+                convertServerTimestamp(row[keyConfig.value])
+              )}
             </TableCell>
           ))}
           {isAction && (
-            <TableCell align="right">
+            <TableCell align="right" className="px-2 sticky right-0 bg-white">
               <Button
                 color="warning"
                 onClick={() => onEdit && onEdit(row.id)}
@@ -157,7 +171,7 @@ const KTable = ({
           size="small"
           stickyHeader
           sx={{ minWidth: 650 }}
-          aria-label="simple table"
+          aria-label="simple table hover"
         >
           <TableHead>{headerRow}</TableHead>
           <TableBody>

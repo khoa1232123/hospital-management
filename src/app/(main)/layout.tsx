@@ -34,7 +34,10 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       <CssBaseline />
       <Header onToggle={handleDrawerToggle} />
       <Sidebar open={open} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, maxWidth: "calc(100% - 65px)" }}
+      >
         <DrawerHeader />
         {children}
       </Box>
