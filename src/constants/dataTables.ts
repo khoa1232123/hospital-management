@@ -3,4 +3,5 @@ export const DATATABLES = {
   DEPARTMENTS: "departments",
   PATIENTS: "patients",
   APPOINTMENTS: "appointments",
+  MEDICALRECORDS: "medicalRecords",
 };

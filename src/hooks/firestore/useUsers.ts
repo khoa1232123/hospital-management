@@ -85,7 +85,6 @@ const useUsers = (
     getUsers,
     closeForm,
     setOpen,
-    data,
     submitUser,
     editUser,
     ...rest,
