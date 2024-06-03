@@ -4,7 +4,8 @@ import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { tableUsers } from "@/constants/renderTable";
-import { usePatients } from "@/hooks/firestore";
+import { tableMedicalRecords } from "@/constants/renderTableMedicalRecords";
+import { usePatients, useUsers } from "@/hooks/firestore";
 import useMedicalRecords from "@/hooks/firestore/useMedicalRecords";
 import { KInputType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
@@ -32,6 +33,10 @@ const MedicalRecordsPage = (props: Props) => {
     dataSelected: true,
   });
 
+  const { dataSelected: dataUsers } = useUsers(10, {
+    dataSelected: true,
+  });
+
   return (
     <div>
       <Box className="flex justify-between items-center mb-4">
@@ -55,9 +60,13 @@ const MedicalRecordsPage = (props: Props) => {
             name: "patient",
             data: dataPatients,
           },
+          {
+            name: "user",
+            data: dataUsers,
+          },
         ]}
         pagination={pagination}
-        keys={tableUsers}
+        keys={tableMedicalRecords}
         onEdit={editMedicalRecord}
         onDelete={deleteMedicalRecord}
         isAction

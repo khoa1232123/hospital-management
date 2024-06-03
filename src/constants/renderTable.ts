@@ -8,6 +8,7 @@ export const tableUsers: KeyConfigType[] = [
     component: "th",
     width: 200,
     isLink: true,
+    preLink: "users",
   },
   {
     value: "email",

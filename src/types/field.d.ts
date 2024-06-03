@@ -24,4 +24,5 @@ type KeyConfigType = {
   component?: "th" | "td";
   width?: number;
   isLink?: boolean = false;
+  preLink?: string;
 };

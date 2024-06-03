@@ -1,66 +1,39 @@
 "use client";
-import { KDialog } from "@/components/ui";
-import KRenderField from "@/components/ui/KRenderField";
-import KTable from "@/components/ui/KTable";
-import { tablePatientId } from "@/constants/renterTablePatients";
-import {
-  useAppointments,
-  useDepartments,
-  usePatients,
-  useUsers,
-} from "@/hooks/firestore";
-import { Button, Grid } from "@mui/material";
+import TabAppointments from "@/components/main/patients/TabAppointments";
+import TabHello from "@/components/main/patients/TabHello";
+import TabMedicalRecords from "@/components/main/patients/TabMedicalRecords";
+import { usePatients } from "@/hooks/firestore";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Grid, Tab, Tabs } from "@mui/material";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useState } from "react";
+
+const valueTabs = [
+  { label: "Appointments", value: "appointments", Component: TabAppointments },
+  {
+    label: "Medical Records",
+    value: "medicalRecords",
+    Component: TabMedicalRecords,
+  },
+  { label: "Hello", value: "hello", Component: TabHello },
+];
 
 type Props = {};
 
 const PatientIdPage = (props: Props) => {
   const { id } = useParams();
+  const [value, setValue] = useState<string>(valueTabs[0].value);
 
-  const { getPatients, data: patient } = usePatients(10, {
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+  const { data: patient } = usePatients(10, {
     docId: id as string,
   });
 
-  const { dataSelected: dataDepartments } = useDepartments(100, {
-    dataSelected: true,
-  });
-
-  const { dataSelected: dataUsers } = useUsers(100, {
-    dataSelected: true,
-  });
-
-  const {
-    setFilters,
-    allData: dataAppointments,
-    loading,
-    pagination,
-    deleteAppointment,
-    editAppointment,
-    fieldsForm,
-    open,
-    closeForm,
-    submitAppointment,
-    setOpen,
-  } = useAppointments(100, {
-    allData: true,
-  });
-
-  useEffect(() => {
-    getPatients;
-  }, []);
-
-  useEffect(() => {
-    if (id) {
-      setFilters({ patientId: id as string });
-    }
-  }, [id]);
-
-  console.log({ dataAppointments, patient });
-
   return (
     <Grid container spacing={2}>
-      <Grid item xs={4}>
+      <Grid item xs={4} md={3}>
         <h1>{patient?.fullName}</h1>
         <p>{patient?.phone}</p>
         <p>{patient?.address}</p>
@@ -68,44 +41,27 @@ const PatientIdPage = (props: Props) => {
         <p>{patient?.gender}</p>
         <p>{patient?.birthday}</p>
       </Grid>
-      <Grid item xs={8}>
-        <Button onClick={() => setOpen(true)}>Create Appointment</Button>
-        <KTable
-          loading={loading}
-          data={dataAppointments}
-          moreData={[
-            {
-              name: "department",
-              data: dataDepartments,
-            },
-            {
-              name: "user",
-              data: dataUsers,
-            },
-          ]}
-          pagination={pagination}
-          keys={tablePatientId}
-          onEdit={editAppointment}
-          onDelete={deleteAppointment}
-          isAction
-        />
-        <KDialog
-          title="Patient"
-          size="sm"
-          open={open}
-          onClose={closeForm}
-          onSubmit={submitAppointment}
-        >
-          <Grid container spacing={2}>
-            {fieldsForm.map((props, index) => {
-              if (props.name === "patientId") {
-                props.disabled = true;
-                props.value = id as string;
-              }
-              return <KRenderField key={index} {...props} />;
-            })}
-          </Grid>
-        </KDialog>
+      <Grid item xs={8} md={9}>
+        <TabContext value={value}>
+          <Tabs
+            key={0}
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            aria-label="scrollable force tabs example"
+          >
+            {valueTabs.map(({ label, value }) => (
+              <Tab key={value} label={label} value={value} />
+            ))}
+          </Tabs>
+          {valueTabs.map(({ value, Component }) => (
+            <TabPanel value={value} key={value}>
+              <Component />
+            </TabPanel>
+          ))}
+        </TabContext>
       </Grid>
     </Grid>
   );

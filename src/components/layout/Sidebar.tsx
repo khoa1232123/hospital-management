@@ -1,9 +1,10 @@
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MasksIcon from "@mui/icons-material/Masks";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AccessibleIcon from "@mui/icons-material/Accessible";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import BedroomChildIcon from "@mui/icons-material/BedroomChild";
+import MailIcon from "@mui/icons-material/Mail";
+import MasksIcon from "@mui/icons-material/Masks";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
 
 import {
   CSSObject,
@@ -18,7 +19,7 @@ import {
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -93,6 +94,11 @@ const Sidebar = ({ open }: Props) => {
             label: "Appointments",
             link: "/appointments",
             Icon: <MasksIcon />,
+          },
+          {
+            label: "Medical Records",
+            link: "/medical-records",
+            Icon: <AssignmentIndIcon />,
           },
         ].map((item, index) => (
           <Link

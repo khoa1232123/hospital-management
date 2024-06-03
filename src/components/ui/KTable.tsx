@@ -123,7 +123,7 @@ const KTable = ({
               scope="row"
             >
               {keyConfig.isLink ? (
-                <Link href={`${pathName}/${row.id}`}>
+                <Link href={`${keyConfig.preLink || pathName}/${row.id}`}>
                   {convertServerTimestamp(row[keyConfig.value])}
                 </Link>
               ) : (
