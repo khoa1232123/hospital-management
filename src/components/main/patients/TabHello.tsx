@@ -1,7 +1,10 @@
+import { OptionsType } from "@/types/field";
 import React from "react";
 
 type Props = {
-  id?: string;
+  dataUsers?: OptionsType[];
+  dataPatients?: OptionsType[];
+  dataDepartments?: OptionsType[];
 };
 
 const TabHello = (props: Props) => {

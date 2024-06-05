@@ -41,7 +41,7 @@ export const tablePatients: KeyConfigType[] = [
   },
 ];
 
-export const tablePatientId: KeyConfigType[] = [
+export const tablePatientTabAppointments: KeyConfigType[] = [
   {
     value: "userName",
     label: "Doctor Name",
@@ -57,6 +57,33 @@ export const tablePatientId: KeyConfigType[] = [
   {
     value: "appointmentDate",
     label: "Appointment Date",
+    align: "left",
+    component: "th",
+  },
+  {
+    value: "createdAt",
+    label: "Date Created",
+    align: "left",
+    component: "th",
+  },
+];
+
+export const tablePatientTabMedicalRecords: KeyConfigType[] = [
+  {
+    value: "userName",
+    label: "Doctor",
+    align: "left",
+    component: "th",
+  },
+  {
+    value: "visitDate",
+    label: "Visit Date",
+    align: "left",
+    component: "th",
+  },
+  {
+    value: "followUpDate",
+    label: "Follow Up Date",
     align: "left",
     component: "th",
   },

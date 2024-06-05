@@ -1,6 +1,7 @@
 import { FieldErrType, KInputType, OptionsType } from "@/types/field";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDepartments, usePatients, useUsers } from "../firestore";
+import { useMainContext } from "@/app/contexts";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -14,10 +15,7 @@ type Props = {
 };
 
 const useFormMedicalRecord = ({ fieldErrs, onChange, onBlur, data }: Props) => {
-  const { dataSelected: dataUsers } = useUsers(10, { dataSelected: true });
-  const { dataSelected: dataPatients } = usePatients(10, {
-    dataSelected: true,
-  });
+  const { dataPatients, dataUsers } = useMainContext();
 
   const fieldsForm: KInputType[] = useMemo(() => {
     let fields = [

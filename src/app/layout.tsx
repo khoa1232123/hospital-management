@@ -10,8 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Quản lý cái quần què",
-  description: "Quản lý cái quần què",
+  title: "Hostpital Manager",
+  description: "Hostpital Manager",
 };
 
 export default function RootLayout({

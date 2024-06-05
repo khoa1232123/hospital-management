@@ -1,6 +1,7 @@
 import { FieldErrType, KInputType } from "@/types/field";
 import React, { useMemo } from "react";
 import { useDepartments, usePatients, useUsers } from "../firestore";
+import { useMainContext } from "@/app/contexts";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -13,16 +14,8 @@ type Props = {
   data: any | null;
 };
 
-const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
-  const { dataSelected: dataDepartments } = useDepartments(100, {
-    dataSelected: true,
-  });
-  const { dataSelected: dataUsers } = useUsers(10, {
-    dataSelected: true,
-  });
-  const { dataSelected: dataPatients } = usePatients(10, {
-    dataSelected: true,
-  });
+const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
+  const { dataDepartments, dataPatients, dataUsers } = useMainContext();
 
   const fieldsForm: KInputType[] = useMemo(() => {
     let fields = [
@@ -45,7 +38,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
-        options: [...dataUsers],
+        options: dataUsers,
       },
       {
         type: "select",
@@ -56,7 +49,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
-        options: [...dataPatients],
+        options: dataPatients,
       },
       {
         type: "select",
@@ -67,7 +60,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
-        options: [...dataDepartments],
+        options: dataDepartments,
       },
     ];
 
@@ -76,9 +69,9 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
       value: data?.[field.name] || "",
       onChange,
     }));
-  }, [fieldErrs, data, dataDepartments, dataUsers]);
+  }, [fieldErrs, data, dataDepartments, dataUsers, dataPatients]);
 
   return { fieldsForm };
 };
 
-export default useFormUser;
+export default useFormAppointment;

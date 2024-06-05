@@ -39,7 +39,8 @@ const useFirestore = <T extends DataType>(
     docId: "",
     allData: false,
     dataSelected: false,
-  }
+  },
+  queryFilters?: FilterType
 ) => {
   const { user, isPageLoading } = useAuth();
   const route = useRouter();
@@ -79,7 +80,10 @@ const useFirestore = <T extends DataType>(
       collectionName
     );
 
-    for (const [field, value] of Object.entries(filters)) {
+    for (const [field, value] of Object.entries({
+      ...queryFilters,
+      ...filters,
+    })) {
       console.log({ field, value });
 
       if (!!value) {

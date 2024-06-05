@@ -1,11 +1,10 @@
 "use client";
+import { useMainContext } from "@/app/contexts";
 import ActionFilters from "@/components/common/ActionFilters";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
-import { tableUsers } from "@/constants/renderTable";
 import { tableMedicalRecords } from "@/constants/renderTableMedicalRecords";
-import { usePatients, useUsers } from "@/hooks/firestore";
 import useMedicalRecords from "@/hooks/firestore/useMedicalRecords";
 import { KInputType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
@@ -29,13 +28,7 @@ const MedicalRecordsPage = (props: Props) => {
     allData: true,
   });
 
-  const { dataSelected: dataPatients } = usePatients(10, {
-    dataSelected: true,
-  });
-
-  const { dataSelected: dataUsers } = useUsers(10, {
-    dataSelected: true,
-  });
+  const { dataPatients, dataUsers } = useMainContext();
 
   return (
     <div>

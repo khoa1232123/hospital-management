@@ -1,6 +1,6 @@
-import { FieldErrType, KInputType, OptionsType } from "@/types/field";
-import React, { useEffect, useMemo, useState } from "react";
-import { useDepartments } from "../firestore";
+import { useMainContext } from "@/app/contexts";
+import { FieldErrType, KInputType } from "@/types/field";
+import React, { useMemo } from "react";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -14,17 +14,7 @@ type Props = {
 };
 
 const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
-  const [dataDepartments, setDataDepartments] = useState<OptionsType[]>([]);
-  const { getDataSelected } = useDepartments();
-
-  useEffect(() => {
-    const unSub = async () => {
-      const data = await getDataSelected();
-      setDataDepartments(data);
-    };
-
-    unSub();
-  }, []);
+  const { dataDepartments } = useMainContext();
 
   const fieldsForm: KInputType[] = useMemo(() => {
     let fields = [
@@ -178,7 +168,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         select: true,
         xs: 4,
         md: 4,
-        options: [...dataDepartments],
+        options: dataDepartments,
       },
     ];
 
@@ -187,7 +177,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
       value: data?.[field.name] || "",
       onChange,
     }));
-  }, [fieldErrs, data]);
+  }, [fieldErrs, data, dataDepartments]);
 
   return { fieldsForm };
 };

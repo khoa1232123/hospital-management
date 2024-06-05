@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useDepartments, useFirestore } from ".";
 import useChange from "../common/useChange";
 import { useFormUser } from "../form";
+import { FilterType } from "@/types/firebaseHook";
 
 const useUsers = (
   initialPageSize: number = 10,
-  moreGetData?: MoreGetDataType
+  moreGetData?: MoreGetDataType,
+  queryFilters?: FilterType
 ) => {
   const [data, setData] = useState<UpdateUserType | CreateUserType | null>(
     null
@@ -20,7 +22,12 @@ const useUsers = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(DATATABLES.USERS, initialPageSize, moreGetData);
+  } = useFirestore(
+    DATATABLES.USERS,
+    initialPageSize,
+    moreGetData,
+    queryFilters
+  );
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,

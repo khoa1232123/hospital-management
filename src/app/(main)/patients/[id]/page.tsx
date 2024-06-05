@@ -1,8 +1,6 @@
 "use client";
-import TabAppointments from "@/components/main/patients/TabAppointments";
-import TabHello from "@/components/main/patients/TabHello";
-import TabMedicalRecords from "@/components/main/patients/TabMedicalRecords";
-import { usePatients } from "@/hooks/firestore";
+import { TabAppointments, TabMedicalRecords } from "@/components/main/patients";
+import { useDepartments, usePatients, useUsers } from "@/hooks/firestore";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Grid, Tab, Tabs } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -15,7 +13,6 @@ const valueTabs = [
     value: "medicalRecords",
     Component: TabMedicalRecords,
   },
-  { label: "Hello", value: "hello", Component: TabHello },
 ];
 
 type Props = {};
@@ -35,11 +32,11 @@ const PatientIdPage = (props: Props) => {
     <Grid container spacing={2}>
       <Grid item xs={4} md={3}>
         <h1>{patient?.fullName}</h1>
-        <p>{patient?.phone}</p>
-        <p>{patient?.address}</p>
-        <p>{patient?.email}</p>
-        <p>{patient?.gender}</p>
-        <p>{patient?.birthday}</p>
+        <p>Số điện thoại: {patient?.phone}</p>
+        <p>Địa chỉ: {patient?.address}</p>
+        <p>Email: {patient?.email}</p>
+        <p>Giới tính: {patient?.gender}</p>
+        <p>Ngày sinh: {patient?.birthday}</p>
       </Grid>
       <Grid item xs={8} md={9}>
         <TabContext value={value}>
@@ -50,6 +47,15 @@ const PatientIdPage = (props: Props) => {
             variant="scrollable"
             scrollButtons
             allowScrollButtonsMobile
+            TabScrollButtonProps={{
+              style: {
+                right: 0,
+                position: "absolute",
+              },
+            }}
+            style={{
+              position: "relative",
+            }}
             aria-label="scrollable force tabs example"
           >
             {valueTabs.map(({ label, value }) => (

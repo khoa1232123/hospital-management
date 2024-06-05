@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useFirestore } from ".";
 import useChange from "../common/useChange";
 import { useFormAppointment } from "../form";
+import { FilterType } from "@/types/firebaseHook";
 
 const useAppointments = (
   initialPageSize: number = 10,
-  moreGetData?: MoreGetDataType
+  moreGetData?: MoreGetDataType,
+  queryFilters?: FilterType
 ) => {
   const [data, setData] = useState<
     UpdateAppointmentType | CreateAppointmentType | null
@@ -21,7 +23,12 @@ const useAppointments = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(DATATABLES.APPOINTMENTS, initialPageSize, moreGetData);
+  } = useFirestore(
+    DATATABLES.APPOINTMENTS,
+    initialPageSize,
+    moreGetData,
+    queryFilters
+  );
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -80,6 +87,7 @@ const useAppointments = (
     editAppointment,
     deleteAppointment,
     getAppointments,
+    setData,
   };
 };
 

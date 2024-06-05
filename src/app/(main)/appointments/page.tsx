@@ -1,4 +1,5 @@
 "use client";
+import { useMainContext } from "@/app/contexts";
 import ActionFilters from "@/components/common/ActionFilters";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
@@ -28,21 +29,11 @@ const AppointmentsPage = (props: Props) => {
     editAppointment,
     deleteAppointment,
     setFilters,
-    setSortBy,
   } = useAppointments(10, {
     allData: true,
   });
 
-  const { dataSelected: dataUsers } = useUsers(100, {
-    dataSelected: true,
-  });
-
-  const { dataSelected: dataDepartments } = useDepartments(100, {
-    dataSelected: true,
-  });
-  const { dataSelected: dataPatients } = usePatients(10, {
-    dataSelected: true,
-  });
+  const { dataDepartments, dataPatients, dataUsers } = useMainContext();
 
   return (
     <div>
@@ -77,7 +68,6 @@ const AppointmentsPage = (props: Props) => {
         keys={tableAppointments}
         onEdit={editAppointment}
         onDelete={deleteAppointment}
-        onSortBy={setSortBy}
         isAction
       />
       <KDialog

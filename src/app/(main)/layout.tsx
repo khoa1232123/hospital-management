@@ -3,6 +3,7 @@ import { Header, Sidebar } from "@/components/layout";
 import useAuth from "@/hooks/useAuth";
 import { Box, CircularProgress, CssBaseline, styled } from "@mui/material";
 import React from "react";
+import { MainProvider } from "../contexts";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -30,18 +31,20 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Header onToggle={handleDrawerToggle} />
-      <Sidebar open={open} />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, maxWidth: "calc(100% - 65px)" }}
-      >
-        <DrawerHeader />
-        {children}
+    <MainProvider>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Header onToggle={handleDrawerToggle} />
+        <Sidebar open={open} />
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, maxWidth: "calc(100% - 65px)" }}
+        >
+          <DrawerHeader />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </MainProvider>
   );
 };
 

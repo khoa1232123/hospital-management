@@ -108,7 +108,11 @@ const Sidebar = ({ open }: Props) => {
           >
             <ListItem
               disablePadding
-              className={pathName === item.link ? `bg-gray-300` : ""}
+              className={
+                pathName.length > 3 && pathName.includes(item.link)
+                  ? `bg-gray-300`
+                  : ""
+              }
               sx={{ display: "block" }}
             >
               <ListItemButton
@@ -126,7 +130,6 @@ const Sidebar = ({ open }: Props) => {
                   }}
                 >
                   {item.Icon}
-                  {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                 </ListItemIcon>
                 <ListItemText
                   primary={item.label}

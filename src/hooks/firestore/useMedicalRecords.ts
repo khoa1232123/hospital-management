@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useFirestore } from ".";
 import useChange from "../common/useChange";
 import { useFormMedicalRecord } from "../form";
+import { FilterType } from "@/types/firebaseHook";
 
 const useMedicalRecords = (
   initialPageSize: number = 10,
-  moreGetData?: MoreGetDataType
+  moreGetData?: MoreGetDataType,
+  queryFilters?: FilterType
 ) => {
   const [data, setData] = useState<
     UpdateMedicalRecordType | CreateMedicalRecordType | null
@@ -19,7 +21,12 @@ const useMedicalRecords = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(DATATABLES.MEDICALRECORDS, initialPageSize, moreGetData);
+  } = useFirestore(
+    DATATABLES.MEDICALRECORDS,
+    initialPageSize,
+    moreGetData,
+    queryFilters
+  );
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -81,6 +88,7 @@ const useMedicalRecords = (
     setOpen,
     submitMedicalRecord,
     editMedicalRecord,
+    setData,
     ...rest,
   };
 };
