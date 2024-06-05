@@ -63,7 +63,7 @@ const PatientIdPage = (props: Props) => {
             ))}
           </Tabs>
           {valueTabs.map(({ value, Component }) => (
-            <TabPanel value={value} key={value}>
+            <TabPanel value={value} key={value} className="px-0">
               <Component />
             </TabPanel>
           ))}

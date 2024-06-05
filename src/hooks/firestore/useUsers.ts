@@ -56,7 +56,6 @@ const useUsers = (
         fullName: fullName,
         nameSearch: splitString(fullName.toLowerCase()),
       };
-      console.log({ newUser });
       await updateDocument(data.id, newUser);
       closeForm();
     } else {
@@ -65,8 +64,6 @@ const useUsers = (
         fullName: fullName,
         nameSearch: splitString(fullName.toLowerCase()),
       };
-
-      console.log({ newUser });
 
       await addDocument(newUser);
       closeForm();

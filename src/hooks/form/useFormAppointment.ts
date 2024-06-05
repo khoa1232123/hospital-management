@@ -1,7 +1,7 @@
 import { FieldErrType, KInputType } from "@/types/field";
 import React, { useMemo } from "react";
 import { useDepartments, usePatients, useUsers } from "../firestore";
-import { useMainContext } from "@/app/contexts";
+import { useMainContext } from "@/contexts";
 
 type Props = {
   fieldErrs?: FieldErrType;

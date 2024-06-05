@@ -1,3 +1,4 @@
+import { useLayoutContext } from "@/contexts";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Toolbar, Typography, styled } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -13,17 +14,17 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 type Props = {
-  onToggle: () => void;
+  toggleSidebar: () => void;
 };
 
-const Header = ({ onToggle }: Props) => {
+const Header = ({ toggleSidebar }: Props) => {
   return (
     <AppBar position="fixed">
       <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={onToggle}
+          onClick={toggleSidebar}
           edge="start"
           sx={{
             marginRight: 2,
@@ -32,7 +33,7 @@ const Header = ({ onToggle }: Props) => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div">
-          Mini variant drawer
+          Hospital Management
         </Typography>
       </Toolbar>
     </AppBar>

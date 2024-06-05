@@ -84,8 +84,6 @@ const useFirestore = <T extends DataType>(
       ...queryFilters,
       ...filters,
     })) {
-      console.log({ field, value });
-
       if (!!value) {
         switch (field) {
           case "gender":
@@ -144,8 +142,6 @@ const useFirestore = <T extends DataType>(
     filters: { [key: string]: string | number } = {}
   ): Promise<T> => {
     setLoading(true);
-
-    console.log({ filters });
 
     try {
       const offset = (page - 1) * pageSize;

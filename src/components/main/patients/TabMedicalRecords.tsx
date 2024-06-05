@@ -1,5 +1,5 @@
 "use client";
-import { useMainContext } from "@/app/contexts";
+import { useMainContext } from "@/contexts";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";

@@ -52,15 +52,12 @@ const useMedicalRecords = (
       const newMedicalRecord: UpdateMedicalRecordType = {
         ...(data as UpdateMedicalRecordType),
       };
-      console.log({ newMedicalRecord });
       await updateDocument(data.id, newMedicalRecord);
       closeForm();
     } else {
       const newMedicalRecord: CreateMedicalRecordType = {
         ...(data as CreateMedicalRecordType),
       };
-
-      console.log({ newMedicalRecord });
 
       await addDocument(newMedicalRecord);
       closeForm();

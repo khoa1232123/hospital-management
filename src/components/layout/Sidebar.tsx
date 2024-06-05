@@ -5,6 +5,7 @@ import BedroomChildIcon from "@mui/icons-material/BedroomChild";
 import MailIcon from "@mui/icons-material/Mail";
 import MasksIcon from "@mui/icons-material/Masks";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MedicationIcon from "@mui/icons-material/Medication";
 
 import {
   CSSObject,
@@ -20,6 +21,7 @@ import {
 import MuiDrawer from "@mui/material/Drawer";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLayoutContext } from "@/contexts";
 
 const drawerWidth = 240;
 
@@ -71,14 +73,14 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 type Props = {
-  open: boolean;
+  openSidebar: boolean;
 };
 
-const Sidebar = ({ open }: Props) => {
+const Sidebar = ({ openSidebar }: Props) => {
   const pathName = usePathname();
 
   return (
-    <Drawer variant="permanent" open={open}>
+    <Drawer variant="permanent" open={openSidebar}>
       <DrawerHeader />
       <Divider />
       <List>
@@ -100,6 +102,11 @@ const Sidebar = ({ open }: Props) => {
             link: "/medical-records",
             Icon: <AssignmentIndIcon />,
           },
+          {
+            label: "Medications",
+            link: "/medications",
+            Icon: <MedicationIcon />,
+          },
         ].map((item, index) => (
           <Link
             key={item.label}
@@ -118,14 +125,14 @@ const Sidebar = ({ open }: Props) => {
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: openSidebar ? "initial" : "center",
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: openSidebar ? 3 : "auto",
                     justifyContent: "center",
                   }}
                 >
@@ -133,7 +140,7 @@ const Sidebar = ({ open }: Props) => {
                 </ListItemIcon>
                 <ListItemText
                   primary={item.label}
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{ opacity: openSidebar ? 1 : 0 }}
                 />
               </ListItemButton>
             </ListItem>
@@ -147,20 +154,23 @@ const Sidebar = ({ open }: Props) => {
             <ListItemButton
               sx={{
                 minHeight: 48,
-                justifyContent: open ? "initial" : "center",
+                justifyContent: openSidebar ? "initial" : "center",
                 px: 2.5,
               }}
             >
               <ListItemIcon
                 sx={{
                   minWidth: 0,
-                  mr: open ? 3 : "auto",
+                  mr: openSidebar ? 3 : "auto",
                   justifyContent: "center",
                 }}
               >
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText
+                primary={text}
+                sx={{ opacity: openSidebar ? 1 : 0 }}
+              />
             </ListItemButton>
           </ListItem>
         ))}

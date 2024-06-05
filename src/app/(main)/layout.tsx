@@ -1,9 +1,9 @@
 "use client";
 import { Header, Sidebar } from "@/components/layout";
+import { LayoutProvider, MainProvider, useLayoutContext } from "@/contexts";
 import useAuth from "@/hooks/useAuth";
 import { Box, CircularProgress, CssBaseline, styled } from "@mui/material";
-import React from "react";
-import { MainProvider } from "../contexts";
+import React, { useState } from "react";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -16,10 +16,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { isPageLoading } = useAuth();
-  const [open, setOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
-    setOpen(!open);
+  const [openSidebar, setOpenSidebar] = useState(false);
+
+  const toggleSidebar = () => {
+    setOpenSidebar(!openSidebar);
   };
 
   if (isPageLoading) {
@@ -30,21 +31,33 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
+  console.log({ openSidebar });
+
   return (
-    <MainProvider>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Header onToggle={handleDrawerToggle} />
-        <Sidebar open={open} />
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, p: 3, maxWidth: "calc(100% - 65px)" }}
-        >
-          <DrawerHeader />
-          {children}
+    <LayoutProvider>
+      <MainProvider>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <Header toggleSidebar={toggleSidebar} />
+          <Sidebar openSidebar={openSidebar} />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              maxWidth: `${
+                openSidebar ? "calc(100% - 240px)" : "calc(100% - 65px)"
+              }`,
+              transitionDuration: "225ms",
+              animationDuration: "225ms",
+            }}
+          >
+            <DrawerHeader />
+            {children}
+          </Box>
         </Box>
-      </Box>
-    </MainProvider>
+      </MainProvider>
+    </LayoutProvider>
   );
 };
 

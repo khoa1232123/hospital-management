@@ -37,8 +37,6 @@ export const MainProvider = ({ children }: MainProviderProps) => {
     dataSelected: true,
   });
 
-  console.log({ dataDepartments, dataPatients, dataUsers });
-
   const value = { dataPatients, dataUsers, dataDepartments };
 
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;
