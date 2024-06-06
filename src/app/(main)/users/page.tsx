@@ -5,9 +5,8 @@ import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { tableUsers } from "@/constants/renderTable";
 import { useDepartments, useUsers } from "@/hooks/firestore";
-import { KInputType, OptionsType } from "@/types/field";
+import { KInputType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
 
 type Props = {};
 
@@ -31,8 +30,6 @@ const UsersPage = (props: Props) => {
   const { dataSelected: dataDepartments } = useDepartments(10, {
     dataSelected: true,
   });
-
-  console.log({ dataDepartments });
 
   return (
     <div>

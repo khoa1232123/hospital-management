@@ -1,7 +1,6 @@
-import { FieldErrType, KInputType, OptionsType } from "@/types/field";
-import React, { useEffect, useMemo, useState } from "react";
-import { useDepartments, usePatients, useUsers } from "../firestore";
 import { useMainContext } from "@/contexts";
+import { FieldErrType, KInputType } from "@/types/field";
+import React, { useMemo } from "react";
 
 type Props = {
   fieldErrs?: FieldErrType;

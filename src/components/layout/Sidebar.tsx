@@ -72,12 +72,11 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-type Props = {
-  openSidebar: boolean;
-};
+type Props = {};
 
-const Sidebar = ({ openSidebar }: Props) => {
+const Sidebar = ({}: Props) => {
   const pathName = usePathname();
+  const { openSidebar } = useLayoutContext();
 
   return (
     <Drawer variant="permanent" open={openSidebar}>

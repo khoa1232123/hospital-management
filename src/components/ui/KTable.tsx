@@ -31,6 +31,7 @@ type KTableProps = {
   data: any[];
   moreData?: MoreDataType[];
   isAction?: boolean;
+  actionMaxWidth?: number | string;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
   onSortBy?: React.Dispatch<
@@ -70,6 +71,7 @@ const KTable = ({
   onEdit,
   onDelete,
   isAction = false,
+  actionMaxWidth = 100,
   keys,
   pagination,
   loading = false,
@@ -101,7 +103,8 @@ const KTable = ({
         ))}
         {isAction && (
           <TableCell
-            style={{ minWidth: 100 }}
+            style={{ minWidth: 100, maxWidth: actionMaxWidth || "100%" }}
+            width={actionMaxWidth}
             className="sticky right-0 bg-white"
           />
         )}

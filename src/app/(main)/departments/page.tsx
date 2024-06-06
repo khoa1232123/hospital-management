@@ -48,6 +48,7 @@ const DepartmentsPage = (props: Props) => {
         onEdit={editDepartment}
         onDelete={deleteDepartment}
         onSortBy={setSortBy}
+        actionMaxWidth={100}
         isAction
       />
       <KDialog

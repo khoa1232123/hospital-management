@@ -1,27 +1,13 @@
 "use client";
 import { Header, Sidebar } from "@/components/layout";
+import LayoutMain from "@/components/layout/LayoutMain";
 import { LayoutProvider, MainProvider, useLayoutContext } from "@/contexts";
 import useAuth from "@/hooks/useAuth";
 import { Box, CircularProgress, CssBaseline, styled } from "@mui/material";
 import React, { useState } from "react";
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { isPageLoading } = useAuth();
-
-  const [openSidebar, setOpenSidebar] = useState(false);
-
-  const toggleSidebar = () => {
-    setOpenSidebar(!openSidebar);
-  };
 
   if (isPageLoading) {
     return (
@@ -31,31 +17,10 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  console.log({ openSidebar });
-
   return (
     <LayoutProvider>
       <MainProvider>
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <Header toggleSidebar={toggleSidebar} />
-          <Sidebar openSidebar={openSidebar} />
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              maxWidth: `${
-                openSidebar ? "calc(100% - 240px)" : "calc(100% - 65px)"
-              }`,
-              transitionDuration: "225ms",
-              animationDuration: "225ms",
-            }}
-          >
-            <DrawerHeader />
-            {children}
-          </Box>
-        </Box>
+        <LayoutMain>{children}</LayoutMain>
       </MainProvider>
     </LayoutProvider>
   );

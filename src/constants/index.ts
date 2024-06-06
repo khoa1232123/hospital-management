@@ -5,6 +5,7 @@ import {
   tablePatientTabAppointments,
   tablePatientTabMedicalRecords,
 } from "./renterTablePatients";
+import { tableMedications } from "./renderTableMedications";
 
 export {
   DATATABLES,
@@ -14,4 +15,5 @@ export {
   tablePatients,
   tablePatientTabAppointments,
   tablePatientTabMedicalRecords,
+  tableMedications,
 };

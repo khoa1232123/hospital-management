@@ -13,11 +13,10 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-type Props = {
-  toggleSidebar: () => void;
-};
+type Props = {};
 
-const Header = ({ toggleSidebar }: Props) => {
+const Header = ({}: Props) => {
+  const { toggleSidebar } = useLayoutContext();
   return (
     <AppBar position="fixed">
       <Toolbar>
