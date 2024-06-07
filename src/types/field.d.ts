@@ -11,6 +11,10 @@ type KInputType = TextFieldProps & {
   sm?: number;
   md?: number;
   options?: OptionsType[];
+  type: string;
+  array?: KInputType[];
+  items?: KInputType[];
+  onClick?: (ev?: MouseEvent) => void;
 };
 
 type FieldErrType = {

@@ -1,3 +1,9 @@
+type prescriptionType = {
+  medicationId: string;
+  dosage: string;
+  notes?: string;
+};
+
 type MedicalRecordType = {
   id?: string;
   patientId?: string;
@@ -8,6 +14,7 @@ type MedicalRecordType = {
   diagnosis?: string; //Chẩn đoán
   treatment?: string; //Điều trị
   followUpDate?: Date; //Ngày hẹn tái khám
+  prescriptions?: prescriptionType[];
   createdAt?: Date;
   updatedAt?: Date;
 };

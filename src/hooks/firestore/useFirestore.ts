@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../useAuth";
 import { OptionsType } from "@/types/field";
+import { cleanData } from "@/utils/array";
 
 interface DataType {
   id?: string;
@@ -176,13 +177,14 @@ const useFirestore = <T extends DataType>(
 
   // Add a new document
   const addDocument = async (data: DataType) => {
+    const newData = cleanData(data);
     try {
       const newData = {
         ...data,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
-      await addDoc(collection(db, collectionName), newData);
+      await addDoc(collection(db, collectionName), cleanData(newData));
       calculateTotalPages(); // Recalculate total pages after adding a document
       setOpen(false);
       getDocuments(currentPage);
@@ -198,7 +200,7 @@ const useFirestore = <T extends DataType>(
     try {
       const newData = { ...updatedData, updatedAt: serverTimestamp() };
       const docRef = doc(db, collectionName, id);
-      await updateDoc(docRef, newData);
+      await updateDoc(docRef, cleanData(newData));
       getDocuments(currentPage);
       setOpen(false);
       toast.success("You updated a document successfully");

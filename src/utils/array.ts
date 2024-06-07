@@ -1,3 +1,9 @@
+type DataType = { [key: string]: any };
+
+const isEmptyObject = (obj: any): boolean => {
+  return Object.values(obj).every((value) => value === "");
+};
+
 export const extractKeys = (arr: Array<Record<string, any>>): string[] => {
   const keysSet: Set<string> = new Set();
 
@@ -12,4 +18,23 @@ export const extractKeys = (arr: Array<Record<string, any>>): string[] => {
 
 export const convertNumberToArray = (n: number): number[] => {
   return Array.from({ length: n }, (_, i) => i + 1);
+};
+
+export const cleanData = (data: DataType): DataType => {
+  const cleanedData: DataType = {};
+
+  for (const key in data) {
+    if (!key.includes("].")) {
+      if (Array.isArray(data[key])) {
+        // Filter out empty objects from arrays
+        cleanedData[key] = data[key].filter(
+          (item: any) => !isEmptyObject(item)
+        );
+      } else {
+        cleanedData[key] = data[key];
+      }
+    }
+  }
+
+  return cleanedData;
 };

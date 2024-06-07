@@ -67,7 +67,7 @@ const MedicalRecordsPage = (props: Props) => {
       />
       <KDialog
         title="User"
-        size="sm"
+        size="md"
         open={open}
         onClose={closeForm}
         onSubmit={submitMedicalRecord}

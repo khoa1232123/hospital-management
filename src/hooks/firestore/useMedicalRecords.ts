@@ -5,6 +5,22 @@ import useChange from "../common/useChange";
 import { useFormMedicalRecord } from "../form";
 import { FilterType } from "@/types/firebaseHook";
 
+const initialValue: CreateMedicalRecordType = {
+  appointmentId: "",
+  diagnosis: "",
+  patientId: "",
+  symptoms: "",
+  treatment: "",
+  userId: "",
+  prescriptions: [
+    {
+      medicationId: "",
+      dosage: "",
+      notes: "",
+    },
+  ],
+};
+
 const useMedicalRecords = (
   initialPageSize: number = 10,
   moreGetData?: MoreGetDataType,
@@ -12,7 +28,7 @@ const useMedicalRecords = (
 ) => {
   const [data, setData] = useState<
     UpdateMedicalRecordType | CreateMedicalRecordType | null
-  >(null);
+  >(initialValue);
   const {
     addDocument,
     updateDocument,
@@ -35,7 +51,7 @@ const useMedicalRecords = (
   });
 
   const closeForm = () => {
-    setData(null);
+    setData(initialValue);
     setOpen(false);
   };
 
@@ -74,6 +90,7 @@ const useMedicalRecords = (
     onChange: onChange,
     onBlur: checkField,
     data,
+    setData,
   });
 
   return {

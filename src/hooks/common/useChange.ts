@@ -21,13 +21,32 @@ const useChange = ({ setData, data, collectionName }: Props) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const name = e.target.name;
-    setData({
-      ...data,
-      [name]: e.target.value,
-    });
+    const value = e.target.value;
+
+    const setNestedValue = (obj: any, path: string[], value: any) => {
+      const [first, ...rest] = path;
+      if (rest.length === 0) {
+        obj[first] = value;
+      } else {
+        if (!obj[first]) {
+          obj[first] = isNaN(parseInt(rest[0])) ? {} : [];
+        }
+        setNestedValue(obj[first], rest, value);
+      }
+    };
+
+    const path = name.replace(/\]/g, "").split(/\[|\./);
+    const updatedData = { ...data };
+    setNestedValue(updatedData, path, value);
+
+    // Also update the flattened structure
+    updatedData[name] = value;
+
+    setData(updatedData);
+
     if (fieldErrs?.[name]) {
-      delete fieldErrs?.[name];
-      setFieldErrs(fieldErrs);
+      delete fieldErrs[name];
+      setFieldErrs({ ...fieldErrs });
     }
   };
 

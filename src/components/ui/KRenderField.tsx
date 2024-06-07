@@ -1,6 +1,7 @@
 import { KInputType } from "@/types/field";
 import KInput from "./KInput";
-import { MenuItem } from "@mui/material";
+import { Button, Grid, MenuItem } from "@mui/material";
+import { Add, PlusOne } from "@mui/icons-material";
 
 export type KRenderFieldProps = KInputType & {};
 
@@ -17,6 +18,36 @@ const KRenderField = ({ ...props }: KRenderFieldProps) => {
             </MenuItem>
           ))}
         </KInput>
+      );
+    case "array":
+      return (
+        <Grid item xs={12}>
+          <div className="flex items-center justify-between">
+            <h3 className="mt-0">{props.label}</h3>
+            <Button
+              onClick={() => {
+                props.onClick && props.onClick();
+              }}
+            >
+              <Add />
+            </Button>
+          </div>
+          <Grid container spacing={3}>
+            {props.array?.map((item) => (
+              <Grid item xs={12}>
+                <KRenderField {...item} />
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      );
+    case "arrayItems":
+      return (
+        <Grid container spacing={2}>
+          {props.items?.map((item) => (
+            <KRenderField {...item} />
+          ))}
+        </Grid>
       );
     default:
       return <KInput {...props} />;
