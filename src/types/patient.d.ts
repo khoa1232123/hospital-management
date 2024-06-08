@@ -34,3 +34,31 @@ type GetPatientType = PatientType & {
 type DeletePatientType = {
   id: string;
 };
+
+type VisitType = {
+  id?: string;
+  patientId?: string; // INT	Mã bệnh nhân
+  userId?: string; // mã bác sĩ
+  visitDate?: Date; // DATETIME	Ngày và giờ khám
+  purpose?: string; //VARCHAR(255)	Mục đích khám
+  notes?: string; // TEXT Ghi chú
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+type CreateVisitType = VisitType & {
+  patientId: string;
+  userId: string;
+};
+
+type UpdateVisitType = VisitType & {
+  id: string;
+};
+
+type GetVisitType = VisitType & {
+  id: string;
+};
+
+type DeleteVisitType = {
+  id: string;
+};

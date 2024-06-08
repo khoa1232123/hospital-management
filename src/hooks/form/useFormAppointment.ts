@@ -1,7 +1,7 @@
+import { dataStatus } from "@/constants";
+import { useMainContext } from "@/contexts";
 import { FieldErrType, KInputType } from "@/types/field";
 import React, { useMemo } from "react";
-import { useDepartments, usePatients, useUsers } from "../firestore";
-import { useMainContext } from "@/contexts";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -62,14 +62,24 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xl: 6,
         options: dataDepartments,
       },
+      {
+        type: "select",
+        name: "status",
+        label: "Status",
+        select: true,
+        xs: 12,
+        md: 6,
+        options: dataStatus,
+      },
     ];
 
     return fields.map((field) => ({
       ...field,
       value: data?.[field.name] || "",
+      placeholder: field.label,
       onChange,
     }));
-  }, [fieldErrs, data, dataDepartments, dataUsers, dataPatients]);
+  }, [fieldErrs, data, dataDepartments, dataUsers, dataPatients, dataStatus]);
 
   return { fieldsForm };
 };

@@ -4,13 +4,7 @@ import React, { useState } from "react";
 import KInput from "../ui/KInput";
 import { Clear, Search } from "@mui/icons-material";
 import { FilterType } from "@/types/firebaseHook";
-
-const dataGenders = [
-  { value: "", label: "--Choose a gender--" },
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "other", label: "Other" },
-];
+import { dataGender } from "@/constants";
 
 const initDataSearch = {
   nameSearch: "",
@@ -126,15 +120,16 @@ const ActionFilters = ({
       {actions.gender && (
         <KInput
           size="small"
+          type="text"
           className="min-w-[200px]"
           name={"gender"}
           onChange={handleSearch}
           value={dataSearch?.gender}
           placeholder="Gender"
           label="Gender"
-          select
+          select={true}
         >
-          {dataGenders.map((item) => (
+          {dataGender.map((item) => (
             <MenuItem
               key={item.value}
               value={item.value}

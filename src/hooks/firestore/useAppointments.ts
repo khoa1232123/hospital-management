@@ -6,6 +6,14 @@ import useChange from "../common/useChange";
 import { useFormAppointment } from "../form";
 import { FilterType } from "@/types/firebaseHook";
 
+const initialData: CreateAppointmentType = {
+  email: "",
+  departmentId: "",
+  patientId: "",
+  status: "pending",
+  userId: "",
+};
+
 const useAppointments = (
   initialPageSize: number = 10,
   moreGetData?: MoreGetDataType,
@@ -13,7 +21,7 @@ const useAppointments = (
 ) => {
   const [data, setData] = useState<
     UpdateAppointmentType | CreateAppointmentType | null
-  >(null);
+  >(initialData);
 
   const {
     addDocument,
@@ -37,7 +45,7 @@ const useAppointments = (
   });
 
   const closeForm = () => {
-    setData(null);
+    setData(initialData);
     setOpen(false);
   };
 

@@ -25,12 +25,8 @@ export const MainProvider = ({ children }: MainProviderProps) => {
 
   const { dataSelected: dataUsers } = useUsers(
     10,
-    {
-      dataSelected: true,
-    },
-    {
-      role: "user",
-    }
+    { dataSelected: true },
+    { role: "user" }
   );
 
   const { dataSelected: dataDepartments } = useDepartments(10, {

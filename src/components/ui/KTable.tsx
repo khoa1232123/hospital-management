@@ -1,4 +1,5 @@
 "use client";
+import { dataStatus } from "@/constants";
 import { KeyConfigType, OptionsType } from "@/types/field";
 import { convertNumberToArray } from "@/utils/array";
 import { convertServerTimestamp } from "@/utils/timeDate";
@@ -113,6 +114,38 @@ const KTable = ({
     [keys]
   );
 
+  const bodyRow = ({
+    keyConfig,
+    row,
+  }: {
+    keyConfig: KeyConfigType;
+    row: any;
+  }) => {
+    if (keyConfig.isLink) {
+      return (
+        <Link href={`${keyConfig.preLink || pathName}/${row.id}`}>
+          {convertServerTimestamp(row[keyConfig.value])}
+        </Link>
+      );
+    }
+    if (keyConfig.value === "status") {
+      const color =
+        dataStatus.find((status) => status.value === row.status)?.color || "";
+      return (
+        <span
+          className={`py-1 px-2 rounded-md`}
+          style={{
+            background: color != "" ? `${color}` : "",
+            color: color != "yellow" ? "white" : "",
+          }}
+        >
+          {row[keyConfig.value]}
+        </span>
+      );
+    }
+    return convertServerTimestamp(row[keyConfig.value]);
+  };
+
   const rows: JSX.Element[] = React.useMemo(() => {
     return data.map((row) => {
       moreData && addMoreData(row, moreData);
@@ -125,13 +158,18 @@ const KTable = ({
               component={keyConfig.component || "td"}
               scope="row"
             >
-              {keyConfig.isLink ? (
+              {bodyRow({ keyConfig, row })}
+              {/* {keyConfig.isLink ? (
                 <Link href={`${keyConfig.preLink || pathName}/${row.id}`}>
                   {convertServerTimestamp(row[keyConfig.value])}
                 </Link>
+              ) : keyConfig.value === "status" ? (
+                <span className="py-1 px-2 bg-blue-500">
+                  {convertServerTimestamp(row[keyConfig.value])}
+                </span>
               ) : (
                 convertServerTimestamp(row[keyConfig.value])
-              )}
+              )} */}
             </TableCell>
           ))}
           {isAction && (

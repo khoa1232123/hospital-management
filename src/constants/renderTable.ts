@@ -88,6 +88,12 @@ export const tableAppointments: KeyConfigType[] = [
     component: "th",
   },
   {
+    value: "status",
+    label: "Status",
+    align: "center",
+    component: "th",
+  },
+  {
     value: "departmentName",
     label: "Department",
     align: "left",

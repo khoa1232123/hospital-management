@@ -6,6 +6,7 @@ import {
   tablePatientTabMedicalRecords,
 } from "./renterTablePatients";
 import { tableMedications } from "./renderTableMedications";
+import { dataGender, dataStatus } from "./staticData";
 
 export {
   DATATABLES,
@@ -16,4 +17,6 @@ export {
   tablePatientTabAppointments,
   tablePatientTabMedicalRecords,
   tableMedications,
+  dataGender,
+  dataStatus,
 };
