@@ -3,6 +3,7 @@ import useFormDepartment from "./useFormDepartment";
 import useFormMedicalRecord from "./useFormMedicalRecord";
 import useFormMedication from "./useFormMedication";
 import useFormPatient from "./useFormPatient";
+import useFormRoom from "./useFormRoom";
 import useFormUser from "./useFormUser";
 
 export {
@@ -11,5 +12,6 @@ export {
   useFormMedicalRecord,
   useFormMedication,
   useFormPatient,
+  useFormRoom,
   useFormUser,
 };

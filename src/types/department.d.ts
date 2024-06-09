@@ -27,8 +27,9 @@ type DeleteDepartmentType = {
 type RoomType = {
   id?: string;
   name?: string; //	VARCHAR(10)	Số phòng
+  nameSearch?: string[];
   departmentId?: string; //	INT	Mã khoa/phòng
-  roomType?: string; //	VARCHAR(50)	Loại phòng (phòng thường, phòng VIP)
+  type?: string; //	VARCHAR(50)	Loại phòng (phòng thường, phòng VIP)
   createdAt?: Date;
   updatedAt?: Date;
 };

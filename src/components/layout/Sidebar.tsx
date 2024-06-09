@@ -106,6 +106,11 @@ const Sidebar = ({}: Props) => {
             link: "/medications",
             Icon: <MedicationIcon />,
           },
+          {
+            label: "Rooms",
+            link: "/rooms",
+            Icon: <MedicationIcon />,
+          },
         ].map((item, index) => (
           <Link
             key={item.label}

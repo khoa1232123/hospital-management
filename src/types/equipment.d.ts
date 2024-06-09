@@ -10,18 +10,10 @@ type EquipmentType = {
   updatedAt?: Date;
 };
 
-type CreateEquipmentType = EquipmentType & {
-  name: string;
-};
+type CreateEquipmentType = EquipmentType & { name: string };
 
-type UpdateEquipmentType = EquipmentType & {
-  id: string;
-};
+type UpdateEquipmentType = EquipmentType & { id: string };
 
-type GetEquipmentType = EquipmentType & {
-  id: string;
-};
+type GetEquipmentType = EquipmentType & { id: string };
 
-type DeleteEquipmentType = {
-  id: string;
-};
+type DeleteEquipmentType = { id: string };

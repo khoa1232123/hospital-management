@@ -5,4 +5,5 @@ export const DATATABLES = {
   APPOINTMENTS: "appointments",
   MEDICALRECORDS: "medicalRecords",
   MEDICATIONS: "medications",
+  ROOMS: "rooms",
 };

@@ -1,10 +1,6 @@
-import { OptionsType } from "@/types/field";
+import { OptionBuilding, OptionStatusType, OptionsType } from "@/types/field";
 
-type OptionStatusType = OptionsType & {
-  color?: string;
-};
-
-export const dataStatus: OptionStatusType[] = [
+export const dataStatusMore: OptionStatusType[] = [
   {
     label: "Pending",
     value: "pending",
@@ -20,6 +16,26 @@ export const dataStatus: OptionStatusType[] = [
     value: "cancel",
     color: "red",
   },
+  {
+    label: "Out of Date",
+    value: "outOfDate",
+    color: "black",
+  },
+];
+
+export const dataStatus: OptionsType[] = [
+  {
+    label: "Pending",
+    value: "pending",
+  },
+  {
+    label: "Done",
+    value: "done",
+  },
+  {
+    label: "Cancel",
+    value: "cancel",
+  },
 ];
 
 export const dataGender: OptionsType[] = [
@@ -34,5 +50,44 @@ export const dataGender: OptionsType[] = [
   {
     label: "Other",
     value: "other",
+  },
+];
+
+export const dataRoomTypes: OptionsType[] = [
+  {
+    label: "Normal",
+    value: "normal",
+  },
+  {
+    label: "VIP",
+    value: "vip",
+  },
+];
+
+export const dataBuildings: OptionBuilding[] = [
+  {
+    label: "A1",
+    value: "a1",
+    floors: 5,
+  },
+  {
+    label: "A2",
+    value: "a2",
+    floors: 6,
+  },
+  {
+    label: "B1",
+    value: "b1",
+    floors: 4,
+  },
+  {
+    label: "B2",
+    value: "b2",
+    floors: 4,
+  },
+  {
+    label: "C1",
+    value: "c1",
+    floors: 6,
   },
 ];

@@ -1,5 +1,5 @@
 "use client";
-import { dataStatus } from "@/constants";
+import { dataStatus, dataStatusMore } from "@/constants";
 import { KeyConfigType, OptionsType } from "@/types/field";
 import { convertNumberToArray } from "@/utils/array";
 import { convertServerTimestamp } from "@/utils/timeDate";
@@ -13,6 +13,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -129,8 +130,32 @@ const KTable = ({
       );
     }
     if (keyConfig.value === "status") {
-      const color =
-        dataStatus.find((status) => status.value === row.status)?.color || "";
+      const status = dataStatusMore.find(
+        (status) => status.value === row.status
+      );
+
+      const timeAppointment = dayjs(row?.appointmentDate).format("DD-MM-YYYY");
+      const timeNow = dayjs(Date.now()).format("DD-MM-YYYY");
+
+      if (status && status.value === "pending" && timeAppointment < timeNow) {
+        const status = dataStatusMore.find(
+          (status) => status.value === "outOfDate"
+        );
+        return (
+          <span
+            className={`py-1 px-2 rounded-md`}
+            style={{
+              background: status?.color || "",
+              color: "white",
+            }}
+          >
+            {status?.label}
+          </span>
+        );
+      }
+
+      const color = status ? status.color : "";
+
       return (
         <span
           className={`py-1 px-2 rounded-md`}
@@ -143,6 +168,11 @@ const KTable = ({
         </span>
       );
     }
+
+    if (keyConfig.value === "appointmentDate") {
+      return dayjs(row[keyConfig.value]).format("DD-MM-YYYY");
+    }
+
     return convertServerTimestamp(row[keyConfig.value]);
   };
 
@@ -159,17 +189,6 @@ const KTable = ({
               scope="row"
             >
               {bodyRow({ keyConfig, row })}
-              {/* {keyConfig.isLink ? (
-                <Link href={`${keyConfig.preLink || pathName}/${row.id}`}>
-                  {convertServerTimestamp(row[keyConfig.value])}
-                </Link>
-              ) : keyConfig.value === "status" ? (
-                <span className="py-1 px-2 bg-blue-500">
-                  {convertServerTimestamp(row[keyConfig.value])}
-                </span>
-              ) : (
-                convertServerTimestamp(row[keyConfig.value])
-              )} */}
             </TableCell>
           ))}
           {isAction && (

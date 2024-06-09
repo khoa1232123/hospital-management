@@ -1,6 +1,7 @@
 import { dataStatus } from "@/constants";
 import { useMainContext } from "@/contexts";
 import { FieldErrType, KInputType } from "@/types/field";
+import dayjs from "dayjs";
 import React, { useMemo } from "react";
 
 type Props = {
@@ -24,6 +25,7 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         name: "appointmentDate",
         label: "Appointment Date",
         placeholder: "Appointment Date",
+        inputProps: { min: dayjs(Date.now()).format("YYYY-MM-DD") },
         xs: 12,
         md: 6,
         xl: 6,

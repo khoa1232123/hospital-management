@@ -4,6 +4,7 @@ import useFirestore from "./useFirestore";
 import useMedications from "./useMedications";
 import usePatients from "./usePatients";
 import useUsers from "./useUsers";
+import useRooms from "./useRooms";
 
 export {
   useAppointments,
@@ -12,4 +13,5 @@ export {
   useMedications,
   usePatients,
   useUsers,
+  useRooms,
 };

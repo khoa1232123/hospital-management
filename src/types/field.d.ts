@@ -5,6 +5,14 @@ type OptionsType = {
   label: string;
 };
 
+export type OptionStatusType = OptionsType & {
+  color?: string;
+};
+
+export type OptionBuilding = OptionsType & {
+  floors?: number;
+};
+
 type KInputType = TextFieldProps & {
   xs?: number;
   xl?: number;

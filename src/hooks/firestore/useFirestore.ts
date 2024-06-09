@@ -66,11 +66,7 @@ const useFirestore = <T extends DataType>(
 
   useEffect(() => {
     if (!moreGetData.dataSelected) return;
-    const unSub = async () => {
-      const data = await getDataSelected();
-      setDataSelected(data);
-    };
-    unSub();
+    getDataSelected();
   }, [moreGetData?.dataSelected]);
 
   const returnQuery = (filters: { [key: string]: string | number }) => {
@@ -134,7 +130,7 @@ const useFirestore = <T extends DataType>(
       value: doc.id,
       label: doc.data().name || doc.data().fullName || "",
     }));
-    return docsData;
+    setDataSelected(docsData);
   };
 
   // Fetch data from Firestore based on page number
