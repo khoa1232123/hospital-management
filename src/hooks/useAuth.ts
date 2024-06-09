@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const useAuth = () => {
   const route = useRouter();
@@ -42,7 +43,8 @@ const useAuth = () => {
     signInWithPopup(auth, provider)
       .then((userCredential) => {
         console.log("Signed in successfully!", userCredential);
-        route.push("/");
+        route.push("/dashboard");
+        toast.success("Sign in successfully!");
         setIsLoading(false);
       })
       .catch((error) => {
@@ -57,7 +59,8 @@ const useAuth = () => {
       .then((userCredential) => {
         console.log("Signed in successfully!", userCredential);
         setIsLoading(false);
-        route.push("/");
+        toast.success("Sign in successfully!");
+        route.push("/dashboard");
       })
       .catch((error) => {
         console.log("Sign in failed!", { error });
@@ -71,7 +74,7 @@ const useAuth = () => {
       .then((userCredential) => {
         console.log("Signed in successfully!", userCredential);
         setIsLoading(false);
-        route.push("/");
+        route.push("/dashboard");
       })
       .catch((error) => {
         console.log("Sign in failed!", error);
@@ -80,13 +83,18 @@ const useAuth = () => {
   };
 
   const signOut = () => {
+    setIsLoading(true);
     signOutAuth(auth)
       .then(() => {
         console.log("Signed out successfully!");
+        toast.success("Signed out successfully!");
         route.push("/signin");
       })
       .catch((error) => {
         console.log("Sign out failed!", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

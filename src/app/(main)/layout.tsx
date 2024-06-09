@@ -1,10 +1,9 @@
 "use client";
-import { Header, Sidebar } from "@/components/layout";
 import LayoutMain from "@/components/layout/LayoutMain";
-import { LayoutProvider, MainProvider, useLayoutContext } from "@/contexts";
+import { LayoutProvider, MainProvider } from "@/contexts";
 import useAuth from "@/hooks/useAuth";
-import { Box, CircularProgress, CssBaseline, styled } from "@mui/material";
-import React, { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import React from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { isPageLoading } = useAuth();
