@@ -7,7 +7,7 @@ export const tableRooms: KeyConfigType[] = [
     align: "left",
     component: "th",
     isLink: true,
-    preLink: "patients",
+    preLink: "rooms",
   },
   {
     value: "departmentName",
