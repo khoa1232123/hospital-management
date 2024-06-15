@@ -22,3 +22,12 @@ export const tableRooms: KeyConfigType[] = [
     component: "th",
   },
 ];
+
+export const tableBedAssignments: KeyConfigType[] = [
+  {
+    value: "roomName",
+    label: "Room Name",
+    align: "left",
+    component: "th",
+  },
+];

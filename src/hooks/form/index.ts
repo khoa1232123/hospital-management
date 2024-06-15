@@ -1,4 +1,5 @@
 import useFormAppointment from "./useFormAppointment";
+import useFormBedAssignment from "./useFormBedAssignment";
 import useFormDepartment from "./useFormDepartment";
 import useFormMedicalRecord from "./useFormMedicalRecord";
 import useFormMedication from "./useFormMedication";
@@ -8,6 +9,7 @@ import useFormUser from "./useFormUser";
 
 export {
   useFormAppointment,
+  useFormBedAssignment,
   useFormDepartment,
   useFormMedicalRecord,
   useFormMedication,

@@ -16,7 +16,10 @@ import {
   ListItemIcon,
   ListItemText,
   Theme,
+  Tooltip,
+  TooltipProps,
   styled,
+  tooltipClasses,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import Link from "next/link";
@@ -24,6 +27,17 @@ import { usePathname } from "next/navigation";
 import { useLayoutContext } from "@/contexts";
 
 const drawerWidth = 240;
+
+const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -84,6 +98,11 @@ const Sidebar = ({}: Props) => {
       <Divider />
       <List>
         {[
+          {
+            label: "Dashboard",
+            link: "/dashboard",
+            Icon: <AdminPanelSettingsIcon />,
+          },
           { label: "Users", link: "/users", Icon: <AdminPanelSettingsIcon /> },
           { label: "Patients", link: "/patients", Icon: <AccessibleIcon /> },
           {
@@ -126,27 +145,29 @@ const Sidebar = ({}: Props) => {
               }
               sx={{ display: "block" }}
             >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: openSidebar ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+              <BootstrapTooltip title={item.label} placement="right">
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: openSidebar ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: openSidebar ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {item.Icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.label}
-                  sx={{ opacity: openSidebar ? 1 : 0 }}
-                />
-              </ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: openSidebar ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {item.Icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.label}
+                    sx={{ opacity: openSidebar ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </BootstrapTooltip>
             </ListItem>
           </Link>
         ))}

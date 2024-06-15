@@ -38,8 +38,7 @@ const RoomsPage = (props: Props) => {
       <ActionFilters
         setFilters={setFilters}
         actions={{
-          nameAndPhone: true,
-          gender: true,
+          nameSearch: true,
         }}
       />
       <KTable
