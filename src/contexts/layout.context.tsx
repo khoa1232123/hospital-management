@@ -1,5 +1,3 @@
-import { useDepartments, usePatients, useUsers } from "@/hooks/firestore";
-import { OptionsType } from "@/types/field";
 import {
   Dispatch,
   SetStateAction,

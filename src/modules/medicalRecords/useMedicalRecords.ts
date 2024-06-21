@@ -1,9 +1,9 @@
 import { DATATABLES } from "@/constants";
-import { useState } from "react";
-import { useFirestore } from ".";
-import useChange from "../common/useChange";
-import { useFormMedicalRecord } from "../form";
+import useChange from "@/hooks/common/useChange";
+import { useFirestore } from "@/hooks/firestore";
 import { FilterType } from "@/types/firebaseHook";
+import { useState } from "react";
+import useFormMedicalRecord from "./useFormMedicalRecord";
 
 const initialValue: CreateMedicalRecordType = {
   appointmentId: "",

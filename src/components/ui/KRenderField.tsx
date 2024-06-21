@@ -34,7 +34,7 @@ const KRenderField = ({ ...props }: KRenderFieldProps) => {
           </div>
           <Grid container spacing={3}>
             {props.array?.map((item) => (
-              <Grid item xs={12}>
+              <Grid key={item.name} item xs={12}>
                 <KRenderField {...item} />
               </Grid>
             ))}
@@ -45,7 +45,7 @@ const KRenderField = ({ ...props }: KRenderFieldProps) => {
       return (
         <Grid container spacing={2}>
           {props.items?.map((item) => (
-            <KRenderField {...item} />
+            <KRenderField key={item.name} {...item} />
           ))}
         </Grid>
       );

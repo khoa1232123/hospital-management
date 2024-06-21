@@ -1,10 +1,10 @@
 import { DATATABLES } from "@/constants";
 import { splitString } from "@/utils/strings";
 import { useState } from "react";
-import { useDepartments, useFirestore } from ".";
-import useChange from "../common/useChange";
-import { useFormUser } from "../form";
 import { FilterType } from "@/types/firebaseHook";
+import { useFirestore } from "@/hooks/firestore";
+import useChange from "@/hooks/common/useChange";
+import useFormUser from "./useFormUser";
 
 const useUsers = (
   initialPageSize: number = 10,

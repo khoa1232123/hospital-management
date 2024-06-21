@@ -1,9 +1,9 @@
 import { DATATABLES } from "@/constants";
 import { useState } from "react";
-import { useFirestore } from ".";
-import useChange from "../common/useChange";
-import { useFormMedication } from "../form";
 import { FilterType } from "@/types/firebaseHook";
+import { useFirestore } from "@/hooks/firestore";
+import useChange from "@/hooks/common/useChange";
+import { useFormMedication } from ".";
 
 const useMedications = (
   initialPageSize: number = 10,

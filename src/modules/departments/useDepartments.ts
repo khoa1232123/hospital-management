@@ -1,9 +1,9 @@
 import { DATATABLES } from "@/constants";
+import useChange from "@/hooks/common/useChange";
+import { useFirestore } from "@/hooks/firestore";
 import { splitString } from "@/utils/strings";
 import { useState } from "react";
-import { useFirestore } from ".";
-import useChange from "../common/useChange";
-import { useFormDepartment } from "../form";
+import useFormDepartment from "./useFormDepartment";
 
 const useDepartments = (
   initialPageSize: number = 10,

@@ -1,10 +1,10 @@
 import { DATATABLES } from "@/constants";
 import { splitString } from "@/utils/strings";
 import { useState } from "react";
-import { useFirestore } from ".";
-import useChange from "../common/useChange";
-import { useFormAppointment } from "../form";
+import useFormAppointment from "./useFormAppointment";
 import { FilterType } from "@/types/firebaseHook";
+import { useFirestore } from "@/hooks/firestore";
+import useChange from "@/hooks/common/useChange";
 
 const initialData: CreateAppointmentType = {
   email: "",

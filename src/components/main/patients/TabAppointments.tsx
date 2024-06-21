@@ -3,10 +3,10 @@ import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { tablePatientTabAppointments } from "@/constants";
-import { useAppointments } from "@/hooks/firestore";
 import { Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useAppointments } from "@/modules/appointments";
 
 type Props = {};
 

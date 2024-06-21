@@ -1,4 +1,6 @@
-import { useDepartments, usePatients, useUsers } from "@/hooks/firestore";
+import { useDepartments } from "@/modules/departments";
+import { usePatients } from "@/modules/patients";
+import { useUsers } from "@/modules/users";
 import { OptionsType } from "@/types/field";
 import { createContext, useContext } from "react";
 

@@ -1,10 +1,10 @@
 import { DATATABLES } from "@/constants";
 import { useState } from "react";
-import { useFirestore } from ".";
-import useChange from "../common/useChange";
-import { useFormBedAssignment } from "../form";
 import { FilterType } from "@/types/firebaseHook";
 import { useParams } from "next/navigation";
+import { useFirestore } from "@/hooks/firestore";
+import useChange from "@/hooks/common/useChange";
+import { useFormBedAssignment } from ".";
 
 const initialValue: CreateBedAssignmentType = {
   roomId: "",

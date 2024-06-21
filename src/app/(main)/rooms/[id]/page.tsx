@@ -5,8 +5,8 @@ import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { tableBedAssignments } from "@/constants/renderTableRooms";
 import { useMainContext } from "@/contexts";
-import { useRooms } from "@/hooks/firestore";
-import useBedAssignments from "@/hooks/firestore/useBedAssignments";
+import { useBedAssignments } from "@/modules/bedAssignments";
+import { useRooms } from "@/modules/rooms";
 import { Box, Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
 
