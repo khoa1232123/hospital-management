@@ -49,6 +49,14 @@ const useFormRoom = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xl: 6,
         options: dataRoomTypes,
       },
+      {
+        type: "number",
+        name: "numberOfBed",
+        label: "Number of Bedrooms",
+        xs: 6,
+        md: 6,
+        xl: 6,
+      },
     ];
 
     return fields.map((field) => ({

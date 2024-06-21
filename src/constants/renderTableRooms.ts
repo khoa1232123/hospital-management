@@ -25,8 +25,20 @@ export const tableRooms: KeyConfigType[] = [
 
 export const tableBedAssignments: KeyConfigType[] = [
   {
-    value: "roomName",
+    value: "patientName",
     label: "Room Name",
+    align: "left",
+    component: "th",
+  },
+  {
+    value: "admissionDate",
+    label: "Admission Date",
+    align: "left",
+    component: "th",
+  },
+  {
+    value: "dischargeDate",
+    label: "Discharge",
     align: "left",
     component: "th",
   },

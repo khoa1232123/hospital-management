@@ -4,6 +4,7 @@ import { useFirestore } from ".";
 import useChange from "../common/useChange";
 import { useFormBedAssignment } from "../form";
 import { FilterType } from "@/types/firebaseHook";
+import { useParams } from "next/navigation";
 
 const initialValue: CreateBedAssignmentType = {
   roomId: "",
@@ -17,6 +18,8 @@ const useBedAssignments = (
   const [data, setData] = useState<
     UpdateBedAssignmentType | CreateBedAssignmentType | null
   >(initialValue);
+  const { id: roomId } = useParams();
+
   const {
     addDocument,
     updateDocument,
@@ -26,7 +29,7 @@ const useBedAssignments = (
     setOpen,
     ...rest
   } = useFirestore(
-    DATATABLES.BEDASSIGNMENTS,
+    DATATABLES.ROOMS + `/${roomId}/` + DATATABLES.BEDASSIGNMENTS,
     initialPageSize,
     moreGetData,
     queryFilters
@@ -35,7 +38,8 @@ const useBedAssignments = (
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
     data,
-    collectionName: DATATABLES.BEDASSIGNMENTS,
+    collectionName:
+      DATATABLES.ROOMS + `/${roomId}/` + DATATABLES.BEDASSIGNMENTS,
   });
 
   const closeForm = () => {

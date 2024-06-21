@@ -1,34 +1,7 @@
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import LineHeight from "./lineheight";
+//@ts-ignore
+import { Editor } from "ckeditor5-custom-build";
+import { LineHeight } from "@rickx/ckeditor5-line-height";
 
-ClassicEditor.builtinPlugins.push(LineHeight);
+Editor.builtinPlugins.push(LineHeight);
 
-ClassicEditor.defaultConfig = {
-  toolbar: {
-    items: [
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "link",
-      "bulletedList",
-      "numberedList",
-      "blockQuote",
-      "lineHeight",
-      "|",
-      "insertTable",
-      "mediaEmbed",
-      "undo",
-      "redo",
-    ],
-  },
-  lineHeight: {
-    options: [1, 1.2, 1.4, 1.6, 1.8, 2],
-  },
-  table: {
-    contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
-  },
-  language: "en",
-};
-
-export default { ClassicEditor };
+export { Editor };

@@ -21,19 +21,41 @@ const useFormBedAssignment = ({
   data,
   setData,
 }: Props) => {
-  const { dataPatients, dataUsers } = useMainContext();
+  const { dataPatients } = useMainContext();
 
   const fieldsForm: KInputType[] = useMemo(() => {
     let fields = [
       {
+        type: "text",
+        name: "bedNumber",
+        label: "Bed Number",
+        xs: 6,
+        md: 6,
+      },
+      {
         type: "select",
-        name: "userId",
-        label: "Doctor",
-        placeholder: "Doctor",
+        name: "patientId",
+        label: "Patient",
         select: true,
         xs: 6,
         md: 6,
-        options: [...dataUsers],
+        options: [...dataPatients],
+      },
+      {
+        type: "date",
+        name: "admissionDate",
+        label: "Admission Date",
+        focused: true,
+        xs: 6,
+        md: 6,
+      },
+      {
+        type: "date",
+        name: "dischargeDate",
+        label: "Admission Date",
+        focused: true,
+        xs: 6,
+        md: 6,
       },
     ];
 
@@ -45,7 +67,7 @@ const useFormBedAssignment = ({
         onChange,
       };
     });
-  }, [fieldErrs, data, dataUsers, dataPatients]);
+  }, [fieldErrs, data, dataPatients]);
 
   return { fieldsForm };
 };

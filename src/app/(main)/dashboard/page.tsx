@@ -1,10 +1,11 @@
 "use client";
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 // import { CKEditor } from "@ckeditor/ckeditor5-react";
 // @ts-ignore
 import { Editor } from "ckeditor5-custom-build";
+
 // import { useState } from "react";
 //@ts-ignore
 
@@ -39,6 +40,7 @@ const imageConfiguration = {
   ],
   toolbar: ["resizeImage" /* ... */],
 };
+
 const editorConfiguration = {
   // lineHeight: {
   //   // specify your otions in the lineHeight config object. Default values are [ 0, 0.5, 1, 1.5, 2 ]
