@@ -193,8 +193,6 @@ const useFormMedicalRecord = ({
     });
   }, [fieldErrs, data, dataUsers, dataPatients]);
 
-  console.log({ data });
-
   return { fieldsForm };
 };
 

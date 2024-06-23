@@ -1,8 +1,10 @@
+import useAuth from "@/hooks/useAuth";
 import { useDepartments } from "@/modules/departments";
 import { usePatients } from "@/modules/patients";
 import { useUsers } from "@/modules/users";
 import { OptionsType } from "@/types/field";
-import { createContext, useContext } from "react";
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect } from "react";
 
 interface MainContextProps {
   dataDepartments: OptionsType[];
@@ -21,6 +23,15 @@ export const useMainContext = () => {
 };
 
 export const MainProvider = ({ children }: MainProviderProps) => {
+  const { user, isPageLoading } = useAuth();
+  const route = useRouter();
+
+  useEffect(() => {
+    if (!isPageLoading && !user) {
+      route.push("/signin");
+    }
+  }, [user, isPageLoading]);
+
   const { dataSelected: dataPatients } = usePatients(10, {
     dataSelected: true,
   });

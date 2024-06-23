@@ -63,7 +63,7 @@ type BedAssignmentType = {
 };
 
 type CreateBedAssignmentType = BedAssignmentType & {
-  roomId: string;
+  roomId?: string;
 };
 
 type UpdateBedAssignmentType = BedAssignmentType & {

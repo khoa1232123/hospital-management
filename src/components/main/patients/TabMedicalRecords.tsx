@@ -8,7 +8,10 @@ import { KInputType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useMedicalRecords } from "@/modules/medicalRecords";
+import {
+  tableMedicalRecords,
+  useMedicalRecords,
+} from "@/modules/medicalRecords";
 
 type Props = {};
 
@@ -67,7 +70,9 @@ const TabMedicalRecords = ({}: Props) => {
           },
         ]}
         pagination={pagination}
-        keys={tablePatientTabMedicalRecords}
+        keys={tableMedicalRecords.filter(
+          (item) => item.value !== "patientName"
+        )}
         onEdit={editMedicalRecord}
         onDelete={deleteMedicalRecord}
         isAction

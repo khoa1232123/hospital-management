@@ -1,10 +1,11 @@
 import { DATATABLES } from "@/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FilterType } from "@/types/firebaseHook";
 import { useParams } from "next/navigation";
 import { useFirestore } from "@/hooks/firestore";
 import useChange from "@/hooks/common/useChange";
 import { useFormBedAssignment } from ".";
+import { useRooms } from "../rooms";
 
 const initialValue: CreateBedAssignmentType = {
   roomId: "",
@@ -34,6 +35,14 @@ const useBedAssignments = (
     moreGetData,
     queryFilters
   );
+
+  const { getRoomById, data: dataRoom } = useRooms();
+
+  useEffect(() => {
+    if (roomId) {
+      getRoomById(roomId as string);
+    }
+  }, [roomId]);
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,
@@ -83,6 +92,7 @@ const useBedAssignments = (
     onBlur: checkField,
     data,
     setData,
+    numberOfBed: Number(dataRoom?.numberOfBed),
   });
 
   return {

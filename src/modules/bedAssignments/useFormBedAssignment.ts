@@ -1,5 +1,6 @@
 import { useMainContext } from "@/contexts";
-import { FieldErrType, KInputType } from "@/types/field";
+import { FieldErrType, KInputType, OptionsType } from "@/types/field";
+import { convertNumberToOptions } from "@/utils/array";
 import React, { useMemo } from "react";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
   ) => void;
   data: any | null;
   setData?: (data: any) => void;
+  numberOfBed?: number;
 };
 
 const useFormBedAssignment = ({
@@ -20,17 +22,21 @@ const useFormBedAssignment = ({
   onBlur,
   data,
   setData,
+  numberOfBed = 0,
 }: Props) => {
   const { dataPatients } = useMainContext();
 
   const fieldsForm: KInputType[] = useMemo(() => {
+    console.log({ numberOfBed: convertNumberToOptions(numberOfBed) });
     let fields = [
       {
-        type: "text",
+        type: "select",
         name: "bedNumber",
         label: "Bed Number",
+        select: true,
         xs: 6,
         md: 6,
+        options: convertNumberToOptions(numberOfBed),
       },
       {
         type: "select",
@@ -67,7 +73,7 @@ const useFormBedAssignment = ({
         onChange,
       };
     });
-  }, [fieldErrs, data, dataPatients]);
+  }, [fieldErrs, data, dataPatients, numberOfBed]);
 
   return { fieldsForm };
 };

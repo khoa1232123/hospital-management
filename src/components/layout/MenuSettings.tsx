@@ -18,8 +18,6 @@ type Props = {};
 const MenuSettings = (props: Props) => {
   const { signOut, user, isLoading } = useAuth();
 
-  console.log({ user });
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);

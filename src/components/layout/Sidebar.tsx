@@ -145,7 +145,7 @@ const Sidebar = ({}: Props) => {
               }
               sx={{ display: "block" }}
             >
-              <BootstrapTooltip title={item.label} placement="right">
+              {openSidebar ? (
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -167,7 +167,31 @@ const Sidebar = ({}: Props) => {
                     sx={{ opacity: openSidebar ? 1 : 0 }}
                   />
                 </ListItemButton>
-              </BootstrapTooltip>
+              ) : (
+                <BootstrapTooltip title={item.label} placement="right">
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: openSidebar ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: openSidebar ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.Icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.label}
+                      sx={{ opacity: openSidebar ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </BootstrapTooltip>
+              )}
             </ListItem>
           </Link>
         ))}

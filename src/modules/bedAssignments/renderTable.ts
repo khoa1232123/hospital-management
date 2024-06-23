@@ -8,6 +8,12 @@ export const tableBedAssignments: KeyConfigType[] = [
     component: "th",
   },
   {
+    value: "bedNumber",
+    label: "Bed Number",
+    align: "left",
+    component: "th",
+  },
+  {
     value: "admissionDate",
     label: "Admission Date",
     align: "left",

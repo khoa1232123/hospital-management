@@ -56,6 +56,10 @@ const useFormRoom = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
+        inputProps: {
+          min: 1,
+          max: 20,
+        },
       },
     ];
 

@@ -7,8 +7,6 @@ export type KRenderFieldProps = KInputType & {};
 
 const KRenderField = ({ ...props }: KRenderFieldProps) => {
   switch (props.type) {
-    case "text":
-      return <KInput {...props} />;
     case "select":
       return (
         <KInput {...props}>

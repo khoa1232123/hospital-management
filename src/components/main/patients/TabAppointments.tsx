@@ -6,7 +6,7 @@ import { tablePatientTabAppointments } from "@/constants";
 import { Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useAppointments } from "@/modules/appointments";
+import { tableAppointments, useAppointments } from "@/modules/appointments";
 
 type Props = {};
 
@@ -56,7 +56,7 @@ const TabAppointments = ({}: Props) => {
           },
         ]}
         pagination={pagination}
-        keys={tablePatientTabAppointments}
+        keys={tableAppointments.filter((item) => item.value !== "patientName")}
         onEdit={editAppointment}
         onDelete={deleteAppointment}
         isAction
