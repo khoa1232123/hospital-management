@@ -1,3 +1,5 @@
+import { OptionsType } from "@/types/field";
+
 type DataType = { [key: string]: any };
 
 const isEmptyObject = (obj: any): boolean => {
@@ -18,6 +20,14 @@ export const extractKeys = (arr: Array<Record<string, any>>): string[] => {
 
 export const convertNumberToArray = (n: number): number[] => {
   return Array.from({ length: n }, (_, i) => i + 1);
+};
+
+export const convertNumberToOptions = (n: number): OptionsType[] => {
+  const result: OptionsType[] = [];
+  for (let i = 1; i <= n; i++) {
+    result.push({ value: i, label: `Number ${i}` });
+  }
+  return result;
 };
 
 export const cleanData = (data: DataType): DataType => {

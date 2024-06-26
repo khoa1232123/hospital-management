@@ -4,10 +4,12 @@ import ActionFilters from "@/components/common/ActionFilters";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
-import { tableMedicalRecords } from "@/constants/renderTableMedicalRecords";
-import useMedicalRecords from "@/hooks/firestore/useMedicalRecords";
 import { KInputType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
+import {
+  tableMedicalRecords,
+  useMedicalRecords,
+} from "@/modules/medicalRecords";
 
 type Props = {};
 

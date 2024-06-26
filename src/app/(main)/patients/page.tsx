@@ -3,8 +3,7 @@ import ActionFilters from "@/components/common/ActionFilters";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
-import { tablePatients } from "@/constants";
-import { usePatients } from "@/hooks/firestore";
+import { tablePatients, usePatients } from "@/modules/patients";
 import { Box, Button, Grid } from "@mui/material";
 
 type Props = {};

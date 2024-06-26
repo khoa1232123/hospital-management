@@ -43,8 +43,6 @@ const useFirestore = <T extends DataType>(
   },
   queryFilters?: FilterType
 ) => {
-  const { user, isPageLoading } = useAuth();
-  const route = useRouter();
   const [open, setOpen] = useState(false);
   const [allData, setAllData] = useState<(T | DataType)[]>([]);
   const [dataSelected, setDataSelected] = useState<OptionsType[]>([]);
@@ -57,12 +55,6 @@ const useFirestore = <T extends DataType>(
   const [sortBy, setSortBy] = useState<SortByType>({
     createdAt: "desc",
   });
-
-  useEffect(() => {
-    if (!isPageLoading && !user) {
-      route.push("/signin");
-    }
-  }, [user, isPageLoading]);
 
   useEffect(() => {
     if (!moreGetData.dataSelected) return;
@@ -122,13 +114,13 @@ const useFirestore = <T extends DataType>(
     setTotalPages(Math.ceil(totalItems / pageSize));
   };
 
-  const getDataSelected = async () => {
+  const getDataSelected = async (name: string = "") => {
     let q = returnQuery({});
     q = query(q, orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
     const docsData: OptionsType[] = querySnapshot.docs.map((doc) => ({
       value: doc.id,
-      label: doc.data().name || doc.data().fullName || "",
+      label: doc.data()[name] || doc.data().name || doc.data().fullName || "",
     }));
     setDataSelected(docsData);
   };

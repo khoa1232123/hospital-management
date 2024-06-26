@@ -4,11 +4,14 @@ import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { tablePatientTabMedicalRecords } from "@/constants";
-import useMedicalRecords from "@/hooks/firestore/useMedicalRecords";
 import { KInputType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import {
+  tableMedicalRecords,
+  useMedicalRecords,
+} from "@/modules/medicalRecords";
 
 type Props = {};
 
@@ -67,7 +70,9 @@ const TabMedicalRecords = ({}: Props) => {
           },
         ]}
         pagination={pagination}
-        keys={tablePatientTabMedicalRecords}
+        keys={tableMedicalRecords.filter(
+          (item) => item.value !== "patientName"
+        )}
         onEdit={editMedicalRecord}
         onDelete={deleteMedicalRecord}
         isAction

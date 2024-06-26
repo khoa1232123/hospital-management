@@ -30,6 +30,7 @@ type RoomType = {
   nameSearch?: string[];
   departmentId?: string; //	INT	Mã khoa/phòng
   type?: string; //	VARCHAR(50)	Loại phòng (phòng thường, phòng VIP)
+  numberOfBed?: number;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -52,6 +53,7 @@ type DeleteRoomType = {
 
 type BedAssignmentType = {
   id?: string;
+  bedNumber?: string;
   roomId?: string; //	INT	Mã phòng
   patientId?: string; //	INT	Mã bệnh nhân
   admissionDate?: Date; //	DATE	Ngày nhập viện
@@ -61,7 +63,7 @@ type BedAssignmentType = {
 };
 
 type CreateBedAssignmentType = BedAssignmentType & {
-  roomId: string;
+  roomId?: string;
 };
 
 type UpdateBedAssignmentType = BedAssignmentType & {

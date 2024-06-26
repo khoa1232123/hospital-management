@@ -1,26 +1,33 @@
-createDialog().then( config => {
-	return DecoupledEditor
-		.create( document.querySelector( '.editor' ), {
-			ckbox: {
-				tokenUrl: config.ckboxTokenUrl
-			}
-		} )
-		.then( editor => {
-			window.editor = editor;
+const watchdog = new CKSource.EditorWatchdog();
 
-			// Set a custom container for the toolbar.
-			document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
-			document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
-		} )
-		.catch( handleSampleError );
+window.watchdog = watchdog;
+
+watchdog.setCreator( ( element, config ) => {
+	return CKSource.Editor
+		.create( element, config )
+		.then( editor => {
+			return editor;
+		} );
 } );
+
+watchdog.setDestructor( editor => {
+	return editor.destroy();
+} );
+
+watchdog.on( 'error', handleSampleError );
+
+watchdog
+	.create( document.querySelector( '.editor' ), {
+		// Editor configuration.
+	} )
+	.catch( handleSampleError );
 
 function handleSampleError( error ) {
 	const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
 
 	const message = [
 		'Oops, something went wrong!',
-		`Please, report the following error on ${ issueUrl } with the build id "kljeji5454gz-u9490jx48w7r" and the error stack trace:`
+		`Please, report the following error on ${ issueUrl } with the build id "rbiv87ll0ljp-ze71gj7z29m8" and the error stack trace:`
 	].join( '\n' );
 
 	console.error( message );

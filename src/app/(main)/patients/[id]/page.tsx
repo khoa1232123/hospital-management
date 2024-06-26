@@ -1,6 +1,6 @@
 "use client";
 import { TabAppointments, TabMedicalRecords } from "@/components/main/patients";
-import { useDepartments, usePatients, useUsers } from "@/hooks/firestore";
+import { usePatients } from "@/modules/patients";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Grid, Tab, Tabs } from "@mui/material";
 import { useParams } from "next/navigation";

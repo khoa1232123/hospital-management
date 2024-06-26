@@ -3,9 +3,8 @@ import ActionFilters from "@/components/common/ActionFilters";
 import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
-import { tableAppointments } from "@/constants/renderTable";
 import { useMainContext } from "@/contexts";
-import { useAppointments } from "@/hooks/firestore";
+import { tableAppointments, useAppointments } from "@/modules/appointments";
 import { Box, Button, Grid } from "@mui/material";
 
 type Props = {};
