@@ -64,10 +64,13 @@ type BedAssignmentType = {
 
 type CreateBedAssignmentType = BedAssignmentType & {
   roomId?: string;
+  patientId: string;
 };
 
 type UpdateBedAssignmentType = BedAssignmentType & {
   id: string;
+  roomId: string;
+  patientId: string;
 };
 
 type GetBedAssignmentType = BedAssignmentType & {

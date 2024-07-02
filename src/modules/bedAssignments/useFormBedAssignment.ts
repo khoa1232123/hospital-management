@@ -27,7 +27,6 @@ const useFormBedAssignment = ({
   const { dataPatients } = useMainContext();
 
   const fieldsForm: KInputType[] = useMemo(() => {
-    console.log({ numberOfBed: convertNumberToOptions(numberOfBed) });
     let fields = [
       {
         type: "select",
@@ -37,6 +36,9 @@ const useFormBedAssignment = ({
         xs: 6,
         md: 6,
         options: convertNumberToOptions(numberOfBed),
+        required: true,
+        helperText: fieldErrs?.bedNumber ? fieldErrs?.bedNumber : "",
+        error: !!fieldErrs?.bedNumber,
       },
       {
         type: "select",
@@ -45,7 +47,10 @@ const useFormBedAssignment = ({
         select: true,
         xs: 6,
         md: 6,
+        required: true,
         options: [...dataPatients],
+        helperText: fieldErrs?.patientId ? fieldErrs?.patientId : "",
+        error: !!fieldErrs?.patientId,
       },
       {
         type: "date",
@@ -54,6 +59,9 @@ const useFormBedAssignment = ({
         focused: true,
         xs: 6,
         md: 6,
+        required: true,
+        helperText: fieldErrs?.admissionDate ? fieldErrs?.admissionDate : "",
+        error: !!fieldErrs?.admissionDate,
       },
       {
         type: "date",
@@ -62,6 +70,9 @@ const useFormBedAssignment = ({
         focused: true,
         xs: 6,
         md: 6,
+        required: true,
+        helperText: fieldErrs?.dischargeDate ? fieldErrs?.dischargeDate : "",
+        error: !!fieldErrs?.dischargeDate,
       },
     ];
 

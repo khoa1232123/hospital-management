@@ -22,12 +22,13 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         placeholder: "Email",
         helperText: fieldErrs?.email ? fieldErrs?.email : "",
         error: !!fieldErrs?.email,
+        value: "",
         xs: 12,
         md: 12,
         xl: 12,
         onBlur,
         tabIndex: 0,
-        require: "true",
+        required: true,
       },
       {
         type: "text",
@@ -37,6 +38,9 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
+        required: true,
+        helperText: fieldErrs?.firstName ? fieldErrs?.firstName : "",
+        error: !!fieldErrs?.firstName,
       },
       {
         type: "text",
@@ -46,6 +50,7 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
+        required: true,
       },
       {
         type: "date",

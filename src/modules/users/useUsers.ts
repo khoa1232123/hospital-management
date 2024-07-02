@@ -1,6 +1,6 @@
 import { DATATABLES } from "@/constants";
 import { splitString } from "@/utils/strings";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FilterType } from "@/types/firebaseHook";
 import { useFirestore } from "@/hooks/firestore";
 import useChange from "@/hooks/common/useChange";
@@ -14,6 +14,7 @@ const useUsers = (
   const [data, setData] = useState<UpdateUserType | CreateUserType | null>(
     null
   );
+  const prevDataRef = useRef<UpdateUserType | CreateUserType | null>(null);
   const {
     addDocument,
     updateDocument,
@@ -33,6 +34,7 @@ const useUsers = (
     setData,
     data,
     collectionName: DATATABLES.USERS,
+    ref: prevDataRef,
   });
 
   const closeForm = () => {
@@ -43,6 +45,7 @@ const useUsers = (
   const getUserById = async (id: string) => {
     const result: any = await getDocumentById(id);
     setData(result);
+    prevDataRef.current = result;
   };
 
   const submitUser = async () => {
