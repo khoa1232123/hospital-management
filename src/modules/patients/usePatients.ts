@@ -57,8 +57,9 @@ const usePatients = (
       await updateDocument(data.id, newPatient);
       closeForm();
     } else {
-      const newPatient: CreatePatientType = {
+      const newPatient: UpdatePatientType = {
         ...(data as CreatePatientType),
+        id: data.id || "",
         fullName: fullName,
         nameSearch: splitString(fullName.toLowerCase()),
       };
@@ -90,6 +91,7 @@ const usePatients = (
     allData,
     editPatient,
     deletePatient,
+    updatePatient: updateDocument,
   };
 };
 

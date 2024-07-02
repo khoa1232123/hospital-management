@@ -6,9 +6,12 @@ import { useFirestore } from "@/hooks/firestore";
 import useChange from "@/hooks/common/useChange";
 import { useFormBedAssignment } from ".";
 import { useRooms } from "../rooms";
+import { usePatients } from "../patients";
+import { serverTimestamp } from "firebase/firestore";
 
 const initialValue: CreateBedAssignmentType = {
   roomId: "",
+  patientId: "",
 };
 
 const useBedAssignments = (
@@ -36,6 +39,8 @@ const useBedAssignments = (
     queryFilters
   );
 
+  const { updatePatient } = usePatients();
+
   const { getRoomById, data: dataRoom } = useRooms();
 
   useEffect(() => {
@@ -44,11 +49,20 @@ const useBedAssignments = (
     }
   }, [roomId]);
 
-  const { onChange, checkField, fieldErrs } = useChange({
+  const { onChange, checkField, fieldErrs, checkRequiredFields } = useChange({
     setData,
     data,
     collectionName:
       DATATABLES.ROOMS + `/${roomId}/` + DATATABLES.BEDASSIGNMENTS,
+  });
+
+  const { fieldsForm } = useFormBedAssignment({
+    fieldErrs,
+    onChange: onChange,
+    onBlur: checkField,
+    data,
+    setData,
+    numberOfBed: Number(dataRoom?.numberOfBed),
   });
 
   const closeForm = () => {
@@ -62,14 +76,27 @@ const useBedAssignments = (
   };
 
   const submitBedAssignment = async () => {
+    const requiredFields = checkRequiredFields(fieldsForm);
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
+
+    if (Object.keys(requiredFields).length > 0) return;
 
     if (data.id) {
       const newBedAssignment: UpdateBedAssignmentType = {
         ...(data as UpdateBedAssignmentType),
       };
       await updateDocument(data.id, newBedAssignment);
+
+      if (data.patientId) {
+        await updatePatient(data.patientId, {
+          room: {
+            id: newBedAssignment.patientId,
+            bedNumber: newBedAssignment.bedNumber,
+            updatedAt: serverTimestamp(),
+          },
+        });
+      }
       closeForm();
     } else {
       const newBedAssignment: CreateBedAssignmentType = {
@@ -77,6 +104,17 @@ const useBedAssignments = (
       };
 
       await addDocument(newBedAssignment);
+
+      if (data.patientId) {
+        await updatePatient(data.patientId, {
+          room: {
+            id: newBedAssignment.patientId,
+            bedNumber: newBedAssignment.bedNumber,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          },
+        });
+      }
       closeForm();
     }
   };
@@ -85,15 +123,6 @@ const useBedAssignments = (
     getBedAssignmentById(id);
     setOpen(true);
   };
-
-  const { fieldsForm } = useFormBedAssignment({
-    fieldErrs,
-    onChange: onChange,
-    onBlur: checkField,
-    data,
-    setData,
-    numberOfBed: Number(dataRoom?.numberOfBed),
-  });
 
   return {
     fieldsForm,

@@ -164,7 +164,7 @@ const useFirestore = <T extends DataType>(
   };
 
   // Add a new document
-  const addDocument = async (data: DataType) => {
+  const addDocument = async (data: T) => {
     const newData = cleanData(data);
     try {
       const newData = {
@@ -184,7 +184,7 @@ const useFirestore = <T extends DataType>(
   };
 
   // Update an existing document
-  const updateDocument = async (id: string, updatedData: Partial<DataType>) => {
+  const updateDocument = async (id: string, updatedData: Partial<T>) => {
     try {
       const newData = { ...updatedData, updatedAt: serverTimestamp() };
       const docRef = doc(db, collectionName, id);

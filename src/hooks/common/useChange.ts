@@ -1,14 +1,15 @@
 import checkFieldExists from "@/common/checkFieldExists";
-import { FieldErrType } from "@/types/field";
-import React, { useEffect, useState } from "react";
+import { FieldErrType, KInputType } from "@/types/field";
+import React, { MutableRefObject, useEffect, useState } from "react";
 
 type Props = {
   setData: React.Dispatch<React.SetStateAction<any | null>>;
   data: any;
   collectionName: string;
+  ref?: MutableRefObject<any>
 };
 
-const useChange = ({ setData, data, collectionName }: Props) => {
+const useChange = ({ setData, data, collectionName, ref }: Props) => {
   const [fieldErrs, setFieldErrs] = useState<FieldErrType>({});
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const useChange = ({ setData, data, collectionName }: Props) => {
     const fieldExists = await checkFieldExists(collectionName, {
       [name]: value,
     });
-    if (fieldExists) {
+    if (fieldExists && ref?.current.email !== value) {
       setFieldErrs({ ...fieldErrs, [name]: `${value} already exists` });
     } else {
       delete fieldErrs?.[name];
@@ -68,7 +69,26 @@ const useChange = ({ setData, data, collectionName }: Props) => {
     }
   };
 
-  return { fieldErrs, onChange: handleOnChange, checkField };
+  function checkRequiredFields(fields: KInputType[]) {
+    let result: FieldErrType = {};
+
+    fields.forEach((field) => {
+      if (field.required && !field.value) {
+        result[field.name || ""] = `${field.label} is required`;
+      }
+    });
+
+    setFieldErrs({ ...fieldErrs, ...result });
+
+    return result;
+  }
+
+  return {
+    fieldErrs,
+    onChange: handleOnChange,
+    checkField,
+    checkRequiredFields,
+  };
 };
 
 export default useChange;

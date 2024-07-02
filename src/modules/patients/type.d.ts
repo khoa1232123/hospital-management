@@ -11,6 +11,14 @@ type PatientType = {
   phone?: string;
   address?: string;
   avatar?: string;
+  room?: {
+    id?: string;
+    roomNumber?: string; // INT  Số phòng
+    bedNumber?: string; // INT  gường
+    bedId?: string; // INT
+    createdAt?: FieldValue;
+    updatedAt?: FieldValue;
+  }
   emergencyContact?: string; //Liên hệ khẩn cấp
   insuranceNumber?: string; //Số bảo hiểm
   medicalHistory?: string;
