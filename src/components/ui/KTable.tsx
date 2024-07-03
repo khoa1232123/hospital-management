@@ -1,7 +1,7 @@
 "use client";
 import { dataStatus, dataStatusMore } from "@/constants";
 import { KeyConfigType, OptionsType } from "@/types/field";
-import { convertNumberToArray } from "@/utils/array";
+import { convertNumberToArray, getValueData } from "@/utils/array";
 import { convertServerTimestamp } from "@/utils/timeDate";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -47,7 +47,7 @@ type KTableProps = {
 };
 
 const addMoreData = (
-  row: { [key: string]: string },
+  row: { [key: string]: any },
   moreData: MoreDataType[]
 ) => {
   moreData &&
@@ -62,6 +62,19 @@ const addMoreData = (
 
         // Nếu tìm thấy giá trị phù hợp, thay thế giá trị trong doc
         if (dataItem) {
+          row[key + "Name"] = dataItem.label;
+        }
+      }
+      if(row[key] && row[key].id) {
+        console.log("omomo", row[key].id, moreDataItem.data);
+        
+        const dataItem =
+          moreDataItem.data &&
+          moreDataItem.data.find((d) => d.value === row[key].id);
+
+        // Nếu tìm thấy giá trị phù h��p, thay thế giá trị trong doc
+        if (dataItem) {
+          console.log("omomo2");
           row[key + "Name"] = dataItem.label;
         }
       }
@@ -173,11 +186,13 @@ const KTable = ({
       return dayjs(row[keyConfig.value]).format("DD-MM-YYYY");
     }
 
-    return convertServerTimestamp(row[keyConfig.value]);
+    return convertServerTimestamp(getValueData(row, keyConfig.value));
   };
 
   const rows: JSX.Element[] = React.useMemo(() => {
     return data.map((row) => {
+      console.log({row});
+      
       moreData && addMoreData(row, moreData);
       return (
         <TableRow hover key={row.id}>

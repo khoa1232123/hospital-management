@@ -94,7 +94,7 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        require: "true",
+        required: true,
       },
       {
         type: "text",

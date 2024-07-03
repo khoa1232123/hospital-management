@@ -40,7 +40,7 @@ const RoomSinglePage = (props: Props) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={4} md={3}>
-        <h1>Room: {room?.name}</h1>
+        <h1 className="mt-0">Room: {room?.name}</h1>
         <p>Type: {room?.type}</p>
         <p>{room?.departmentId}</p>
       </Grid>

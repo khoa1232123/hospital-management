@@ -78,9 +78,12 @@ const useChange = ({ setData, data, collectionName, ref }: Props) => {
       }
     });
 
-    setFieldErrs({ ...fieldErrs, ...result });
+    console.log({result, fields});
+    
 
-    return result;
+    setFieldErrs({ ...fieldErrs, ...result });
+    
+    return !!Object.keys(result).length;
   }
 
   return {
@@ -88,6 +91,7 @@ const useChange = ({ setData, data, collectionName, ref }: Props) => {
     onChange: handleOnChange,
     checkField,
     checkRequiredFields,
+    setFieldErrs
   };
 };
 

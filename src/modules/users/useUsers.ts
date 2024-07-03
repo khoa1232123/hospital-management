@@ -30,7 +30,7 @@ const useUsers = (
     queryFilters
   );
 
-  const { onChange, checkField, fieldErrs } = useChange({
+  const { onChange, checkField, fieldErrs, checkRequiredFields, setFieldErrs } = useChange({
     setData,
     data,
     collectionName: DATATABLES.USERS,
@@ -40,6 +40,7 @@ const useUsers = (
   const closeForm = () => {
     setData(null);
     setOpen(false);
+    setFieldErrs({});
   };
 
   const getUserById = async (id: string) => {
@@ -49,10 +50,12 @@ const useUsers = (
   };
 
   const submitUser = async () => {
+    const requiredFields = checkRequiredFields(fieldsForm);
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
     const fullName = (data.firstName + " " + data.lastName).trim();
 
+    if (requiredFields) return;
     if (data.id) {
       const newUser: UpdateUserType = {
         ...(data as UpdateUserType),

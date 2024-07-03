@@ -26,6 +26,9 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
+        required: true,
+        helperText: fieldErrs?.firstName ? fieldErrs?.firstName : "",
+        error: !!fieldErrs?.firstName,
       },
       {
         type: "text",
@@ -35,6 +38,9 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 12,
         md: 6,
         xl: 6,
+        required: true,
+        helperText: fieldErrs?.lastName ? fieldErrs?.lastName : "",
+        error: !!fieldErrs?.lastName,
       },
       {
         type: "text",
@@ -47,7 +53,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 12,
         xl: 12,
         onBlur,
-        require: "true",
+        required: true,
         tabIndex: 0,
       },
       {
@@ -92,7 +98,9 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 4,
         md: 4,
         xl: 4,
-        require: "true",
+        required: true,
+        helperText: fieldErrs?.phone ? fieldErrs?.phone : "",
+        error: !!fieldErrs?.phone,
       },
       {
         type: "text",

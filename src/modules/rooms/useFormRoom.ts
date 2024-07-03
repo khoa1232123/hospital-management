@@ -27,7 +27,7 @@ const useFormRoom = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 12,
         xl: 12,
         tabIndex: 0,
-        require: "true",
+        required: true,
       },
       {
         type: "select",

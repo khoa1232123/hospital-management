@@ -1,6 +1,7 @@
 import useAuth from "@/hooks/useAuth";
 import { useDepartments } from "@/modules/departments";
 import { usePatients } from "@/modules/patients";
+import { useRooms } from "@/modules/rooms";
 import { useUsers } from "@/modules/users";
 import { OptionsType } from "@/types/field";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ interface MainContextProps {
   dataDepartments: OptionsType[];
   dataUsers: OptionsType[];
   dataPatients: OptionsType[];
+  dataRooms: OptionsType[];
 }
 
 type MainProviderProps = {
@@ -46,7 +48,11 @@ export const MainProvider = ({ children }: MainProviderProps) => {
     dataSelected: true,
   });
 
-  const value = { dataPatients, dataUsers, dataDepartments };
+  const { dataSelected: dataRooms } = useRooms(10, {
+    dataSelected: true,
+  });
+
+  const value = { dataPatients, dataUsers, dataDepartments, dataRooms };
 
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;
 };

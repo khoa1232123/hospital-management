@@ -32,7 +32,7 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xs: 6,
         md: 6,
         xl: 6,
-        require: "true",
+        required: true,
       },
       {
         type: "text",

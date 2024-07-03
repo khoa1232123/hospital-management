@@ -28,7 +28,7 @@ const usePatients = (
     moreGetData
   );
 
-  const { onChange, checkField, fieldErrs } = useChange({
+  const { onChange, checkField, fieldErrs, checkRequiredFields } = useChange({
     setData,
     data,
     collectionName: DATATABLES.PATIENTS,
@@ -45,9 +45,11 @@ const usePatients = (
   };
 
   const submitPatient = async () => {
+    const requiredFields = checkRequiredFields(fieldsForm);
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
     const fullName = (data.firstName + " " + data.lastName).trim();
+    if(requiredFields) return;
     if (data.id) {
       const newPatient: UpdatePatientType = {
         ...(data as UpdatePatientType),

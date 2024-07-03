@@ -48,3 +48,17 @@ export const cleanData = (data: DataType): DataType => {
 
   return cleanedData;
 };
+
+export const getValueData = (data: any, key: string): string | number => {
+  const keys = key.split('.');
+  let result = data;
+
+  for (const k of keys) {
+    if (result[k] === undefined) {
+      return "";
+    }
+    result = result[k];
+  }
+
+  return result;
+}

@@ -49,12 +49,13 @@ const useBedAssignments = (
     }
   }, [roomId]);
 
-  const { onChange, checkField, fieldErrs, checkRequiredFields } = useChange({
-    setData,
-    data,
-    collectionName:
-      DATATABLES.ROOMS + `/${roomId}/` + DATATABLES.BEDASSIGNMENTS,
-  });
+  const { onChange, checkField, fieldErrs, checkRequiredFields, setFieldErrs } =
+    useChange({
+      setData,
+      data,
+      collectionName:
+        DATATABLES.ROOMS + `/${roomId}/` + DATATABLES.BEDASSIGNMENTS,
+    });
 
   const { fieldsForm } = useFormBedAssignment({
     fieldErrs,
@@ -68,6 +69,7 @@ const useBedAssignments = (
   const closeForm = () => {
     setData(initialValue);
     setOpen(false);
+    setFieldErrs({});
   };
 
   const getBedAssignmentById = async (id: string) => {
@@ -80,7 +82,7 @@ const useBedAssignments = (
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
 
-    if (Object.keys(requiredFields).length > 0) return;
+    if (requiredFields) return;
 
     if (data.id) {
       const newBedAssignment: UpdateBedAssignmentType = {
@@ -91,7 +93,7 @@ const useBedAssignments = (
       if (data.patientId) {
         await updatePatient(data.patientId, {
           room: {
-            id: newBedAssignment.patientId,
+            id: roomId as string,
             bedNumber: newBedAssignment.bedNumber,
             updatedAt: serverTimestamp(),
           },
@@ -108,7 +110,7 @@ const useBedAssignments = (
       if (data.patientId) {
         await updatePatient(data.patientId, {
           room: {
-            id: newBedAssignment.patientId,
+            id: roomId as string,
             bedNumber: newBedAssignment.bedNumber,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
