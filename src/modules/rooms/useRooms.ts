@@ -22,7 +22,7 @@ const useRooms = (
     allData,
     setOpen,
     ...rest
-  } = useFirestore<GetRoomType>(DATATABLES.ROOMS, initialPageSize, moreGetData);
+  } = useFirestore<RoomType>(DATATABLES.ROOMS, initialPageSize, moreGetData);
 
   const { onChange, checkField, fieldErrs } = useChange({
     setData,

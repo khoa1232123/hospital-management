@@ -65,19 +65,6 @@ const addMoreData = (
           row[key + "Name"] = dataItem.label;
         }
       }
-      if(row[key] && row[key].id) {
-        console.log("omomo", row[key].id, moreDataItem.data);
-        
-        const dataItem =
-          moreDataItem.data &&
-          moreDataItem.data.find((d) => d.value === row[key].id);
-
-        // Nếu tìm thấy giá trị phù h��p, thay thế giá trị trong doc
-        if (dataItem) {
-          console.log("omomo2");
-          row[key + "Name"] = dataItem.label;
-        }
-      }
     });
 };
 
@@ -186,7 +173,7 @@ const KTable = ({
       return dayjs(row[keyConfig.value]).format("DD-MM-YYYY");
     }
 
-    return convertServerTimestamp(getValueData(row, keyConfig.value));
+    return convertServerTimestamp(row[keyConfig.value]);
   };
 
   const rows: JSX.Element[] = React.useMemo(() => {

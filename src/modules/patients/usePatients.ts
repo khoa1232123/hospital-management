@@ -13,19 +13,33 @@ const usePatients = (
     UpdatePatientType | CreatePatientType | null
   >(null);
 
+  const middleConvertData = (allData: PatientType[]): PatientType[] => {
+    if (allData && allData.length) {
+      return allData.map((data) => {
+        return {
+          ...data,
+          roomId: (data.room && data.room.id) || "",
+          bedNumber: (data.room && data.room.bedNumber) || "",
+        };
+      });
+    }
+    return [];
+  };
+
   const {
     addDocument,
     updateDocument,
     getDocuments: getPatients,
     deleteDocument: deletePatient,
     getDocumentById,
-    allData,
     setOpen,
     ...rest
-  } = useFirestore<GetPatientType>(
+  } = useFirestore<PatientType>(
     DATATABLES.PATIENTS,
     initialPageSize,
-    moreGetData
+    moreGetData,
+    {},
+    middleConvertData
   );
 
   const { onChange, checkField, fieldErrs, checkRequiredFields } = useChange({
@@ -49,7 +63,7 @@ const usePatients = (
     if (!data) return;
     if (JSON.stringify(fieldErrs).length > 2) return;
     const fullName = (data.firstName + " " + data.lastName).trim();
-    if(requiredFields) return;
+    if (requiredFields) return;
     if (data.id) {
       const newPatient: UpdatePatientType = {
         ...(data as UpdatePatientType),
@@ -59,7 +73,7 @@ const usePatients = (
       await updateDocument(data.id, newPatient);
       closeForm();
     } else {
-      const newPatient: UpdatePatientType = {
+      const newPatient: CreatePatientType = {
         ...(data as CreatePatientType),
         id: data.id || "",
         fullName: fullName,
@@ -90,7 +104,6 @@ const usePatients = (
     submitPatient,
     setOpen,
     closeForm,
-    allData,
     editPatient,
     deletePatient,
     updatePatient: updateDocument,

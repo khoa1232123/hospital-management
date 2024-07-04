@@ -5,9 +5,9 @@ import { useParams } from "next/navigation";
 import { useFirestore } from "@/hooks/firestore";
 import useChange from "@/hooks/common/useChange";
 import { useFormBedAssignment } from ".";
-import { useRooms } from "../rooms";
-import { usePatients } from "../patients";
 import { serverTimestamp } from "firebase/firestore";
+import { usePatients } from "@/modules/patients";
+import { useRooms } from "..";
 
 const initialValue: CreateBedAssignmentType = {
   roomId: "",
@@ -32,7 +32,7 @@ const useBedAssignments = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(
+  } = useFirestore<BedAssignmentType>(
     DATATABLES.ROOMS + `/${roomId}/` + DATATABLES.BEDASSIGNMENTS,
     initialPageSize,
     moreGetData,

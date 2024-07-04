@@ -30,6 +30,8 @@ import { cleanData } from "@/utils/array";
 interface DataType {
   id?: string;
   name?: string;
+  value?: string;
+  label?: string;
   [key: string]: any;
 }
 
@@ -41,7 +43,8 @@ const useFirestore = <T extends DataType>(
     allData: false,
     dataSelected: false,
   },
-  queryFilters?: FilterType
+  queryFilters?: FilterType,
+  middleConvertData?: (e: T[]) => T[]
 ) => {
   const [open, setOpen] = useState(false);
   const [allData, setAllData] = useState<(T | DataType)[]>([]);
@@ -126,10 +129,10 @@ const useFirestore = <T extends DataType>(
   };
 
   // Fetch data from Firestore based on page number
-  const getDocuments = async <T>(
+  const getDocuments = async (
     page: number,
     filters: { [key: string]: string | number } = {}
-  ): Promise<T> => {
+  ): Promise<T[]> => {
     setLoading(true);
 
     try {
@@ -145,16 +148,23 @@ const useFirestore = <T extends DataType>(
         value: doc.id,
         label: doc.data()?.label || "",
         id: doc.id,
-      }));
-      setAllData(docsData);
+      })) as T[];
 
-      return docsData as T;
+      let data = docsData;
+
+      if (middleConvertData) {
+        data = middleConvertData(docsData);
+      }
+
+      setAllData(data);
+
+      return data;
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
       setLoading(false);
     }
-    return null as T;
+    return [];
   };
 
   // Go to specific page
@@ -165,7 +175,6 @@ const useFirestore = <T extends DataType>(
 
   // Add a new document
   const addDocument = async (data: T) => {
-    const newData = cleanData(data);
     try {
       const newData = {
         ...data,

@@ -31,7 +31,7 @@ const useAppointments = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(
+  } = useFirestore<AppointmentType>(
     DATATABLES.APPOINTMENTS,
     initialPageSize,
     moreGetData,

@@ -37,7 +37,7 @@ const useMedicalRecords = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(
+  } = useFirestore<MedicationType>(
     DATATABLES.MEDICALRECORDS,
     initialPageSize,
     moreGetData,

@@ -4,11 +4,11 @@ import { KDialog } from "@/components/ui";
 import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { useMainContext } from "@/contexts";
+import { useRooms } from "@/modules/rooms";
 import {
   tableBedAssignments,
   useBedAssignments,
-} from "@/modules/bedAssignments";
-import { useRooms } from "@/modules/rooms";
+} from "@/modules/rooms/bedAssignments";
 import { Box, Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
 
@@ -69,7 +69,6 @@ const RoomSinglePage = (props: Props) => {
             ]}
             onEdit={editBedAssignment}
             onDelete={deleteBedAssignment}
-            onSortBy={setSortBy}
             isAction
           />
           <KDialog

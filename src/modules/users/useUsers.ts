@@ -23,11 +23,11 @@ const useUsers = (
     getDocumentById,
     setOpen,
     ...rest
-  } = useFirestore(
+  } = useFirestore<UserType>(
     DATATABLES.USERS,
     initialPageSize,
     moreGetData,
-    queryFilters
+    queryFilters,
   );
 
   const { onChange, checkField, fieldErrs, checkRequiredFields, setFieldErrs } = useChange({

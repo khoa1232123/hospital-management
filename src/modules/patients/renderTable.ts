@@ -42,7 +42,7 @@ export const tablePatients: KeyConfigType[] = [
     component: "th",
   },
   {
-    value: "room.bedNumber",
+    value: "bedNumber",
     label: "Bed Number",
     align: "left",
     component: "th",

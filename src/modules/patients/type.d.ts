@@ -19,6 +19,8 @@ type PatientType = {
     createdAt?: FieldValue;
     updatedAt?: FieldValue;
   }
+  roomId?: string;
+  bedNumber?: string;
   emergencyContact?: string; //Liên hệ khẩn cấp
   insuranceNumber?: string; //Số bảo hiểm
   medicalHistory?: string;

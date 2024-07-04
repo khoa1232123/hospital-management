@@ -6,6 +6,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import MasksIcon from "@mui/icons-material/Masks";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MedicationIcon from "@mui/icons-material/Medication";
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import {
   CSSObject,
@@ -27,6 +29,41 @@ import { usePathname } from "next/navigation";
 import { useLayoutContext } from "@/contexts";
 
 const drawerWidth = 240;
+
+const nav = [
+  {
+    label: "Dashboard",
+    link: "/dashboard",
+    Icon: <DashboardIcon />,
+  },
+  { label: "Users", link: "/users", Icon: <AdminPanelSettingsIcon /> },
+  { label: "Patients", link: "/patients", Icon: <AccessibleIcon /> },
+  {
+    label: "Departments",
+    link: "/departments",
+    Icon: <BedroomChildIcon />,
+  },
+  {
+    label: "Appointments",
+    link: "/appointments",
+    Icon: <MasksIcon />,
+  },
+  {
+    label: "Medical Records",
+    link: "/medical-records",
+    Icon: <AssignmentIndIcon />,
+  },
+  {
+    label: "Medications",
+    link: "/medications",
+    Icon: <MedicationIcon />,
+  },
+  {
+    label: "Rooms",
+    link: "/rooms",
+    Icon: <MeetingRoomIcon />,
+  },
+]
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -97,40 +134,7 @@ const Sidebar = ({}: Props) => {
       <DrawerHeader />
       <Divider />
       <List>
-        {[
-          {
-            label: "Dashboard",
-            link: "/dashboard",
-            Icon: <AdminPanelSettingsIcon />,
-          },
-          { label: "Users", link: "/users", Icon: <AdminPanelSettingsIcon /> },
-          { label: "Patients", link: "/patients", Icon: <AccessibleIcon /> },
-          {
-            label: "Departments",
-            link: "/departments",
-            Icon: <BedroomChildIcon />,
-          },
-          {
-            label: "Appointments",
-            link: "/appointments",
-            Icon: <MasksIcon />,
-          },
-          {
-            label: "Medical Records",
-            link: "/medical-records",
-            Icon: <AssignmentIndIcon />,
-          },
-          {
-            label: "Medications",
-            link: "/medications",
-            Icon: <MedicationIcon />,
-          },
-          {
-            label: "Rooms",
-            link: "/rooms",
-            Icon: <MedicationIcon />,
-          },
-        ].map((item, index) => (
+        {nav.map((item, index) => (
           <Link
             key={item.label}
             href={item.link}
