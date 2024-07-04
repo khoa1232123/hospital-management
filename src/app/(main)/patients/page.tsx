@@ -5,7 +5,6 @@ import KRenderField from "@/components/ui/KRenderField";
 import KTable from "@/components/ui/KTable";
 import { useMainContext } from "@/contexts";
 import { tablePatients, usePatients } from "@/modules/patients";
-import { getValueData } from "@/utils/array";
 import { Box, Button, Grid } from "@mui/material";
 
 type Props = {};
@@ -29,18 +28,7 @@ const PatientsPage = (props: Props) => {
   });
 
   const { dataRooms } = useMainContext();
-  // @ts-ignore
-  // console.log({hello: allData[1]['room']['bedNumber']});
-
-  if (allData && allData.length) {
-    console.log(
-      allData,
-      getValueData(allData[2], "room.bedNumber"),
-      "aisdfjpoaijsd"
-    );
-    console.log({dataRooms});
-  }
-
+  
   return (
     <div>
       <Box className="flex justify-between items-center mb-4">

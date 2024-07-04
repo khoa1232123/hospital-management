@@ -26,7 +26,7 @@ export const tablePatients: KeyConfigType[] = [
   {
     value: "gender",
     label: "Gender",
-    align: "left",
+    align: "center",
     component: "th",
   },
   {
@@ -38,13 +38,13 @@ export const tablePatients: KeyConfigType[] = [
   {
     value: "roomName",
     label: "Room",
-    align: "left",
+    align: "center",
     component: "th",
   },
   {
     value: "bedNumber",
     label: "Bed Number",
-    align: "left",
+    align: "center",
     component: "th",
   },
   {

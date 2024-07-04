@@ -40,6 +40,10 @@ export const dataStatus: OptionsType[] = [
 
 export const dataGender: OptionsType[] = [
   {
+    label: "--Gender--",
+    value: "",
+  },
+  {
     label: "Male",
     value: "male",
   },
