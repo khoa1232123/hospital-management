@@ -40,7 +40,7 @@ const TabAppointments = ({}: Props) => {
     <>
       <div className="flex justify-between mb-4">
         <h2 className="m-0">History Appointments</h2>
-        <Button onClick={() => setOpen(true)}>Create Appointment</Button>
+        <Button onClick={() => setOpen(true)}>Create</Button>
       </div>
       <KTable
         loading={loading}

@@ -1,21 +1,18 @@
-"use client";
+import { KDialog, KRenderField, KTable } from "@/components/ui";
 import { useMainContext } from "@/contexts";
-import { KDialog } from "@/components/ui";
-import KRenderField from "@/components/ui/KRenderField";
-import KTable from "@/components/ui/KTable";
-import { tablePatientTabMedicalRecords } from "@/constants";
-import { KInputType } from "@/types/field";
+import { tableVisits, useVisits } from "@/modules/visits";
+import { KInputType, OptionsType } from "@/types/field";
 import { Box, Button, Grid } from "@mui/material";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
-import {
-  tableMedicalRecords,
-  useMedicalRecords,
-} from "@/modules/medicalRecords";
+import React, { useEffect } from "react";
 
-type Props = {};
+type Props = {
+  dataUsers?: OptionsType[];
+  dataPatients?: OptionsType[];
+  dataDepartments?: OptionsType[];
+};
 
-const TabMedicalRecords = ({}: Props) => {
+const TabVisits = (props: Props) => {
   const { id } = useParams();
 
   const { dataUsers, dataPatients } = useMainContext();
@@ -28,11 +25,11 @@ const TabMedicalRecords = ({}: Props) => {
     loading,
     setOpen,
     closeForm,
-    deleteMedicalRecord,
-    submitMedicalRecord,
-    editMedicalRecord,
+    deleteVisit,
+    submitVisit,
+    editVisit,
     setData,
-  } = useMedicalRecords(
+  } = useVisits(
     10,
     {
       allData: true,
@@ -41,6 +38,9 @@ const TabMedicalRecords = ({}: Props) => {
       patientId: id as string,
     }
   );
+
+  console.log({allData});
+  
 
   useEffect(() => {
     setData((prev: any) => ({
@@ -52,7 +52,7 @@ const TabMedicalRecords = ({}: Props) => {
   return (
     <div>
       <Box className="flex justify-between items-center mb-4">
-        <h2 className="m-0">Manage Medical Records</h2>
+        <h2 className="m-0">Manage Visits</h2>
         <Button onClick={() => setOpen(true)}>Create</Button>
       </Box>
 
@@ -70,11 +70,11 @@ const TabMedicalRecords = ({}: Props) => {
           },
         ]}
         pagination={pagination}
-        keys={tableMedicalRecords.filter(
+        keys={tableVisits.filter(
           (item) => item.value !== "patientName"
         )}
-        onEdit={editMedicalRecord}
-        onDelete={deleteMedicalRecord}
+        onEdit={editVisit}
+        onDelete={deleteVisit}
         isAction
       />
       <KDialog
@@ -82,7 +82,7 @@ const TabMedicalRecords = ({}: Props) => {
         size="sm"
         open={open}
         onClose={closeForm}
-        onSubmit={submitMedicalRecord}
+        onSubmit={submitVisit}
       >
         <Grid container spacing={2}>
           {(fieldsForm as KInputType[]).map((props, index) => {
@@ -95,4 +95,4 @@ const TabMedicalRecords = ({}: Props) => {
   );
 };
 
-export default TabMedicalRecords;
+export default TabVisits;

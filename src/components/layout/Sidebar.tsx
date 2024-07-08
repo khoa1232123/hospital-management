@@ -6,8 +6,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import MasksIcon from "@mui/icons-material/Masks";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MedicationIcon from "@mui/icons-material/Medication";
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 import {
   CSSObject,
@@ -63,7 +63,12 @@ const nav = [
     link: "/rooms",
     Icon: <MeetingRoomIcon />,
   },
-]
+  {
+    label: "Visits",
+    link: "/visits",
+    Icon: <InboxIcon />,
+  },
+];
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />

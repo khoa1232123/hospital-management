@@ -68,6 +68,7 @@ const KDialog = ({
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Close</Button>
+          {onSubmit && (
           <Button
             type="submit"
             color="primary"
@@ -76,6 +77,7 @@ const KDialog = ({
           >
             {submitText ? submitText : "Save changes"}
           </Button>
+          )}
         </DialogActions>
       </BootstrapDialog>
     </form>

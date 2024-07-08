@@ -1,5 +1,5 @@
 "use client";
-import { TabAppointments, TabMedicalRecords } from "@/components/main/patients";
+import { TabAppointments, TabMedicalRecords, TabVisits } from "@/components/main/patients";
 import { usePatients } from "@/modules/patients";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Grid, Tab, Tabs } from "@mui/material";
@@ -7,12 +7,21 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 const valueTabs = [
-  { label: "Appointments", value: "appointments", Component: TabAppointments },
+  {
+    label: "Appointments",
+    value: "appointments",
+    Component: TabAppointments,
+  },
   {
     label: "Medical Records",
     value: "medicalRecords",
     Component: TabMedicalRecords,
   },
+  {
+    label: "Visits",
+    value: "visits",
+    Component: TabVisits,
+  }
 ];
 
 type Props = {};
@@ -31,7 +40,7 @@ const PatientIdPage = (props: Props) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={4} md={3}>
-        <h1>{patient?.fullName}</h1>
+        <h1 className="mt-0">{patient?.fullName}</h1>
         <p>Số điện thoại: {patient?.phone}</p>
         <p>Địa chỉ: {patient?.address}</p>
         <p>Email: {patient?.email}</p>
