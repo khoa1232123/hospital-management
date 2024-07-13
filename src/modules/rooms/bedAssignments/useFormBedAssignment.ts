@@ -1,6 +1,6 @@
 import { useMainContext } from "@/contexts";
 import { FieldErrType, KInputType, OptionsType } from "@/types/field";
-import { convertNumberToOptions } from "@/utils/array";
+import { convertNumberToOptions, rerenderForm } from "@/utils/array";
 import React, { useMemo } from "react";
 
 type Props = {
@@ -76,14 +76,15 @@ const useFormBedAssignment = ({
       },
     ];
 
-    return fields.map((field) => {
-      return {
-        ...field,
-        value: data?.[field?.name] || "",
-        placeholder: field.label || "",
-        onChange,
-      };
-    });
+    return rerenderForm(fields, data, onChange)
+    // return fields.map((field) => {
+    //   return {
+    //     ...field,
+    //     value: data?.[field?.name] || "",
+    //     placeholder: field.label || "",
+    //     onChange,
+    //   };
+    // });
   }, [fieldErrs, data, dataPatients, numberOfBed]);
 
   return { fieldsForm };

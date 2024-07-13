@@ -3,6 +3,7 @@ import { FieldErrType, KInputType } from "@/types/field";
 import React, { useMemo } from "react";
 import { usePatients } from "../patients";
 import { useUsers } from "../users";
+import { rerenderForm } from "@/utils/array";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -47,7 +48,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "date",
         name: "visitDate",
         label: "Visit Date",
-        placeholder: "Visit Date",
         xs: 12,
         md: 6,
         xl: 6,
@@ -60,7 +60,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "purpose",
         label: "Purpose",
-        placeholder: "Purpose",
         helperText: fieldErrs?.purpose ? fieldErrs?.purpose : "",
         error: !!fieldErrs?.purpose,
         xs: 12,
@@ -74,7 +73,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "notes",
         label: "Notes",
-        placeholder: "Notes",
         focused: true,
         xs: 12,
         multiline: true,
@@ -82,11 +80,13 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
       },
     ];
 
-    return fields.map((field) => ({
-      ...field,
-      value: data?.[field.name] || "",
-      onChange,
-    }));
+    return rerenderForm(fields, data, onChange);
+
+    // return fields.map((field) => ({
+    //   ...field,
+    //   value: data?.[field.name] || "",
+    //   onChange,
+    // }));
   }, [fieldErrs, data, dataPatients, dataUsers]);
 
   return { fieldsForm };

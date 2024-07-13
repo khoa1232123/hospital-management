@@ -14,6 +14,8 @@ export const tableVisits: KeyConfigType[] = [
     align: "left",
     component: "th",
     width: 200,
+    isLink: true,
+    preLink: "users",
   },
   {
     value: "visitDate",

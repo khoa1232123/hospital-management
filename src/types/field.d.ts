@@ -18,6 +18,7 @@ type KInputType = TextFieldProps & {
   xl?: number;
   sm?: number;
   md?: number;
+  name?: string;
   options?: OptionsType[];
   type: string;
   array?: KInputType[];

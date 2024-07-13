@@ -1,4 +1,5 @@
 import { FieldErrType, KInputType } from "@/types/field";
+import { rerenderForm } from "@/utils/array";
 import React, { useMemo } from "react";
 
 type Props = {
@@ -19,7 +20,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "email",
         label: "Email",
-        placeholder: "Email",
         helperText: fieldErrs?.email ? fieldErrs?.email : "",
         error: !!fieldErrs?.email,
         value: "",
@@ -34,7 +34,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "firstName",
         label: "First Name",
-        placeholder: "First Name",
         xs: 6,
         md: 6,
         xl: 6,
@@ -46,7 +45,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "lastName",
         label: "Last Name",
-        placeholder: "Last Name",
         xs: 6,
         md: 6,
         xl: 6,
@@ -56,7 +54,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "date",
         name: "birthday",
         label: "Birthday",
-        placeholder: "Birthday",
         focused: true,
         xs: 4,
         md: 4,
@@ -66,7 +63,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "select",
         name: "gender",
         label: "Gender",
-        placeholder: "Gender",
         select: true,
         xs: 4,
         md: 4,
@@ -90,7 +86,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "phone",
         label: "Phone number",
-        placeholder: "Phone number",
         xs: 4,
         md: 4,
         xl: 4,
@@ -100,7 +95,6 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "address",
         label: "Address",
-        placeholder: "Address",
         xs: 12,
         md: 12,
         xl: 12,
@@ -109,21 +103,18 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "emergencyContact",
         label: "Emergency Contact",
-        placeholder: "Emergency Contact",
         xs: 6,
       },
       {
         type: "text",
         name: "insuranceNumber",
         label: "Insurance Number",
-        placeholder: "Insurance Number",
         xs: 6,
       },
       {
         type: "textarea",
         name: "medicalHistory",
         label: "Medical History",
-        placeholder: "Medical History",
         multiline: true,
         rows: 4,
         xs: 12,
@@ -132,11 +123,12 @@ const useFormPatient = ({ fieldErrs, onChange, onBlur, data }: Props) => {
       },
     ];
 
-    return fields.map((field) => ({
-      ...field,
-      value: data?.[field.name] || "",
-      onChange,
-    }));
+    return rerenderForm(fields, data, onChange);
+    // return fields.map((field) => ({
+    //   ...field,
+    //   value: data?.[field.name] || "",
+    //   onChange,
+    // }));
   }, [fieldErrs, data]);
 
   return { fieldsForm };

@@ -1,6 +1,7 @@
 import { dataRoomTypes } from "@/constants/staticData";
 import { useMainContext } from "@/contexts";
 import { FieldErrType, KInputType } from "@/types/field";
+import { rerenderForm } from "@/utils/array";
 import React, { useMemo } from "react";
 
 type Props = {
@@ -22,7 +23,6 @@ const useFormRoom = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "name",
         label: "Room Number",
-        placeholder: "Email",
         xs: 12,
         md: 12,
         xl: 12,
@@ -63,12 +63,13 @@ const useFormRoom = ({ fieldErrs, onChange, onBlur, data }: Props) => {
       },
     ];
 
-    return fields.map((field) => ({
-      ...field,
-      value: data?.[field.name] || "",
-      placeholder: field.label || "",
-      onChange,
-    }));
+    return rerenderForm(fields, data, onChange)
+    // return fields.map((field) => ({
+    //   ...field,
+    //   value: data?.[field.name] || "",
+    //   placeholder: field.label || "",
+    //   onChange,
+    // }));
   }, [fieldErrs, data, dataDepartments]);
 
   return { fieldsForm };

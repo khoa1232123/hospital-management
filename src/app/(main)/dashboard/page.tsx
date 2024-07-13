@@ -2,7 +2,6 @@
 
 import { KDialog } from "@/components/ui";
 import KInput from "@/components/ui/KInput";
-import useCallEvents from "@/hooks/call-fpt/useCallEvents";
 import useOnCall from "@/hooks/call-fpt/useOnCall";
 import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -55,6 +54,18 @@ const DashboardPage = (props: Props) => {
     unSub();
   }, [token]);
 
+  // const {} = useJsSIP({destination: "", password: "oK44KJLj4mb5", socketUrl: "wss://sip.prm.deepcare.com.vn", uri: "HNIDA19225724"})
+
+
+  
+
+
+
+
+
+
+
+
   const handleGetExtensions = async (id: string) => {
     const data = await getUsersAndExtensions({ id });
     const balance = await getUsersAndExtensions({ id, type: "balance" });
@@ -85,19 +96,10 @@ const DashboardPage = (props: Props) => {
     // setAudioSrc(url);
   };
 
-  console.log({ record }, "13123123");
-
   const handleClose = () => {
     setOpen(false);
     setRecord(null);
   };
-
-  useCallEvents(token, (data) => {
-    // Xử lý sự kiện hủy cuộc gọi
-    console.log('Call cancelled:', data);
-    alert('Call has been cancelled');
-  });
-
 
   const handleMakeCall = async () => {
     if (!phone) {
@@ -105,9 +107,9 @@ const DashboardPage = (props: Props) => {
       return;
     }
     const abc = await makeCall({
-      callee: "102",
+      callee: "105",
       caller: phone,
-      extensionNumber: "102",
+      extensionNumber: "105",
     });
     console.log({ abc });
   };

@@ -1,6 +1,7 @@
 import { dataStatus } from "@/constants";
 import { useMainContext } from "@/contexts";
 import { FieldErrType, KInputType } from "@/types/field";
+import { rerenderForm } from "@/utils/array";
 import dayjs from "dayjs";
 import React, { useMemo } from "react";
 
@@ -18,13 +19,12 @@ type Props = {
 const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
   const { dataDepartments, dataPatients, dataUsers } = useMainContext();
 
-  const fieldsForm: KInputType[] = useMemo(() => {
+  const fieldsForm = useMemo<KInputType[]>(() => {
     let fields = [
       {
         type: "date",
         name: "appointmentDate",
         label: "Appointment Date",
-        placeholder: "Appointment Date",
         inputProps: { min: dayjs(Date.now()).format("YYYY-MM-DD") },
         xs: 12,
         md: 6,
@@ -35,7 +35,6 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "select",
         name: "userId",
         label: "User",
-        placeholder: "User",
         select: true,
         xs: 12,
         md: 6,
@@ -46,7 +45,6 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "select",
         name: "patientId",
         label: "Patient",
-        placeholder: "Patient",
         select: true,
         xs: 12,
         md: 6,
@@ -57,7 +55,6 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "select",
         name: "departmentId",
         label: "Department",
-        placeholder: "Department",
         select: true,
         xs: 12,
         md: 6,
@@ -73,14 +70,16 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 6,
         options: dataStatus,
       },
-    ];
+    ] as KInputType[];
 
-    return fields.map((field) => ({
-      ...field,
-      value: data?.[field.name] || "",
-      placeholder: field.label,
-      onChange,
-    }));
+    return rerenderForm(fields, data, onChange);
+
+    // return fields.map((field) => ({
+    //   ...field,
+    //   value: data?.[field?.name] || "",
+    //   placeholder: field.label,
+    //   onChange,
+    // }));
   }, [fieldErrs, data, dataDepartments, dataUsers, dataPatients, dataStatus]);
 
   return { fieldsForm };

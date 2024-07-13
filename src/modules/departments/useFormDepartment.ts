@@ -1,4 +1,5 @@
 import { FieldErrType, KInputType } from "@/types/field";
+import { rerenderForm } from "@/utils/array";
 import React, { useMemo } from "react";
 
 type Props = {
@@ -19,7 +20,6 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "name",
         label: "Department Name",
-        placeholder: "Department Name",
         xs: 12,
         md: 12,
         xl: 12,
@@ -28,7 +28,6 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "phone",
         label: "Phone number",
-        placeholder: "Phone number",
         xs: 6,
         md: 6,
         xl: 6,
@@ -38,18 +37,18 @@ const useFormDepartment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         type: "text",
         name: "location",
         label: "Location",
-        placeholder: "Location",
         xs: 6,
         md: 6,
         xl: 6,
       },
     ];
 
-    return fields.map((field) => ({
-      ...field,
-      value: data?.[field.name] || "",
-      onChange,
-    }));
+    return rerenderForm(fields, data, onChange);
+    // return fields.map((field) => ({
+    //   ...field,
+    //   value: data?.[field.name] || "",
+    //   onChange,
+    // }));
   }, [fieldErrs, data]);
 
   return { fieldsForm };

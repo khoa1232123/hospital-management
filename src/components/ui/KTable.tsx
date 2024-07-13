@@ -122,9 +122,11 @@ const KTable = ({
     keyConfig: KeyConfigType;
     row: any;
   }) => {
+    console.log({keyConfig});
+    
     if (keyConfig.isLink) {
       return (
-        <Link href={`${keyConfig.preLink || pathName}/${row.id}`}>
+        <Link href={`/${keyConfig.preLink || pathName}/${row.id}`}>
           {convertServerTimestamp(row[keyConfig.value])}
         </Link>
       );

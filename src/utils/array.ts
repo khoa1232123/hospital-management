@@ -1,4 +1,4 @@
-import { OptionsType } from "@/types/field";
+import { KInputType, OptionsType } from "@/types/field";
 
 type DataType = { [key: string]: any };
 
@@ -61,4 +61,35 @@ export const getValueData = (data: any, key: string): string | number => {
   }
 
   return result;
+}
+
+export const rerenderForm = (fields: any[], data: any, onChange?: (event: any) => void) => {
+  return fields.map((field) => {
+    if (field.type === "array") {
+      const array = field.array?.map((value: any) => {
+        const items = value.items.map((item: any) => {
+          return {
+            ...item,
+            onChange,
+          };
+        });
+        return {
+          ...value,
+          items: items,
+        };
+      });
+
+      return {
+        ...field,
+        array: array,
+      };
+    } else {
+      return {
+        ...field,
+        value: data?.[field?.name] || "",
+        placeholder: field?.label || "",
+        onChange,
+      };
+    }
+  });
 }
