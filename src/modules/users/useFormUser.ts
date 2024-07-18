@@ -151,7 +151,7 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
       },
       {
         type: "text",
-        name: "shirt",
+        name: "shift",
         label: "Shift",
         xs: 4,
         md: 4,
@@ -170,11 +170,6 @@ const useFormUser = ({ fieldErrs, onChange, onBlur, data }: Props) => {
     
     return rerenderForm(fields, data, onChange);
 
-    // return fields.map((field) => ({
-    //   ...field,
-    //   value: data?.[field.name] || "",
-    //   onChange,
-    // }));
   }, [fieldErrs, data, dataDepartments]);
 
   return { fieldsForm };
