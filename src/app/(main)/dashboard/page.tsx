@@ -54,18 +54,6 @@ const DashboardPage = (props: Props) => {
     unSub();
   }, [token]);
 
-  // const {} = useJsSIP({destination: "", password: "oK44KJLj4mb5", socketUrl: "wss://sip.prm.deepcare.com.vn", uri: "HNIDA19225724"})
-
-
-  
-
-
-
-
-
-
-
-
   const handleGetExtensions = async (id: string) => {
     const data = await getUsersAndExtensions({ id });
     const balance = await getUsersAndExtensions({ id, type: "balance" });

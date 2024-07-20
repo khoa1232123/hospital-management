@@ -1,7 +1,12 @@
-"use client"
+"use client";
+import {
+  TabAppointments,
+  TabMedicalRecords,
+  TabVisits,
+} from "@/components/main/users";
 import { useMainContext } from "@/contexts";
 import { useUsers } from "@/modules/users";
-import { TabContext } from "@mui/lab";
+import { TabContext, TabPanel } from "@mui/lab";
 import { Grid, Tab, Tabs } from "@mui/material";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
@@ -10,18 +15,18 @@ const valueTabs = [
   {
     label: "Appointments",
     value: "appointments",
-    // Component: TabAppointments,
+    Component: TabAppointments,
   },
   {
     label: "Medical Records",
     value: "medicalRecords",
-    // Component: TabMedicalRecords,
+    Component: TabMedicalRecords,
   },
   {
     label: "Visits",
     value: "visits",
-    // Component: TabVisits,
-  }
+    Component: TabVisits,
+  },
 ];
 
 type Props = {};
@@ -77,11 +82,11 @@ const UserIdPage = (props: Props) => {
               <Tab key={value} label={label} value={value} />
             ))}
           </Tabs>
-          {/* {valueTabs.map(({ value, Component }) => (
+          {valueTabs.map(({ value, Component }) => (
             <TabPanel value={value} key={value} className="px-0">
               <Component />
             </TabPanel>
-          ))} */}
+          ))}
         </TabContext>
       </Grid>
     </Grid>
