@@ -12,6 +12,7 @@ interface MainContextProps {
   dataUsers: OptionsType[];
   dataPatients: OptionsType[];
   dataRooms: OptionsType[];
+  getLabelById: (id: string) => string;
 }
 
 type MainProviderProps = {
@@ -52,7 +53,18 @@ export const MainProvider = ({ children }: MainProviderProps) => {
     dataSelected: true,
   });
 
-  const value = { dataPatients, dataUsers, dataDepartments, dataRooms };
+  const getLabelById = (id: string) => {
+    if (!id) return "";
+    const item = [
+      ...dataPatients,
+      ...dataUsers,
+      ...dataDepartments,
+      ...dataRooms,
+    ].find((item) => item.value === id);
+    return item?.label ?? "";
+  };
+
+  const value = { dataPatients, dataUsers, dataDepartments, dataRooms, getLabelById };
 
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;
 };
