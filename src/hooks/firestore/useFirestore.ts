@@ -1,7 +1,10 @@
 // useFirestore.ts
 import { db } from "@/lib/firebase/client";
+import { OptionsType } from "@/types/field";
 import { FilterType, SortByType } from "@/types/firebaseHook";
+import { cleanData } from "@/utils/array";
 import { isNumberInput } from "@/utils/numbers";
+import { debouncedValue } from "@/utils/values";
 import {
   CollectionReference,
   DocumentData,
@@ -20,12 +23,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useAuth from "../useAuth";
-import { OptionsType } from "@/types/field";
-import { cleanData } from "@/utils/array";
 
 interface DataType {
   id?: string;
@@ -143,12 +142,26 @@ const useFirestore = <T extends DataType>(
       q = query(q, orderBy(fieldPath, directionStr), limit(offset + pageSize));
 
       const querySnapshot = await getDocs(q);
-      const docsData = querySnapshot.docs.slice(offset).map((doc) => ({
-        ...doc.data(),
-        value: doc.id,
-        label: doc.data()?.label || "",
-        id: doc.id,
-      })) as T[];
+
+      const docsData = querySnapshot.docs.slice(offset).map((doc) => {
+        const { nameSearch, ...rest } = doc.data();
+        if (moreGetData.dataSelected) {
+          return {
+            value: doc.id,
+            label: doc.data().name || doc.data().fullName || "",
+            id: doc.id,
+            gender: rest?.gender,
+            birthday: rest?.birthday
+          };
+        } else {
+          return {
+            ...rest,
+            value: doc.id,
+            label: doc.data().name || doc.data().fullName || "",
+            id: doc.id,
+          };
+        }
+      }) as T[];
 
       let data = docsData;
 
@@ -270,6 +283,7 @@ const useFirestore = <T extends DataType>(
     updateDocument,
     deleteDocument,
     setFilters,
+    onSearch: debouncedValue(setFilters, 500),
     setPageSize,
     getDocuments,
     getDocumentById,

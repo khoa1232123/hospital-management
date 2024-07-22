@@ -4,6 +4,8 @@ import { FieldErrType, KInputType } from "@/types/field";
 import { rerenderForm } from "@/utils/array";
 import dayjs from "dayjs";
 import React, { useMemo } from "react";
+import { useUsers } from "../users";
+import { usePatients } from "../patients";
 
 type Props = {
   fieldErrs?: FieldErrType;
@@ -17,7 +19,15 @@ type Props = {
 };
 
 const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
-  const { dataDepartments, dataPatients, dataUsers } = useMainContext();
+  const { dataDepartments } = useMainContext();
+
+  const {allData: dataPatients, onSearch: onSearchPatient, loading: isLoadingPatient} = usePatients(10, {
+    dataSelected: true,
+  })
+
+  const {allData: dataUsers, onSearch: onSearchUser, loading: isLoadingUser} = useUsers(5, {
+    dataSelected: true
+  });
 
   const fieldsForm = useMemo<KInputType[]>(() => {
     let fields = [
@@ -32,7 +42,7 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         focused: true,
       },
       {
-        type: "select",
+        type: "autoComplete",
         name: "userId",
         label: "User",
         select: true,
@@ -40,9 +50,11 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 6,
         xl: 6,
         options: dataUsers,
+        onSearch: onSearchUser,
+        loading: isLoadingUser,
       },
       {
-        type: "select",
+        type: "autoComplete",
         name: "patientId",
         label: "Patient",
         select: true,
@@ -50,6 +62,8 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         md: 6,
         xl: 6,
         options: dataPatients,
+        onSearch: onSearchPatient,
+        loading: isLoadingPatient
       },
       {
         type: "select",
@@ -74,12 +88,6 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
 
     return rerenderForm(fields, data, onChange);
 
-    // return fields.map((field) => ({
-    //   ...field,
-    //   value: data?.[field?.name] || "",
-    //   placeholder: field.label,
-    //   onChange,
-    // }));
   }, [fieldErrs, data, dataDepartments, dataUsers, dataPatients, dataStatus]);
 
   return { fieldsForm };

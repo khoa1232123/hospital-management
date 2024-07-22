@@ -3,13 +3,13 @@ import { KeyConfigType } from "@/types/field";
 export const tableAppointments: KeyConfigType[] = [
   {
     value: "userName",
-    label: "User Name",
+    label: "Doctor",
     align: "left",
     component: "th",
   },
   {
     value: "patientName",
-    label: "Patient Name",
+    label: "Patient",
     align: "left",
     component: "th",
   },

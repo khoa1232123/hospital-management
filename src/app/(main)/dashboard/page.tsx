@@ -1,6 +1,7 @@
 "use client";
 
 import { KDialog } from "@/components/ui";
+import KAutoComplate from "@/components/ui/KAutoComplate";
 import KInput from "@/components/ui/KInput";
 import useOnCall from "@/hooks/call-fpt/useOnCall";
 import { Button, Grid } from "@mui/material";
@@ -11,100 +12,101 @@ type Props = {};
 const BASE_URL = "https://rsv01.oncall.vn:8887";
 
 const DashboardPage = (props: Props) => {
-  const {
-    token,
-    getUsersAndExtensions,
-    getCallRecording,
-    getCallHistory,
-    callQueues,
-    getContactGroup,
-    makeCall,
-    handleMakeCalling,
-  } = useOnCall();
-  const [extentions, setExtentions] = useState<any[]>([]);
-  const [records, setRecords] = useState<any[]>([]);
-  const [queues, setQueues] = useState<any[]>([]);
-  const [histories, setHistories] = useState<any[]>([]);
-  const [audioSrc, setAudioSrc] = useState<string | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
-  const [phone, setPhone] = useState<string>('');
+  // const {
+  //   token,
+  //   getUsersAndExtensions,
+  //   getCallRecording,
+  //   getCallHistory,
+  //   callQueues,
+  //   getContactGroup,
+  //   makeCall,
+  //   handleMakeCalling,
+  // } = useOnCall();
+  // const [extentions, setExtentions] = useState<any[]>([]);
+  // const [records, setRecords] = useState<any[]>([]);
+  // const [queues, setQueues] = useState<any[]>([]);
+  // const [histories, setHistories] = useState<any[]>([]);
+  // const [audioSrc, setAudioSrc] = useState<string | null>(null);
+  // const [open, setOpen] = useState<boolean>(false);
+  // const [phone, setPhone] = useState<string>('');
 
-  const [record, setRecord] = useState<any>();
+  // const [record, setRecord] = useState<any>();
 
-  useEffect(() => {
-    if (!token) return;
-    const unSub = async () => {
-      const data = await getUsersAndExtensions();
-      const records = await getCallRecording();
-      const callHistories = await getCallHistory({
-        // startedAt: "2024-07-06T17:00:00Z",
-        // endedAt: "2024-07-08T17:00:00Z",
-      });
+  // useEffect(() => {
+  //   if (!token) return;
+  //   const unSub = async () => {
+  //     const data = await getUsersAndExtensions();
+  //     const records = await getCallRecording();
+  //     const callHistories = await getCallHistory({
+  //       // startedAt: "2024-07-06T17:00:00Z",
+  //       // endedAt: "2024-07-08T17:00:00Z",
+  //     });
 
-      const contacts = await getContactGroup({ id: "862544585518219264" });
+  //     const contacts = await getContactGroup({ id: "862544585518219264" });
 
-      setHistories(callHistories.items);
+  //     setHistories(callHistories.items);
 
-      const data3 = await callQueues({});
-      console.log({ data, records, data3, contacts, callHistories });
-      setRecords(records.items);
-      setExtentions(data.items);
-      setQueues(data3.items);
-    };
-    unSub();
-  }, [token]);
+  //     const data3 = await callQueues({});
+  //     console.log({ data, records, data3, contacts, callHistories });
+  //     setRecords(records.items);
+  //     setExtentions(data.items);
+  //     setQueues(data3.items);
+  //   };
+  //   unSub();
+  // }, [token]);
 
-  const handleGetExtensions = async (id: string) => {
-    const data = await getUsersAndExtensions({ id });
-    const balance = await getUsersAndExtensions({ id, type: "balance" });
-    const status = await getUsersAndExtensions({ id, type: "status" });
+  // const handleGetExtensions = async (id: string) => {
+  //   const data = await getUsersAndExtensions({ id });
+  //   const balance = await getUsersAndExtensions({ id, type: "balance" });
+  //   const status = await getUsersAndExtensions({ id, type: "status" });
 
-    console.log({ data, balance, status });
-  };
+  //   console.log({ data, balance, status });
+  // };
 
-  const handleGetDetailsRecord = async (id: string) => {
-    setRecord(null);
-    const data = await getCallRecording({ id });
-    const data2 = await getCallHistory({ id });
-    console.log({ data, data2 });
-    setRecord({ ...data.items[0] });
-  };
+  // const handleGetDetailsRecord = async (id: string) => {
+  //   setRecord(null);
+  //   const data = await getCallRecording({ id });
+  //   const data2 = await getCallHistory({ id });
+  //   console.log({ data, data2 });
+  //   setRecord({ ...data.items[0] });
+  // };
 
-  const handleGetDetailHistory = async (id: string) => {
-    setRecord(null);
-    const data = await getCallHistory({ id });
-    const data2 = await getCallRecording({ id });
+  // const handleGetDetailHistory = async (id: string) => {
+  //   setRecord(null);
+  //   const data = await getCallHistory({ id });
+  //   const data2 = await getCallRecording({ id });
 
-    console.log({ data2 });
-    setRecord({ ...data2.items[0] });
+  //   console.log({ data2 });
+  //   setRecord({ ...data2.items[0] });
 
-    setOpen(true);
-    // const url = URL.createObjectURL(data2);
+  //   setOpen(true);
+  //   // const url = URL.createObjectURL(data2);
 
-    // setAudioSrc(url);
-  };
+  //   // setAudioSrc(url);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-    setRecord(null);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  //   setRecord(null);
+  // };
 
-  const handleMakeCall = async () => {
-    if (!phone) {
-      alert('Please input phone number');
-      return;
-    }
-    const abc = await makeCall({
-      callee: "105",
-      caller: phone,
-      extensionNumber: "105",
-    });
-    console.log({ abc });
-  };
+  // const handleMakeCall = async () => {
+  //   if (!phone) {
+  //     alert('Please input phone number');
+  //     return;
+  //   }
+  //   const abc = await makeCall({
+  //     callee: "105",
+  //     caller: phone,
+  //     extensionNumber: "105",
+  //   });
+  //   console.log({ abc });
+  // };
 
   return (
     <div>
-      <h2>Queues</h2>
+      <KAutoComplate type="" name="hamo" />
+      {/* <h2>Queues</h2>
       <KInput type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone" />
       <Button onClick={handleMakeCall}>momo</Button>
       <ul>
@@ -165,7 +167,7 @@ const DashboardPage = (props: Props) => {
             Your browser does not support the audio element.
           </audio>
         )}
-      </KDialog>
+      </KDialog> */}
     </div>
   );
 };

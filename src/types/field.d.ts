@@ -3,6 +3,7 @@ import { TextFieldProps } from "@mui/material";
 type OptionsType = {
   value: string | number;
   label: string;
+  [key: string]: string;
 };
 
 export type OptionStatusType = OptionsType & {
@@ -24,6 +25,7 @@ type KInputType = TextFieldProps & {
   array?: KInputType[];
   items?: KInputType[];
   onClick?: (ev?: MouseEvent) => void;
+  onSearch?: (event: any) => void;
 };
 
 type FieldErrType = {
