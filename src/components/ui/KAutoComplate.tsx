@@ -20,7 +20,7 @@ const KAutoComplate = ({
   xl,
   sm,
   md,
-  placeholder
+  placeholder,
 }: Props) => {
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
   const [dataAutoCom, setDataAutoCom] = useState<any[]>([]);
@@ -52,8 +52,7 @@ const KAutoComplate = ({
 
   const deValue = useMemo(() => {
     const idx = dataAutoCom.findIndex((data) => data.value === value);
-    console.log({idx, value, dataAutoCom});
-    
+
     return dataAutoCom[idx];
   }, [dataAutoCom.length, value]);
 
@@ -65,13 +64,12 @@ const KAutoComplate = ({
         disablePortal
         id="KAutoComplate"
         options={dataAutoCom || []}
-        sx={{ width: '100%' }}
+        sx={{ width: "100%" }}
         loading={isLoadingSearch || loading}
-        value={inputValue ? {...inputValue} : null}
+        value={inputValue ? { ...inputValue } : null}
         onInputChange={(e, value) => {
-            setIsLoadingSearch(true);
-            onSearch &&
-              onSearch({ nameSearch: value.toLowerCase() });
+          setIsLoadingSearch(true);
+          onSearch && onSearch({ nameSearch: value.toLowerCase() });
         }}
         renderInput={(params) => (
           <TextField
