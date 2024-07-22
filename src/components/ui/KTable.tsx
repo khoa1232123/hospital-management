@@ -122,8 +122,6 @@ const KTable = ({
     keyConfig: KeyConfigType;
     row: any;
   }) => {
-    console.log({keyConfig});
-    
     if (keyConfig.isLink) {
       return (
         <Link href={`/${keyConfig.preLink || pathName}/${row.id}`}>
@@ -180,8 +178,6 @@ const KTable = ({
 
   const rows: JSX.Element[] = React.useMemo(() => {
     return data.map((row) => {
-      console.log({row});
-      
       moreData && addMoreData(row, moreData);
       return (
         <TableRow hover key={row.id}>

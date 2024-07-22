@@ -2,8 +2,12 @@ import { KInputType } from "@/types/field";
 import KInput from "./KInput";
 import { Button, Grid, MenuItem } from "@mui/material";
 import { Add, PlusOne } from "@mui/icons-material";
+import KAutoComplate from "./KAutoComplate";
 
-export type KRenderFieldProps = KInputType & {};
+export type KRenderFieldProps = KInputType & {
+  onSearch?: (value: any) => void;
+  loading?: boolean;
+};
 
 const KRenderField = ({ ...props }: KRenderFieldProps) => {
   switch (props.type) {
@@ -47,6 +51,10 @@ const KRenderField = ({ ...props }: KRenderFieldProps) => {
           ))}
         </Grid>
       );
+      case "autoComplete":
+        return (
+          <KAutoComplate {...props} />
+        );
     default:
       return <KInput {...props} />;
   }
