@@ -35,6 +35,9 @@ const TabAppointments = ({}: Props) => {
     }));
   }, [id]);
 
+  console.log({fieldsForm});
+  
+
   return (
     <>
       <div className="flex justify-between mb-4">
@@ -61,7 +64,7 @@ const TabAppointments = ({}: Props) => {
         isAction
       />
       <KDialog
-        title="Doctor"
+        title="Appointment"
         size="sm"
         open={open}
         onClose={closeForm}

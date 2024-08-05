@@ -1,4 +1,5 @@
 import { KInputType } from "@/types/field";
+import { mergeArray } from "@/utils/array";
 import { Autocomplete, CircularProgress, Grid, TextField } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
@@ -10,10 +11,10 @@ type Props = KInputType & {
 };
 
 const KAutoComplate = ({
-  options,
+  options = [],
   onSearch,
   loading,
-  value,
+  value = '',
   onChange,
   name = "",
   xs,
@@ -22,9 +23,27 @@ const KAutoComplate = ({
   md,
   placeholder,
 }: Props) => {
+  const [inputBlur, setInputBlur] = useState(false);
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
   const [dataAutoCom, setDataAutoCom] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<any>();
+  const [countValue, setCountValue] = useState(0);
+  const [nameSearch, setNameSearch] = useState('');
+
+  const defConfig = {
+    options: options,
+  }
+
+  console.log({options});
+  
+
+  useEffect(() => {
+    onSearch && onSearch({ id: value });
+    console.log("abc onSearch", value, name);
+    
+  }, [value, nameSearch]);
+
+  console.log({nameSearch});
 
   useEffect(() => {
     if (!options || options.length === 0) return;
@@ -46,8 +65,8 @@ const KAutoComplate = ({
         };
       }
     });
-    setDataAutoCom(datas);
-    setInputValue(datas.find((data) => data.value === value) || "");
+    setDataAutoCom(mergeArray([...dataAutoCom,...datas], 'value'));
+    setInputValue(datas.find((data: any) => data.value === value) || "");
   }, [options, value, loading]);
 
   const deValue = useMemo(() => {
@@ -56,26 +75,30 @@ const KAutoComplate = ({
     return dataAutoCom[idx];
   }, [dataAutoCom.length, value]);
 
-  console.log({ deValue, inputValue });
-
   return (
     <Grid item xs={xs} xl={xl} sm={sm} md={md}>
       <Autocomplete
         disablePortal
         id="KAutoComplate"
-        options={dataAutoCom || []}
+        // options={dataAutoCom || []}
+        // getOptionLabel={option => option.label}
+        {...defConfig}
         sx={{ width: "100%" }}
-        loading={isLoadingSearch || loading}
+        // loading={isLoadingSearch || loading}
         value={inputValue ? { ...inputValue } : null}
-        onInputChange={(e, value) => {
-          setIsLoadingSearch(true);
-          onSearch && onSearch({ nameSearch: value.toLowerCase() });
-        }}
         renderInput={(params) => (
           <TextField
             {...params}
             label={placeholder}
             placeholder={placeholder}
+            onChange={(e) => {
+              onSearch &&
+                onSearch({ nameSearch: e.target.value.toLowerCase() });
+                setNameSearch(e.target.value);
+            }}
+            onBlur={() => {
+              setInputBlur(true);
+            }}
             InputProps={{
               ...params.InputProps,
               endAdornment: (

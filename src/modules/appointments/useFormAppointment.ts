@@ -21,13 +21,24 @@ type Props = {
 const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
   const { dataDepartments } = useMainContext();
 
-  const {allData: dataPatients, onSearch: onSearchPatient, loading: isLoadingPatient} = usePatients(10, {
+  const {
+    allData: dataPatients,
+    onSearch: onSearchPatient,
+    loading: isLoadingPatient,
+    getPatientById
+  } = usePatients(5, {
     dataSelected: true,
-  })
-
-  const {allData: dataUsers, onSearch: onSearchUser, loading: isLoadingUser} = useUsers(5, {
-    dataSelected: true
   });
+
+  const {
+    allData: dataUsers,
+    onSearch: onSearchUser,
+    loading: isLoadingUser,
+    getUserById
+  } = useUsers(5, {
+    dataSelected: true,
+  });
+  
 
   const fieldsForm = useMemo<KInputType[]>(() => {
     let fields = [
@@ -52,6 +63,7 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         options: dataUsers,
         onSearch: onSearchUser,
         loading: isLoadingUser,
+        getDataItem: getUserById,
       },
       {
         type: "autoComplete",
@@ -63,7 +75,8 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
         xl: 6,
         options: dataPatients,
         onSearch: onSearchPatient,
-        loading: isLoadingPatient
+        loading: isLoadingPatient,
+        getDataItem: getPatientById,
       },
       {
         type: "select",
@@ -87,7 +100,6 @@ const useFormAppointment = ({ fieldErrs, onChange, onBlur, data }: Props) => {
     ] as KInputType[];
 
     return rerenderForm(fields, data, onChange);
-
   }, [fieldErrs, data, dataDepartments, dataUsers, dataPatients, dataStatus]);
 
   return { fieldsForm };

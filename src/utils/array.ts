@@ -25,7 +25,7 @@ export const convertNumberToArray = (n: number): number[] => {
 export const convertNumberToOptions = (n: number): OptionsType[] => {
   const result: OptionsType[] = [];
   for (let i = 1; i <= n; i++) {
-    result.push({ value: i, label: `Number ${i}` });
+    result.push({ value: i + '', label: `Number ${i}` });
   }
   return result;
 };
@@ -93,3 +93,18 @@ export const rerenderForm = (fields: any[], data: any, onChange?: (event: any) =
     }
   });
 }
+
+export const mergeArray = (arr: any[], key: string): any[] => {
+  const uniqueArray = Array.from(
+    arr
+      .reduce((map, item) => {
+        if (!map.has(item?.[key])) {
+          map.set(item?.[key], item);
+        }
+        return map;
+      }, new Map())
+      .values(),
+  ).filter((obj: any) => !isEmptyObject(obj));
+
+  return uniqueArray;
+};

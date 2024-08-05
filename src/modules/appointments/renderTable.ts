@@ -12,29 +12,34 @@ export const tableAppointments: KeyConfigType[] = [
     label: "Patient",
     align: "left",
     component: "th",
+    width: 200
   },
   {
     value: "status",
     label: "Status",
     align: "center",
     component: "th",
+    width: 125
   },
   {
     value: "departmentName",
     label: "Department",
     align: "left",
     component: "th",
+    width: 160
   },
   {
     value: "appointmentDate",
     label: "Appointment Date",
     align: "left",
     component: "th",
+    width: 150
   },
   {
     value: "createdAt",
     label: "Date Created",
     align: "left",
     component: "th",
+    width: 120
   },
 ];

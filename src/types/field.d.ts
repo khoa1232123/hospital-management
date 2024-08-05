@@ -26,6 +26,7 @@ type KInputType = TextFieldProps & {
   items?: KInputType[];
   onClick?: (ev?: MouseEvent) => void;
   onSearch?: (event: any) => void;
+  getDataItem?: (key: string) => void;
 };
 
 type FieldErrType = {
